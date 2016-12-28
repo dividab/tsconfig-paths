@@ -12,6 +12,7 @@
     "@types/node": "^6.0.54",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
+    "shelljs": "^0.7.5",
     "ts-node": "^1.7.3",
     "typescript": "^2.1.4"
   },
@@ -21,7 +22,7 @@
     "tsc": "tsc -P src",
     "tsc:tests": "tsc -P tests",
     "test": "mocha --compilers ts:ts-node/register tests/**/*.ts",
-    "build": "tsc -P src",
+    "build": "rm -rf lib && tsc -P src",
     "publish:major": "yarn run build && node scripts/publish.js major",
     "publish:minor": "yarn run build && node scripts/publish.js minor",
     "publish:patch": "yarn run build && node scripts/publish.js patch"
