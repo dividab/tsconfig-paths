@@ -21,4 +21,4 @@ npm install --save-dev node-tsconfig-paths
 `ts-node -r node-tsconfig-paths main.ts`
 
 ### With mocha and ts-node
-`mocha --compilers ts:ts-node/register -r tsconfig-paths-node-runtime`
+`mocha --compilers ts:ts-node/register -r node-tsconfig-paths`
