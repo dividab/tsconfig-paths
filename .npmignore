@@ -1,0 +1,8 @@
+.idea/
+thumbs.db
+*.log
+src/
+tests/
+scripts/
+tsconfig.json
+
