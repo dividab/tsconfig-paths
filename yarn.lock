@@ -327,7 +327,7 @@ ts-node@^1.7.3:
     xtend "^4.0.0"
     yn "^1.2.0"
 
-tsconfig@^5.0.2:
+tsconfig@^5.0.2, tsconfig@^5.0.3:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/tsconfig/-/tsconfig-5.0.3.tgz#5f4278e701800967a8fc383fd19648878f2a6e3a"
   dependencies:

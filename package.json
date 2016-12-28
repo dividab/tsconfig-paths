@@ -15,9 +15,13 @@
     "typescript": "^2.1.4"
   },
   "scripts": {
-    "start": "yarn test",
+    "start": "cd src && ts-node index.ts",
+    "start:example": "yarn tsc && cd example && ts-node -r ../lib/index.js main.ts",
     "tsc": "tsc -P src",
     "tsc:tests": "tsc -P tests",
     "test": "mocha --compilers ts:ts-node/register tests/**/*.ts"
+  },
+  "dependencies": {
+    "tsconfig": "^5.0.3"
   }
 }
