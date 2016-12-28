@@ -1,8 +1,12 @@
 .idea/
-thumbs.db
-*.log
 src/
 tests/
+example/
+custom-typings/
 scripts/
-tsconfig.json
+thumbs.db
+*.log
+.editorconfig
+.gitignore
+base-tsconfig.json
 
