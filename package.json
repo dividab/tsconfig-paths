@@ -1,0 +1,23 @@
+{
+  "name": "node-tsconfig-paths",
+  "version": "0.1.0",
+  "description": "Load node modules at run-time according to tsconfig.json paths.",
+  "main": "index.js",
+  "author": "Jonas Kello",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.35",
+    "@types/node": "^6.0.54",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "ts-node": "^1.7.3",
+    "typescript": "^2.1.4"
+  },
+  "scripts": {
+    "start": "yarn test",
+    "tsc": "tsc -P src",
+    "tsc:tests": "tsc -P tests",
+    "test": "mocha --compilers ts:ts-node/register tests/**/*.ts"
+  }
+}

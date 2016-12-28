@@ -1,0 +1,9 @@
+.idea/
+.vscode
+node_modules/
+lib/
+temp/
+js_out/
+.DS_Store
+thumbs.db
+*.log
