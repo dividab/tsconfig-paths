@@ -3,7 +3,7 @@ require("shelljs/global");
 const versionPart = process.argv[2];
 console.log(`Incrementing the ${versionPart} part of version in package.json...`);
 const newVersion = incrementVersion(versionPart);
-console.log(`New version is ${newVersion}, commiting rules, package.json...`);
+console.log(`New version is ${newVersion}, commiting package.json...`);
 commit(newVersion);
 console.log(`Tagging with ${newVersion}...`);
 gitTag(newVersion);
@@ -28,13 +28,7 @@ function push() {
 }
 
 function commit(newVersion) {
-  const cmd1 = `git add rules/`;
-  console.log(cmd1);
-  if (exec(cmd1).code !== 0) {
-    echo("Error: Git commit failed");
-    exit(1);
-  }
-  const cmd2 = `git commit package.json rules/ -m "New version ${newVersion}"`;
+  const cmd2 = `git commit package.json -m "New version ${newVersion}"`;
   console.log(cmd2);
   if (exec(cmd2).code !== 0) {
     echo("Error: Git commit failed");
