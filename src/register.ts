@@ -1,4 +1,5 @@
 import { findPath } from "./find-path";
+import { baseUrlResolver } from "./base-url-resolver";
 import * as tsconfig from "tsconfig";
 
 // Do the registration when we are loaded
@@ -18,16 +19,26 @@ export function register() {
 
   const {baseUrl, paths} = config.compilerOptions;
 
+  const absoluteBaseUrl = baseUrlResolver(tsConfigPath, baseUrl);
+  const findPathCurried = (request: string, parent: any) => findPath({
+    request,
+    baseUrl: absoluteBaseUrl,
+    paths,
+    sourceFileName: parent && parent.filename
+  });
+
   const Module = require('module');
   const originalLoader = Module._load;
 
   Module._load = function (request: string, parent: any) {
 
-    const found = findPath(parent && parent.filename, request, tsConfigPath, baseUrl, paths);
+    const found = findPathCurried(request, parent);
     if (found) {
-      arguments[0] = found
+      const modifiedArguments = [found, ...[].slice.call(arguments, 1)];
+      return originalLoader.apply(this, modifiedArguments);
     }
-    return originalLoader.apply(this, arguments)
+
+    return originalLoader.apply(this, arguments);
   }
 
 }

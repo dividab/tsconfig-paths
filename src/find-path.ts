@@ -1,35 +1,45 @@
-import * as console from 'console';
 import * as fs from "fs";
 import * as path from "path";
 import { matchStar } from "./match-star";
 
+export interface FindPathParameters {
+  sourceFileName: string,
+  request: string,
+  baseUrl: string,
+  paths: { [key: string]: Array<string> },
+  fileExists?: (name: string) => boolean
+}
+
 /**
  * Finds a path from tsconfig that matches a module load request.
- * @param sourceFileName The file that requested the module.
+ * @param sourceFileName Absolute path to the file that requested the module.
  * @param request The requested module.
- * @param tsConfig Path to tsconfig.
- * @param baseUrl relative from tsConfigDir.
+ * @param baseUrl Absolute path to tsconfig directory.
  * @param paths The paths to try.
  * @param fileExists Function that checks for existance of a file.
  * @returns the found path, or undefined if no path was found.
  */
-export function findPath(sourceFileName: string, request: string, tsConfig: string, baseUrl: string, paths: { [key: string]: Array<string> },
-  fileExists: (name: string) => boolean = fs.existsSync) {
 
-    if(!sourceFileName) {
-      return undefined;
-    }
+export function findPath({
+  sourceFileName,
+  request,
+  baseUrl,
+  paths,
+  fileExists = fs.existsSync
+}: FindPathParameters) {
 
-  const projectBaseUrl = path.dirname(path.join(tsConfig, baseUrl));
-  const sourceFileDir = path.resolve(path.dirname(tsConfig), path.dirname(sourceFileName));
+  if (!sourceFileName) {
+    return undefined;
+  }
 
-  if (request[0] !== '.' && request[0] !== path.sep && request && projectBaseUrl && paths) {
+  const sourceFileDir = path.dirname(sourceFileName);
+
+  if (request[0] !== '.' && request[0] !== path.sep && request && baseUrl && paths) {
     for (const key of Object.keys(paths)) {
       const starReplace = key === request ? '' : matchStar(key, request);
       if (starReplace !== undefined) {
         for (const pathToTry of paths[key]) {
-          const possibleModule = path.resolve(projectBaseUrl, pathToTry.replace('*', starReplace));
-          console.log("possibleModule: " + possibleModule);
+          const possibleModule = path.resolve(baseUrl, pathToTry.replace('*', starReplace));
           if (fileExists(possibleModule)) {
             return convertToLocal(path.relative(sourceFileDir, possibleModule));
           }
@@ -47,8 +57,8 @@ export function findPath(sourceFileName: string, request: string, tsConfig: stri
 
 }
 
-function convertToLocal(pathString:string) {
-  if(pathString && pathString[0] !== ".") {
+function convertToLocal(pathString: string) {
+  if (pathString && pathString[0] !== ".") {
     return `.${path.sep}${pathString}`;
   }
 
