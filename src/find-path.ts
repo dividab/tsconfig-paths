@@ -1,4 +1,3 @@
-import * as console from 'console';
 import * as fs from "fs";
 import * as path from "path";
 import { matchStar } from "./match-star";
@@ -41,7 +40,6 @@ export function findPath({
       if (starReplace !== undefined) {
         for (const pathToTry of paths[key]) {
           const possibleModule = path.resolve(baseUrl, pathToTry.replace('*', starReplace));
-          console.log("possibleModule: " + possibleModule);
           if (fileExists(possibleModule)) {
             return convertToLocal(path.relative(sourceFileDir, possibleModule));
           }
