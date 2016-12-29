@@ -17,13 +17,13 @@ npm install --save-dev node-tsconfig-paths
 ## How to use
 
 ### With node
-`node -r node-tsconfig-paths main.js`
+`node -r node-tsconfig-paths/register main.js`
 
 ### With ts-node
-`ts-node -r node-tsconfig-paths main.ts`
+`ts-node -r node-tsconfig-paths/register main.ts`
 
 ### With mocha and ts-node
-`mocha --compilers ts:ts-node/register -r node-tsconfig-paths`
+`mocha --compilers ts:ts-node/register -r node-tsconfig-paths/register`
 
 [npm-image]: https://img.shields.io/npm/v/node-tsconfig-paths.svg?style=flat
 [npm-url]: https://www.npmjs.com/package/node-tsconfig-paths
