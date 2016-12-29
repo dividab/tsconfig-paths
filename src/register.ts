@@ -1,4 +1,4 @@
-import {findPath} from "./find-path";
+import { findPath } from "./find-path";
 import * as tsconfig from "tsconfig";
 
 /**
@@ -7,14 +7,20 @@ import * as tsconfig from "tsconfig";
 export function register() {
 
   const cwd = process.cwd();
-  const config = readConfig(undefined, cwd);
+  const {path: tsConfigPath, config} = readConfig(undefined, cwd);
+
+  if (!tsConfigPath) {
+    throw new Error("Couldn't find tsconfig");
+  }
+
   const {baseUrl, paths} = config.compilerOptions;
-  // console.log(`installModuleLoadForPaths, paths: ${JSON.stringify(paths)}, baseUrl: ${baseUrl}`);
 
   const Module = require('module');
   const originalLoader = Module._load;
+
   Module._load = function (request: string, parent: any) {
-    const found = findPath((parent && parent.filename) || undefined, request, baseUrl, paths);
+
+    const found = findPath(parent && parent.filename, request, tsConfigPath, baseUrl, paths);
     if (found) {
       arguments[0] = found
     }
@@ -25,5 +31,5 @@ export function register() {
 
 function readConfig(project: string | boolean | undefined, cwd: string) {
   const result = tsconfig.loadSync(cwd, typeof project === 'string' ? project : undefined);
-  return result.config;
+  return result;
 }
