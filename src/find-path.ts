@@ -2,6 +2,10 @@ import * as fs from "fs";
 import * as path from "path";
 import { matchStar } from "./match-star";
 
+export function resolveBaseUrl(tsConfigPath: string, tsConfigBaseUrl: string) {
+  return path.dirname(path.join(tsConfigPath, tsConfigBaseUrl));
+}
+
 export interface FindPathParameters {
   sourceFileName: string,
   request: string,

@@ -1,15 +1,16 @@
-import {findPath} from "../../src";
+import {findPath, resolveBaseUrl} from "../../src";
 import * as Tsconfig from "tsconfig";
-import * as path from "path";
 
-Tsconfig.loadSync();
+const loadResult = Tsconfig.loadSync(process.cwd(), undefined);
+const absoluteBaseUrl = resolveBaseUrl(loadResult.path, loadResult.config.compilerOptions.baseUrl);
+
+console.log(absoluteBaseUrl, loadResult.config.compilerOptions.paths);
 
 const result = findPath({
   sourceFileName: "./test.ts",
-  request: "lib/mylib",
-  absoluteBaseUrl: path.resolve("./"),
-  paths: { "lib/*": ["location/*"] },
-  fileExists: (name: string) => name === path.resolve("./", "location/mylib")
+  request: "foo/mylib",
+  absoluteBaseUrl,
+  paths: loadResult.config.compilerOptions.paths
 });
 
 console.log(result);

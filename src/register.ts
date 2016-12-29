@@ -1,5 +1,4 @@
-import { findPath } from "./find-path";
-import { baseUrlResolver } from "./base-url-resolver";
+import { findPath, resolveBaseUrl } from "./find-path";
 import * as tsconfig from "tsconfig";
 
 /**
@@ -16,7 +15,7 @@ export function register() {
 
   const {baseUrl, paths} = config.compilerOptions;
 
-  const absoluteBaseUrl = baseUrlResolver(tsConfigPath, baseUrl);
+  const absoluteBaseUrl = resolveBaseUrl(tsConfigPath, baseUrl);
   const findPathCurried = (request: string, parent: any) => findPath({
     request,
     absoluteBaseUrl: absoluteBaseUrl,
