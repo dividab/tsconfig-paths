@@ -19,7 +19,7 @@ export function register() {
   const absoluteBaseUrl = baseUrlResolver(tsConfigPath, baseUrl);
   const findPathCurried = (request: string, parent: any) => findPath({
     request,
-    baseUrl: absoluteBaseUrl,
+    absoluteBaseUrl: absoluteBaseUrl,
     paths,
     sourceFileName: parent && parent.filename
   });

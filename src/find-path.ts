@@ -13,13 +13,12 @@ export interface FindPathParameters {
 /**
  * Finds a path from tsconfig that matches a module load request.
  * @param sourceFileName Absolute path to the file that requested the module.
- * @param request The requested module.
- * @param absoluteBaseUrl baseUrl as specified in tsconfg, but resolved to absolute form.
+ * @param request The required module name.
+ * @param absoluteBaseUrl baseUrl as specified in tsconfg, but must be resolved to absolute form.
  * @param paths The paths to try as specified in tsconfig.
  * @param fileExists Function that checks for existance of a file.
  * @returns the found path, or undefined if no path was found.
  */
-
 export function findPath({
   sourceFileName,
   request,
@@ -30,10 +29,10 @@ export function findPath({
 
   if (request[0] !== '.' && request[0] !== path.sep && sourceFileName && request && absoluteBaseUrl && paths) {
     for (const key of Object.keys(paths)) {
-      const starReplace = key === request ? '' : matchStar(key, request);
-      if (starReplace !== undefined) {
+      const starMatch = key === request ? '' : matchStar(key, request);
+      if (starMatch !== undefined) {
         for (const pathToTry of paths[key]) {
-          const possibleModule = path.resolve(absoluteBaseUrl, pathToTry.replace('*', starReplace));
+          const possibleModule = path.resolve(absoluteBaseUrl, pathToTry.replace('*', starMatch));
           const sourceFileDir = path.dirname(sourceFileName);
           if (fileExists(possibleModule)
             || fileExists(possibleModule + '.ts')

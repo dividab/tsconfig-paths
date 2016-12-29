@@ -9,8 +9,7 @@
     "paths": {
       "lib1": ["../foo", "./lib1", "./bar"],
       "lib2/*": ["../foo", "./lib2/*"],
-      "*/lib3": ["../foo", "./lib3/*", "./bar"],
-      "my/*/lib4": ["../foo", "./lib4/*", "./bar"]
+      "*/lib3": ["../foo", "./lib3/*", "./bar"]
     }
   }
 }
