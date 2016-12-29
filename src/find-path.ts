@@ -3,6 +3,15 @@ import * as fs from "fs";
 import * as path from "path";
 import { matchStar } from "./match-star";
 
+export interface FindPathParameters {
+  sourceFileName: string,
+  request: string,
+  tsConfig: string,
+  baseUrl: string,
+  paths: { [key: string]: Array<string> },
+  fileExists?: (name: string) => boolean
+}
+
 /**
  * Finds a path from tsconfig that matches a module load request.
  * @param sourceFileName The file that requested the module.
@@ -13,12 +22,19 @@ import { matchStar } from "./match-star";
  * @param fileExists Function that checks for existance of a file.
  * @returns the found path, or undefined if no path was found.
  */
-export function findPath(sourceFileName: string, request: string, tsConfig: string, baseUrl: string, paths: { [key: string]: Array<string> },
-  fileExists: (name: string) => boolean = fs.existsSync) {
 
-    if(!sourceFileName) {
-      return undefined;
-    }
+export function findPath({
+  sourceFileName,
+  request,
+  tsConfig,
+  baseUrl,
+  paths,
+  fileExists = fs.existsSync
+}: FindPathParameters) {
+
+  if (!sourceFileName) {
+    return undefined;
+  }
 
   const projectBaseUrl = path.dirname(path.join(tsConfig, baseUrl));
   const sourceFileDir = path.resolve(path.dirname(tsConfig), path.dirname(sourceFileName));
@@ -47,8 +63,8 @@ export function findPath(sourceFileName: string, request: string, tsConfig: stri
 
 }
 
-function convertToLocal(pathString:string) {
-  if(pathString && pathString[0] !== ".") {
+function convertToLocal(pathString: string) {
+  if (pathString && pathString[0] !== ".") {
     return `.${path.sep}${pathString}`;
   }
 

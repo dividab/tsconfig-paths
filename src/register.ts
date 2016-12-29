@@ -23,7 +23,13 @@ export function register() {
 
   Module._load = function (request: string, parent: any) {
 
-    const found = findPath(parent && parent.filename, request, tsConfigPath, baseUrl, paths);
+    const found = findPath({
+      request,
+      baseUrl,
+      paths,
+      sourceFileName: parent && parent.filename,
+      tsConfig: tsConfigPath
+    });
     if (found) {
       arguments[0] = found
     }
