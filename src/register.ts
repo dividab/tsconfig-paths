@@ -18,22 +18,26 @@ export function register() {
 
   const {baseUrl, paths} = config.compilerOptions;
 
-  const Module = require('module');
-  const originalLoader = Module._load;
-
-  Module._load = function (request: string, parent: any) {
-
-    const found = findPath({
+  const findPathCurried = (request: string, parent: any) => findPath({
       request,
       baseUrl,
       paths,
       sourceFileName: parent && parent.filename,
       tsConfig: tsConfigPath
     });
+
+  const Module = require('module');
+  const originalLoader = Module._load;
+
+  Module._load = function (request: string, parent: any) {
+
+    const found = findPathCurried(request, parent);
     if (found) {
-      arguments[0] = found
+      const modifiedArguments = [found, ...[].slice.call(arguments, 1)];
+      return originalLoader.apply(this, modifiedArguments);
     }
-    return originalLoader.apply(this, arguments)
+
+    return originalLoader.apply(this, arguments);
   }
 
 }
