@@ -32,7 +32,7 @@ export function findPath({
       const starMatch = key === request ? '' : matchStar(key, request);
       if (starMatch !== undefined) {
         for (const pathToTry of paths[key]) {
-          const possibleModule = path.resolve(absoluteBaseUrl, pathToTry.replace('*', starMatch));
+          const possibleModule = path.join(absoluteBaseUrl, pathToTry.replace('*', starMatch));
           const sourceFileDir = path.dirname(sourceFileName);
           if (fileExists(possibleModule)
             || fileExists(possibleModule + '.ts')
@@ -51,6 +51,5 @@ function convertToLocal(pathString: string) {
   if (pathString && pathString[0] !== ".") {
     return `.${path.sep}${pathString}`;
   }
-
   return pathString;
 }
