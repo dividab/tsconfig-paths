@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { matchStar } from "./match-star";
+import {matchStar} from "./match-star";
 
 export function resolveBaseUrl(tsConfigPath: string, tsConfigBaseUrl: string) {
   return path.dirname(path.join(tsConfigPath, tsConfigBaseUrl));
@@ -10,7 +10,7 @@ export interface FindPathParameters {
   sourceFileName: string,
   request: string,
   absoluteBaseUrl: string,
-  paths: { [key: string]: Array<string> },
+  paths: {[key: string]: Array<string>},
   fileExists?: (name: string) => boolean
 }
 

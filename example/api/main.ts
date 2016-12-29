@@ -1,16 +1,16 @@
-import {findPath, resolveBaseUrl} from "../../src";
+import {createMatchPath} from "../../src";
 import * as Tsconfig from "tsconfig";
+import * as path from "path";
 
+// Load tsconfig
 const loadResult = Tsconfig.loadSync(process.cwd(), undefined);
-const absoluteBaseUrl = resolveBaseUrl(loadResult.path, loadResult.config.compilerOptions.baseUrl);
 
-console.log(absoluteBaseUrl, loadResult.config.compilerOptions.paths);
+// Create function that will match paths
+const matchPath = createMatchPath(
+  loadResult.path,
+  loadResult.config.compilerOptions.baseUrl,
+  loadResult.config.compilerOptions.paths);
 
-const result = findPath({
-  sourceFileName: "./test.ts",
-  request: "foo/mylib",
-  absoluteBaseUrl,
-  paths: loadResult.config.compilerOptions.paths
-});
-
+// Match a path and log result
+const result = matchPath(path.resolve("./test.ts"), "foo/mylib");
 console.log(result);

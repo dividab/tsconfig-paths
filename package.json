@@ -19,7 +19,7 @@
   "scripts": {
     "start": "cd src && ts-node index.ts",
     "start:example:node": "yarn tsc && cd example/node && ts-node -r ../register.js main.ts",
-    "start:example:api": "yarn tsc && cd example/api && ts-node -r ../register.js main.ts",
+    "start:example:api": "cd example/api && ts-node main.ts",
     "tsc": "tsc -P src",
     "tsc:tests": "tsc -P tests",
     "test": "mocha --compilers ts:ts-node/register tests/**/*.ts",
