@@ -8,5 +8,5 @@ thumbs.db
 *.log
 .editorconfig
 .gitignore
+.npmignore
 base-tsconfig.json
-
