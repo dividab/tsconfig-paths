@@ -1,6 +1,6 @@
 {
   "name": "node-tsconfig-paths",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Load node modules at run-time according to tsconfig.json paths.",
   "main": "lib/index.js",
   "author": "Jonas Kello",
