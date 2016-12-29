@@ -1,4 +1,2 @@
-import {register} from "./register";
-export {register} from "./register";
+import "./register";
 
-register();

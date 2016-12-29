@@ -1,6 +1,9 @@
 import {findPath} from "./find-path";
 import * as tsconfig from "tsconfig";
 
+// Do the registration when we are loaded
+register();
+
 /**
  * Installs a custom module load function that can adhere to paths in tsconfig.
  */
