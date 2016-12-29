@@ -9,6 +9,6 @@
     "noEmit": true,
     // Global types (seems this is needed to satisfy Webstorm)
     "typeRoots": ["./node_modules/@types"],
-    "types": ["mocha"]
+    "types": ["mocha", "node"]
   }
 }

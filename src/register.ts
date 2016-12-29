@@ -13,8 +13,8 @@ export function register() {
 
   const Module = require('module');
   const originalLoader = Module._load;
-  Module._load = function (request: string) {
-    const found = findPath(request, baseUrl, paths);
+  Module._load = function (request: string, parent: any) {
+    const found = findPath((parent && parent.filename) || undefined, request, baseUrl, paths);
     if (found) {
       arguments[0] = found
     }
