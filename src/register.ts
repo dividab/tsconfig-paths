@@ -2,9 +2,6 @@ import { findPath } from "./find-path";
 import { baseUrlResolver } from "./base-url-resolver";
 import * as tsconfig from "tsconfig";
 
-// Do the registration when we are loaded
-register();
-
 /**
  * Installs a custom module load function that can adhere to paths in tsconfig.
  */
@@ -44,6 +41,5 @@ export function register() {
 }
 
 function readConfig(project: string | boolean | undefined, cwd: string) {
-  const result = tsconfig.loadSync(cwd, typeof project === 'string' ? project : undefined);
-  return result;
+  return tsconfig.loadSync(cwd, typeof project === 'string' ? project : undefined);
 }
