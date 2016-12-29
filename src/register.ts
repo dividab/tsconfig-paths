@@ -1,4 +1,5 @@
 import { findPath } from "./find-path";
+import { baseUrlResolver } from "./base-url-resolver";
 import * as tsconfig from "tsconfig";
 
 // Do the registration when we are loaded
@@ -18,13 +19,13 @@ export function register() {
 
   const {baseUrl, paths} = config.compilerOptions;
 
+  const absoluteBaseUrl = baseUrlResolver(tsConfigPath, baseUrl);
   const findPathCurried = (request: string, parent: any) => findPath({
-      request,
-      baseUrl,
-      paths,
-      sourceFileName: parent && parent.filename,
-      tsConfig: tsConfigPath
-    });
+    request,
+    baseUrl: absoluteBaseUrl,
+    paths,
+    sourceFileName: parent && parent.filename
+  });
 
   const Module = require('module');
   const originalLoader = Module._load;

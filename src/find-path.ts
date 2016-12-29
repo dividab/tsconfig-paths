@@ -6,7 +6,6 @@ import { matchStar } from "./match-star";
 export interface FindPathParameters {
   sourceFileName: string,
   request: string,
-  tsConfig: string,
   baseUrl: string,
   paths: { [key: string]: Array<string> },
   fileExists?: (name: string) => boolean
@@ -14,10 +13,9 @@ export interface FindPathParameters {
 
 /**
  * Finds a path from tsconfig that matches a module load request.
- * @param sourceFileName The file that requested the module.
+ * @param sourceFileName Absolute path to the file that requested the module.
  * @param request The requested module.
- * @param tsConfig Path to tsconfig.
- * @param baseUrl relative from tsConfigDir.
+ * @param baseUrl Absolute path to tsconfig directory.
  * @param paths The paths to try.
  * @param fileExists Function that checks for existance of a file.
  * @returns the found path, or undefined if no path was found.
@@ -26,7 +24,6 @@ export interface FindPathParameters {
 export function findPath({
   sourceFileName,
   request,
-  tsConfig,
   baseUrl,
   paths,
   fileExists = fs.existsSync
@@ -36,15 +33,14 @@ export function findPath({
     return undefined;
   }
 
-  const projectBaseUrl = path.dirname(path.join(tsConfig, baseUrl));
-  const sourceFileDir = path.resolve(path.dirname(tsConfig), path.dirname(sourceFileName));
+  const sourceFileDir = path.dirname(sourceFileName);
 
-  if (request[0] !== '.' && request[0] !== path.sep && request && projectBaseUrl && paths) {
+  if (request[0] !== '.' && request[0] !== path.sep && request && baseUrl && paths) {
     for (const key of Object.keys(paths)) {
       const starReplace = key === request ? '' : matchStar(key, request);
       if (starReplace !== undefined) {
         for (const pathToTry of paths[key]) {
-          const possibleModule = path.resolve(projectBaseUrl, pathToTry.replace('*', starReplace));
+          const possibleModule = path.resolve(baseUrl, pathToTry.replace('*', starReplace));
           console.log("possibleModule: " + possibleModule);
           if (fileExists(possibleModule)) {
             return convertToLocal(path.relative(sourceFileDir, possibleModule));

@@ -9,8 +9,7 @@ describe('find-path', function () {
     const result = findPath({
       sourceFileName: "./test.ts",
       request: "lib/mylib",
-      baseUrl: "./",
-      tsConfig: "./tsconfig.json",
+      baseUrl: path.resolve("./"),
       paths: { "lib/*": ["location/*"] },
       fileExists: (name: string) => name === path.resolve("./", "location/mylib")
     });
@@ -22,8 +21,7 @@ describe('find-path', function () {
     const result = findPath({
       sourceFileName: "./subfolder/file.ts",
       request: "lib/mylib",
-      baseUrl: "./",
-      tsConfig: "./tsconfig.json",
+      baseUrl: path.resolve("./"),
       paths: { "lib/*": ["location/*"] },
       fileExists: (name: string) => name === path.resolve("./", "location/mylib")
     });
@@ -35,8 +33,7 @@ describe('find-path', function () {
       const result = findPath({
       sourceFileName: "./asd.ts",
       request: "mylib",
-      baseUrl: "./",
-      tsConfig: "./tsconfig.json",
+      baseUrl: path.resolve("./"),
       paths: { "lib/*": ["location/*"] },
       fileExists: (name: string) => name === path.resolve("./", "location/mylib")
     });
