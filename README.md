@@ -27,3 +27,13 @@ npm install --save-dev node-tsconfig-paths
 
 [npm-image]: https://img.shields.io/npm/v/node-tsconfig-paths.svg?style=flat
 [npm-url]: https://www.npmjs.com/package/node-tsconfig-paths
+
+## Programmatic use
+
+There is one function, `findPath()` that is exported for programmatic use.
+For now see the tests how to call it.
+
+```
+import {findPath} from "node-tsconfig-paths";
+findPath(...)
+```
