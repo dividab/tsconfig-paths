@@ -12,6 +12,16 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/mylib");
   });
 
+  it('should locate path that matches with star and exists with extension', () => {
+
+    const matchPath = createMatchPath("/root/tsconfig.json", "./", {"lib/*": ["location/*"]});
+    const result = matchPath("/root/test.ts", "lib/mylib",
+      (name: string) => name === "/root/location/mylib.myext",
+      [".js", ".myext"]
+    );
+    assert.equal(result, "/root/location/mylib");
+  });
+
   it('should locate path that matches without star and exists', () => {
 
     const matchPath = createMatchPath("/root/tsconfig.json", "./", {"lib/foo": ["location/foo"]});
