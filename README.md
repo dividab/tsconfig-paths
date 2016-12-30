@@ -1,32 +1,32 @@
-# node-tsconfig-paths
+# tsconfig-paths
 
 [![NPM version][npm-image]][npm-url]
 
-Use this to enable execution of files whose location is specified in the `paths` section of `tsconfig.json`.
+Use this to load modules whose location is specified in the `paths` section of `tsconfig.json`. Both loading at run-time and via API are supported.
 
 ## How to install
 
 ```
-yarn add --dev node-tsconfig-paths
+yarn add --dev tsconfig-paths
 ```
 or
 ```
-npm install --save-dev node-tsconfig-paths
+npm install --save-dev tsconfig-paths
 ```
 
 ## How to use
 
 ### With node
-`node -r node-tsconfig-paths/register main.js`
+`node -r tsconfig-paths/register main.js`
 
 ### With ts-node
-`ts-node -r node-tsconfig-paths/register main.ts`
+`ts-node -r tsconfig-paths/register main.ts`
 
 ### With mocha and ts-node
-`mocha --compilers ts:ts-node/register -r node-tsconfig-paths/register`
+`mocha --compilers ts:ts-node/register -r tsconfig-paths/register`
 
-[npm-image]: https://img.shields.io/npm/v/node-tsconfig-paths.svg?style=flat
-[npm-url]: https://www.npmjs.com/package/node-tsconfig-paths
+[npm-image]: https://img.shields.io/npm/v/tsconfig-paths.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/tsconfig-paths
 
 ## Programmatic use
 

@@ -1,11 +1,11 @@
 {
-  "name": "node-tsconfig-paths",
+  "name": "tsconfig-paths",
   "version": "0.3.0",
-  "description": "Load node modules at run-time according to tsconfig.json paths.",
+  "description": "Load node modules according to tsconfig paths, in run-time or via API.",
   "main": "lib/index.js",
   "author": "Jonas Kello",
   "license": "MIT",
-  "repository": "https://github.com/jonaskello/node-tsconfig-paths",
+  "repository": "https://github.com/jonaskello/tsconfig-paths",
   "devDependencies": {
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.35",
