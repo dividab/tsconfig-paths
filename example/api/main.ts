@@ -9,7 +9,8 @@ const loadResult = Tsconfig.loadSync(process.cwd(), undefined);
 const matchPath = createMatchPath(
   loadResult.path,
   loadResult.config.compilerOptions.baseUrl,
-  loadResult.config.compilerOptions.paths);
+  loadResult.config.compilerOptions.paths
+);
 
 // Match a path and log result
 const result = matchPath(path.resolve("./test.ts"), "foo/mylib");

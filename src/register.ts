@@ -1,44 +1,33 @@
-import { findPath, resolveBaseUrl } from "./find-path";
-import * as tsconfig from "tsconfig";
+import {createMatchPath} from "./match-path";
+import * as Tsconfig from "tsconfig";
 
 /**
  * Installs a custom module load function that can adhere to paths in tsconfig.
  */
 export function register() {
 
+  // Load tsconfig and create path matching function
   const cwd = process.cwd();
-  const {path: tsConfigPath, config} = readConfig(undefined, cwd);
-
-  if (!tsConfigPath) {
+  const loadResult = Tsconfig.loadSync(cwd, undefined);
+  if (!loadResult.path) {
     throw new Error("Couldn't find tsconfig");
   }
+  const matchPath = createMatchPath(
+    loadResult.path,
+    loadResult.config.compilerOptions.baseUrl,
+    loadResult.config.compilerOptions.paths
+  );
 
-  const {baseUrl, paths} = config.compilerOptions;
-
-  const absoluteBaseUrl = resolveBaseUrl(tsConfigPath, baseUrl);
-  const findPathCurried = (request: string, parent: any) => findPath({
-    request,
-    absoluteBaseUrl: absoluteBaseUrl,
-    paths,
-    sourceFileName: parent && parent.filename
-  });
-
+  // Patch node's module loading
   const Module = require('module');
   const originalLoader = Module._load;
-
   Module._load = function (request: string, parent: any) {
-
-    const found = findPathCurried(request, parent);
+    const found = matchPath(parent, request);
     if (found) {
       const modifiedArguments = [found, ...[].slice.call(arguments, 1)];
       return originalLoader.apply(this, modifiedArguments);
     }
-
     return originalLoader.apply(this, arguments);
   }
 
-}
-
-function readConfig(project: string | boolean | undefined, cwd: string) {
-  return tsconfig.loadSync(cwd, typeof project === 'string' ? project : undefined);
 }
