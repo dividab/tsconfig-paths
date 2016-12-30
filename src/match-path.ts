@@ -30,7 +30,7 @@ export function createMatchPath(tsConfigPath: string,
  * @param absolutePaths The paths to try as specified in tsconfig but resolved to absolute form.
  * @param absoluteSourceFileName Absolute path to the file that requested the module.
  * @param requestedModule The required module name.
- * @param fileExists Function that checks for existance of a file.
+ * @param fileExists Function that checks for existance of a file (useful for testing).
  * @returns the found path, or undefined if no path was found.
  */
 export function matchFromAbsolutePaths(absolutePaths: {[key: string]: Array<string>},
