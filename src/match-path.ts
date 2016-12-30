@@ -21,7 +21,7 @@ export function createMatchPath(tsConfigPath: string,
     absolutePaths[key] = paths[key].map((pathToResolve) => path.join(absoluteBaseUrl, pathToResolve));
   }
   return (sourceFileName: string, requestedModule: string, fileExists: any) =>
-    matchFromAbsolutePath(absolutePaths, sourceFileName, requestedModule, fileExists);
+    matchFromAbsolutePaths(absolutePaths, sourceFileName, requestedModule, fileExists);
 
 }
 
@@ -33,10 +33,10 @@ export function createMatchPath(tsConfigPath: string,
  * @param fileExists Function that checks for existance of a file.
  * @returns the found path, or undefined if no path was found.
  */
-export function matchFromAbsolutePath(absolutePaths: {[key: string]: Array<string>},
-                                      absoluteSourceFileName: string,
-                                      requestedModule: string,
-                                      fileExists = fs.existsSync): string | undefined {
+export function matchFromAbsolutePaths(absolutePaths: {[key: string]: Array<string>},
+                                       absoluteSourceFileName: string,
+                                       requestedModule: string,
+                                       fileExists = fs.existsSync): string | undefined {
 
   if (requestedModule[0] !== '.'
     && requestedModule[0] !== path.sep

@@ -30,10 +30,10 @@ npm install --save-dev node-tsconfig-paths
 
 ## Programmatic use
 
-There is one function, `findPath()` that is exported for programmatic use.
-For now see the tests how to call it.
+The API consists of these functions:
 
-```
-import {findPath} from "node-tsconfig-paths";
-findPath(...)
-```
+#### `createMatchPath(tsConfigPath, baseUrl, paths)`
+This function will create a function that can match paths. It accepts `baseUrl` and `paths` directly as they are specified in tsconfig and will handle resolving paths to absolute form. The created function has this signature: `matchPath(absoluteSourceFileName: string, requestedModule: string)`
+
+#### `matchFromAbsolutePaths(absolutePaths, absoluteSourceFileName, requestedModule)`
+This function is lower level and requries that the paths as already been resolved to absolute form.
