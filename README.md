@@ -4,6 +4,10 @@
 
 Use this to load modules whose location is specified in the `paths` section of `tsconfig.json`. Both loading at run-time and via API are supported.
 
+Typescript mimics the Node.js runtime resolution strategy of modules. But it also allows the use of `path mapping` which allows arbitrary module paths(that doesn't start with a "./") to be specified and mapped to different paths on the filesystem. The Node.js way is to go and find the module in the `node_modules` folders all the way up to the root of the filesystem.
+
+This package rewrites `paths` in `tsconfig.json` to local paths which node can load.
+
 ## How to install
 
 ```
