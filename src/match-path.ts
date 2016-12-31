@@ -31,14 +31,14 @@ export function createMatchPath(tsConfigPath: string,
 
 /**
  * Finds a path from tsconfig that matches a module load request.
- * @param absolutePaths The paths to try as specified in tsconfig but resolved to absolute form.
+ * @param absolutePathMappings The paths to try as specified in tsconfig but resolved to absolute form.
  * @param absoluteSourceFileName Absolute path to the file that requested the module.
  * @param requestedModule The required module name.
  * @param fileExists Function that checks for existance of a file (useful for testing).
  * @param extensions File extensions to probe for (useful for testing).
  * @returns the found path, or undefined if no path was found.
  */
-export function matchFromAbsolutePaths(absolutePaths: {[key: string]: Array<string>},
+export function matchFromAbsolutePaths(absolutePathMappings: {[key: string]: Array<string>},
                                        absoluteSourceFileName: string,
                                        requestedModule: string,
                                        fileExists = fs.existsSync,
@@ -46,19 +46,18 @@ export function matchFromAbsolutePaths(absolutePaths: {[key: string]: Array<stri
 
   if (requestedModule[0] !== '.'
     && requestedModule[0] !== path.sep
-    && absolutePaths
+    && absolutePathMappings
     && absoluteSourceFileName
     && requestedModule
     && fileExists) {
-    for (const key of Object.keys(absolutePaths)) {
-      const starMatch = key === requestedModule ? '' : matchStar(key, requestedModule);
+    for (const virtualPathPattern of Object.keys(absolutePathMappings)) {
+      const starMatch = virtualPathPattern === requestedModule ? '' : matchStar(virtualPathPattern, requestedModule);
       if (starMatch !== undefined) {
-        for (const absolutePathToTry of absolutePaths[key]) {
-          const possibleModule = absolutePathToTry.replace('*', starMatch);
-          const exists = fileExists(possibleModule) ||
-            extensions.reduce((prev, curr) => prev || fileExists(possibleModule + curr), false);
+        for (const physicalPathPattern of absolutePathMappings[virtualPathPattern]) {
+          const physicalPath = physicalPathPattern.replace('*', starMatch);
+          const exists = mappingExists(physicalPath, fileExists, extensions);
           if (exists) {
-            return possibleModule;
+            return physicalPath;
           }
         }
       }
@@ -66,4 +65,9 @@ export function matchFromAbsolutePaths(absolutePaths: {[key: string]: Array<stri
   }
   return undefined;
 
+}
+
+function mappingExists(expandedMapping: string, fileExists: any, extensions: Array<string>) {
+  return fileExists(expandedMapping) ||
+    extensions.reduce((prev, curr) => prev || fileExists(expandedMapping + curr), false);
 }
