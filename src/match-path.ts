@@ -67,7 +67,7 @@ export function matchFromAbsolutePaths(absolutePathMappings: {[key: string]: Arr
 
 }
 
-function mappingExists(expandedMapping: string, fileExists: any, extensions: Array<string>) {
-  return fileExists(expandedMapping) ||
-    extensions.reduce((prev, curr) => prev || fileExists(expandedMapping + curr), false);
+function mappingExists(physicalPath: string, fileExists: any, extensions: Array<string>) {
+  return fileExists(physicalPath) ||
+    extensions.reduce((prev, curr) => prev || fileExists(physicalPath + curr), false);
 }
