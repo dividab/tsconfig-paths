@@ -15,6 +15,19 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/mylib");
   });
 
+  it('should resolve to correct path when many are specified', () => {
+
+    const matchPath = createMatchPath("/root/tsconfig.json", "./", { "lib/*": ["foo1/*", "foo2/*","location/*", "foo3/*"] });
+    const result = matchPath(
+      "/root/test.ts",
+      "lib/mylib",
+      (_: string) => undefined,
+      (name: string) => name === "/root/location/mylib/index.ts",
+      [".ts"]
+    );
+    assert.equal(result, "/root/location/mylib");
+  });
+
   it('should locate path that matches with star and prioritize pattern with longest prefix', () => {
 
     const matchPath = createMatchPath("/root/tsconfig.json", "./", { "*": ["location/*"], "lib/*": ["location/*"] });
