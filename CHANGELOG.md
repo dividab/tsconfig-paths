@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+- Nothing yet.
+
+## [1.1.0]
+### Added
+- More explanation to readme.
+- Match all extensions in require.extensions.
+- Match longest pattern prefix first as typesript does.
+- Match file in main field of package.json.
+- Check for index files explicitly.
+
 ## [1.0.0] - 2016-12-30
 - First stable release.
 
