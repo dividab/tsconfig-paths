@@ -3,7 +3,7 @@ import * as path from "path";
 import {matchStar} from "./match-star";
 
 export type MatchPath = (absoluteSourceFileName: string, requestedModule: string,
-                         fileExists?: any, extensions?: Array<string>) => string | undefined;
+  fileExists?: any, extensions?: Array<string>) => string | undefined;
 
 /**
  * Creates a function that can resolve paths according to tsconfig paths property.
@@ -12,8 +12,8 @@ export type MatchPath = (absoluteSourceFileName: string, requestedModule: string
  * @param paths The paths specified in tsconfig.
  */
 export function createMatchPath(tsConfigPath: string,
-                                baseUrl: string,
-                                paths: {[key: string]: Array<string>}): MatchPath {
+  baseUrl: string,
+  paths: {[key: string]: Array<string>}): MatchPath {
 
   // Resolve all paths to absolute form once here, this saves time on each request later
   const absoluteBaseUrl = path.dirname(path.join(tsConfigPath, baseUrl));
@@ -38,11 +38,11 @@ export function createMatchPath(tsConfigPath: string,
  * @param extensions File extensions to probe for (useful for testing).
  * @returns the found path, or undefined if no path was found.
  */
-export function matchFromAbsolutePaths(absolutePathMappings: {[key: string]: Array<string>},
-                                       absoluteSourceFileName: string,
-                                       requestedModule: string,
-                                       fileExists = fs.existsSync,
-                                       extensions = Object.keys(require.extensions)): string | undefined {
+export function matchFromAbsolutePaths(absolutePathMappings: { [key: string]: Array<string> },
+  absoluteSourceFileName: string,
+  requestedModule: string,
+  fileExists = fs.existsSync,
+  extensions = Object.keys(require.extensions)): string | undefined {
 
   if (requestedModule[0] !== '.'
     && requestedModule[0] !== path.sep
@@ -50,7 +50,7 @@ export function matchFromAbsolutePaths(absolutePathMappings: {[key: string]: Arr
     && absoluteSourceFileName
     && requestedModule
     && fileExists) {
-    for (const virtualPathPattern of Object.keys(absolutePathMappings)) {
+    for (const virtualPathPattern of sortByLongestPrefix(Object.keys(absolutePathMappings))) {
       const starMatch = virtualPathPattern === requestedModule ? '' : matchStar(virtualPathPattern, requestedModule);
       if (starMatch !== undefined) {
         for (const physicalPathPattern of absolutePathMappings[virtualPathPattern]) {
@@ -70,4 +70,19 @@ export function matchFromAbsolutePaths(absolutePathMappings: {[key: string]: Arr
 function mappingExists(physicalPath: string, fileExists: any, extensions: Array<string>) {
   return fileExists(physicalPath) ||
     extensions.reduce((prev, curr) => prev || fileExists(physicalPath + curr), false);
+}
+
+/**
+ * Sort path patterns.
+ * If module name can be matches with multiple patterns then pattern with the longest prefix will be picked.
+ */
+function sortByLongestPrefix(arr: Array<string>):Array<string> {
+  return arr
+    .concat()
+    .sort((a: string, b: string) => getPrefixLength(b) - getPrefixLength(a));
+}
+
+function getPrefixLength(pattern: string):number {
+  const prefixLength = pattern.indexOf("*");
+  return pattern.substr(0, prefixLength).length;
 }

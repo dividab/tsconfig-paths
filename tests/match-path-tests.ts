@@ -12,6 +12,15 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/mylib");
   });
 
+  it('should locate path that matches with star and prioritize pattern with longest prefix', () => {
+
+    const matchPath = createMatchPath("/root/tsconfig.json", "./", {"*": ["location/*"], "lib/*": ["location/*"]});
+    const result = matchPath("/root/test.ts", "lib/mylib",
+      (name: string) => name === "/root/location/lib/mylib" || "/root/location/mylib"
+    );
+    assert.equal(result, "/root/location/mylib");
+  });
+
   it('should locate path that matches with star and exists with extension', () => {
 
     const matchPath = createMatchPath("/root/tsconfig.json", "./", {"lib/*": ["location/*"]});
