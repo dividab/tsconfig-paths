@@ -72,9 +72,9 @@ export function matchFromAbsolutePaths(absolutePathMappings: { [key: string]: Ar
 
 /**
  * Tries to resolve a physical path by:
- * 1. Check for file specified in package.json's main property.
- * 2. Check for a file named index ending in any of the extensions.
- * 3. Check for files ending in any of the extensions.
+ * 1. Check for files named as last part of request and ending in any of the extensions.
+ * 2. Check for file specified in package.json's main property.
+ * 3. Check for a file named index ending in any of the extensions.
  * @param physicalPath The path to check.
  * @param fileExists Function that checks for existance of a file (useful for testing).
  * @param readPackageJson Function that returns parsed package.json if exists or undefined(useful for testing).
