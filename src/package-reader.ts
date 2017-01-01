@@ -4,8 +4,8 @@ export function readPackage(
   packageJsonPath: string,
   loadPackageJson: (file: string) => any = loadPackageJsonFromDisk,
   fileExists: (path: string) => boolean = fs.existsSync
-) {
-  return !!packageJsonPath.match(/package\.json$/) && fileExists(packageJsonPath) && loadPackageJson(packageJsonPath);
+): { main: string } | undefined {
+return (packageJsonPath.match(/package\.json$/) && fileExists(packageJsonPath) && loadPackageJson(packageJsonPath)) || undefined;
 }
 
 function loadPackageJsonFromDisk(file: string) {
