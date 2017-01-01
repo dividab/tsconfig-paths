@@ -61,7 +61,10 @@ export function matchFromAbsolutePaths(absolutePathMappings: { [key: string]: Ar
       if (starMatch !== undefined) {
         for (const physicalPathPattern of absolutePathMappings[virtualPathPattern]) {
           const physicalPath = physicalPathPattern.replace('*', starMatch);
-          return tryResolve(physicalPath, fileExists, readPackageJson, extensions);
+          const resolved = tryResolve(physicalPath, fileExists, readPackageJson, extensions);
+          if (resolved) {
+            return resolved;
+          }
         }
       }
     }
@@ -82,8 +85,8 @@ export function matchFromAbsolutePaths(absolutePathMappings: { [key: string]: Ar
  * @returns {string}
  */
 function tryResolve(physicalPath: string,
-                    fileExists: any,
-                    readPackageJson: (packageJsonPath: string) => any, extensions: Array<string>): string | undefined {
+  fileExists: any,
+  readPackageJson: (packageJsonPath: string) => any, extensions: Array<string>): string | undefined {
   if (extensions.reduce((prev, curr) => prev || fileExists(physicalPath + curr), false)) {
     return physicalPath;
   }
