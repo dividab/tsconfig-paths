@@ -83,7 +83,7 @@ export function matchFromAbsolutePaths(absolutePathMappings: { [key: string]: Ar
  */
 function tryResolve(physicalPath: string,
                     fileExists: any,
-                    readPackageJson: (packageJsonPath: string) => any, extensions: Array<string>): string {
+                    readPackageJson: (packageJsonPath: string) => any, extensions: Array<string>): string | undefined {
   if (extensions.reduce((prev, curr) => prev || fileExists(physicalPath + curr), false)) {
     return physicalPath;
   }
