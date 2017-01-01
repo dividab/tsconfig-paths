@@ -61,8 +61,7 @@ export function matchFromAbsolutePaths(absolutePathMappings: { [key: string]: Ar
       if (starMatch !== undefined) {
         for (const physicalPathPattern of absolutePathMappings[virtualPathPattern]) {
           const physicalPath = physicalPathPattern.replace('*', starMatch);
-          const resolved = tryResolve(physicalPath, fileExists, readPackageJson, extensions);
-          return resolved;
+          return tryResolve(physicalPath, fileExists, readPackageJson, extensions);
         }
       }
     }
@@ -71,7 +70,20 @@ export function matchFromAbsolutePaths(absolutePathMappings: { [key: string]: Ar
 
 }
 
-function tryResolve(physicalPath: string, fileExists: any, readPackageJson: (packageJsonPath: string) => any, extensions: Array<string>) {
+/**
+ * Tries to resolve a physical path by:
+ * 1. Check for file specified in package.json's main property.
+ * 2. Check for a file named index ending in any of the extensions.
+ * 3. Check for files ending in any of the extensions.
+ * @param physicalPath The path to check.
+ * @param fileExists Function that checks for existance of a file (useful for testing).
+ * @param readPackageJson Function that returns parsed package.json if exists or undefined(useful for testing).
+ * @param extensions File extensions to probe for (useful for testing).
+ * @returns {string}
+ */
+function tryResolve(physicalPath: string,
+                    fileExists: any,
+                    readPackageJson: (packageJsonPath: string) => any, extensions: Array<string>): string {
   if (extensions.reduce((prev, curr) => prev || fileExists(physicalPath + curr), false)) {
     return physicalPath;
   }
