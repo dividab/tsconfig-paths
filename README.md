@@ -56,11 +56,12 @@ Then run with:
 
 The API consists of these functions:
 
-#### `createMatchPath(tsConfigPath, baseUrl, paths)`
-This function will create a function that can match paths. It accepts `baseUrl` and `paths` directly as they are specified in tsconfig and will handle resolving paths to absolute form. The created function has this signature: `matchPath(absoluteSourceFileName: string, requestedModule: string)`
+#### `createMatchPath(absoluteBaseUrl, paths)`
+This function will create a function that can match paths. It accepts `baseUrl` and `paths` directly as they are specified in tsconfig and will handle resolving paths to absolute form. The created function has this signature:
+`(sourceFileName: string, requestedModule: string, readPackageJson: (packageJsonPath: string) => any, fileExists: any, extensions?: Array<string>)`
 
-#### `matchFromAbsolutePaths(absolutePaths, absoluteSourceFileName, requestedModule)`
-This function is lower level and requries that the paths as already been resolved to absolute form.
+#### `matchFromAbsolutePaths(absolutePathMappings)`
+Same structure as paths in tsconfig but all paths needs to be resolved to absolute paths. This function is lower level and requries that the paths as already been resolved to absolute form.
 
 [npm-image]: https://img.shields.io/npm/v/tsconfig-paths.svg?style=flat
 [npm-url]: https://www.npmjs.com/package/tsconfig-paths
