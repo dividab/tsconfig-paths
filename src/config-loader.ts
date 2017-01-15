@@ -8,7 +8,7 @@ export interface ExplicitParams {
 
 interface ConfigLoaderParams {
   tsConfigLoader?: (params: TsConfigLoader.TsConfigLoaderParams) => TsConfigLoader.TsConfigLoaderResult
-  explicitParams: ExplicitParams,
+  explicitParams: ExplicitParams | undefined,
   cwd: string,
 }
 
@@ -35,7 +35,9 @@ export function configLoader({
     throw new Error("Couldn't find tsconfig");
   }
 
-  const absoluteBaseUrl = path.dirname(path.join(loadResult.tsConfigPath, loadResult.baseUrl));
+  const tsConfigDir = path.dirname(loadResult.tsConfigPath);
+  const absoluteBaseUrl = path.join(tsConfigDir, loadResult.baseUrl);
+
   return {
     absoluteBaseUrl,
     paths: loadResult.paths
