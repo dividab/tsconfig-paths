@@ -5,7 +5,7 @@ describe('find-path', function () {
 
   it('should locate path that matches with star and exists', () => {
 
-    const matchPath = createMatchPath("/root/tsconfig.json", "./", { "lib/*": ["location/*"] });
+    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/test.ts",
       "lib/mylib",
@@ -17,7 +17,7 @@ describe('find-path', function () {
 
   it('should resolve to correct path when many are specified', () => {
 
-    const matchPath = createMatchPath("/root/tsconfig.json", "./", { "lib/*": ["foo1/*", "foo2/*","location/*", "foo3/*"] });
+    const matchPath = createMatchPath("/root/", { "lib/*": ["foo1/*", "foo2/*","location/*", "foo3/*"] });
     const result = matchPath(
       "/root/test.ts",
       "lib/mylib",
@@ -30,7 +30,7 @@ describe('find-path', function () {
 
   it('should locate path that matches with star and prioritize pattern with longest prefix', () => {
 
-    const matchPath = createMatchPath("/root/tsconfig.json", "./", { "*": ["location/*"], "lib/*": ["location/*"] });
+    const matchPath = createMatchPath("/root/", { "*": ["location/*"], "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/test.ts",
       "lib/mylib",
@@ -42,7 +42,7 @@ describe('find-path', function () {
 
   it('should locate path that matches with star and exists with extension', () => {
 
-    const matchPath = createMatchPath("/root/tsconfig.json", "./", { "lib/*": ["location/*"] });
+    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/test.ts",
       "lib/mylib",
@@ -55,7 +55,7 @@ describe('find-path', function () {
 
   it('should locate path that matches without star and exists', () => {
 
-    const matchPath = createMatchPath("/root/tsconfig.json", "./", { "lib/foo": ["location/foo"] });
+    const matchPath = createMatchPath("/root/", { "lib/foo": ["location/foo"] });
     const result = matchPath(
       "/root/test.ts",
       "lib/foo",
@@ -67,7 +67,7 @@ describe('find-path', function () {
 
   it('should resolve to parent folder when filename is in subfolder', () => {
 
-    const matchPath = createMatchPath("/root/tsconfig.json", "./", { "lib/*": ["location/*"] });
+    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/subfolder/file.ts",
       "lib/mylib",
@@ -79,7 +79,7 @@ describe('find-path', function () {
 
   it('should resolve from main field in package.json', () => {
 
-    const matchPath = createMatchPath("/root/tsconfig.json", "./", { "lib/*": ["location/*"] });
+    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/subfolder/file.ts",
       "lib/mylib",
@@ -91,7 +91,7 @@ describe('find-path', function () {
 
   it('should not locate path that does not match', () => {
 
-    const matchPath = createMatchPath("/root/tsconfig.json", "./", { "lib/*": ["location/*"] });
+    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/asd.ts",
       "mylib",

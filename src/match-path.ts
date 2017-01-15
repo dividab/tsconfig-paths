@@ -15,12 +15,11 @@ export type MatchPath = (
  * @param baseUrl The baseUrl specified in tsconfig.
  * @param paths The paths specified in tsconfig.
  */
-export function createMatchPath(tsConfigPath: string,
-  baseUrl: string,
+export function createMatchPath(
+  absoluteBaseUrl:string,
   paths: { [key: string]: Array<string> }): MatchPath {
 
   // Resolve all paths to absolute form once here, this saves time on each request later
-  const absoluteBaseUrl = path.dirname(path.join(tsConfigPath, baseUrl));
   const absolutePaths: { [key: string]: Array<string> } = Object.keys(paths)
     .reduce((soFar, key) => ({
       ...soFar,
