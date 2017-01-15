@@ -2,7 +2,7 @@ import * as TsConfigLoader from "./tsconfig-loader";
 import * as path from "path";
 
 export interface ExplicitParams {
-  absoluteBaseUrl: string,
+  baseUrl: string,
   paths: { [key: string]: Array<string> }
 }
 
@@ -19,8 +19,11 @@ export function configLoader({
 }: ConfigLoaderParams) {
 
   if (explicitParams) {
+    const absoluteBaseUrl = path.isAbsolute(explicitParams.baseUrl)
+    ? explicitParams.baseUrl
+    : path.join(cwd, explicitParams.baseUrl);
     return {
-      absoluteBaseUrl: explicitParams.absoluteBaseUrl,
+      absoluteBaseUrl,
       paths: explicitParams.paths
     };
   }

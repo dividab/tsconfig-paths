@@ -6,7 +6,7 @@ describe('config-loader', function () {
   it('should use explicitParams when set', () => {
     const result = configLoader({
       explicitParams: {
-        absoluteBaseUrl: "/foo/bar",
+        baseUrl: "/foo/bar",
         paths: {
           "asd": ["asd"]
         }
@@ -16,6 +16,20 @@ describe('config-loader', function () {
 
     assert.equal(result.absoluteBaseUrl, "/foo/bar");
     assert.equal(result.paths["asd"][0], "asd");
+  });
+
+  it('should use explicitParams when set and add cwd when path is relative', () => {
+    const result = configLoader({
+      explicitParams: {
+        baseUrl: "bar/",
+        paths: {
+          "asd": ["asd"]
+        }
+      },
+      cwd: "/baz"
+    });
+
+    assert.equal(result.absoluteBaseUrl, "/baz/bar/");
   });
 
   it('should fallback to tsConfigLoader when explicitParams is not set', () => {
