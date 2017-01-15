@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-- Nothing yet.
+- Use TS_NODE_PROJECT env if exists
 
 ## [1.1.0]
 ### Added
