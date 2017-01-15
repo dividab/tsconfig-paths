@@ -7,8 +7,7 @@ const loadResult = Tsconfig.loadSync(process.cwd(), undefined);
 
 // Create function that will match paths
 const matchPath = createMatchPath(
-  loadResult.path,
-  loadResult.config.compilerOptions.baseUrl,
+  path.join(path.dirname(loadResult.path), loadResult.config.compilerOptions.baseUrl),
   loadResult.config.compilerOptions.paths
 );
 
