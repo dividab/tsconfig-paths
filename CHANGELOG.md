@@ -5,8 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-- Use `TS_NODE_PROJECT` env if exists
+- Nothing for now
 - Functionality to bootstrap tsconfig-paths
+
+## [1.2.0]
+### Added
+- We now look at `process.env.TS_NODE_PROJECT`
+- Functionality to bootstrap tsconfig-paths. Documentation in [README](https://github.com/jonaskello/tsconfig-paths/blob/master/README.md)
 
 ## [1.1.0]
 ### Added
