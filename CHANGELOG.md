@@ -6,12 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 - Nothing for now
-- Functionality to bootstrap tsconfig-paths
 
-## [1.2.0]
+## [2.0.0]
 ### Added
 - We now look at `process.env.TS_NODE_PROJECT`
 - Functionality to bootstrap tsconfig-paths. Documentation in [README](https://github.com/jonaskello/tsconfig-paths/blob/master/README.md)
+
+### Changed
+- Changed signature for `createMatchPath`. Now only takes absoluteUrl and paths.
 
 ## [1.1.0]
 ### Added
