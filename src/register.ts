@@ -1,5 +1,5 @@
-import {createMatchPath} from "./match-path";
-import * as Tsconfig from "tsconfig";
+import { createMatchPath } from "./match-path";
+import { loadTsConfig } from "./tsconfig-loader";
 
 /**
  * Installs a custom module load function that can adhere to paths in tsconfig.
@@ -7,15 +7,17 @@ import * as Tsconfig from "tsconfig";
 export function register() {
 
   // Load tsconfig and create path matching function
-  const cwd = process.cwd();
-  const loadResult = Tsconfig.loadSync(cwd, undefined);
-  if (!loadResult.path) {
+  const loadResult = loadTsConfig({
+    cwd: process.cwd(),
+    getEnv: (key:string) => process.env[key],
+  });
+  if (!loadResult.tsConfigPath) {
     throw new Error("Couldn't find tsconfig");
   }
   const matchPath = createMatchPath(
-    loadResult.path,
-    loadResult.config.compilerOptions.baseUrl,
-    loadResult.config.compilerOptions.paths
+    loadResult.tsConfigPath,
+    loadResult.baseUrl,
+    loadResult.paths
   );
 
   // Patch node's module loading
