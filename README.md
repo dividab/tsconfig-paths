@@ -29,6 +29,22 @@ npm install --save-dev tsconfig-paths
 ### With mocha and ts-node
 `mocha --compilers ts:ts-node/register -r tsconfig-paths/register`
 
+### Bootstrap tsconfig-paths
+If you want more granular control over tsconfig-paths you can bootstrap it. This can be useful if you for instance have compiled with `tsc` to another directory where `tsconfig.json` doesn't exists.
+```javascript
+const tsConfig = require("./tsconfig.json");
+const tsConfigPaths = require("tsconfig-paths");
+
+const baseUrl = "./"; // Either absolute or relative path. If relative it's resolved to cwd.
+tsConfigPaths.register({
+    baseUrl,
+    paths: tsConfig.compilerOptions.paths
+});
+```
+Then run with:
+
+`node -r ./tsconfig-paths-bootstrap.js main.js`
+
 [npm-image]: https://img.shields.io/npm/v/tsconfig-paths.svg?style=flat
 [npm-url]: https://www.npmjs.com/package/tsconfig-paths
 
