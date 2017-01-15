@@ -1,10 +1,10 @@
 import { assert } from "chai";
-import { loadTsConfig } from "../src/tsconfig-loader";
+import { tsConfigLoader } from "../src/tsconfig-loader";
 
 describe('tsconfig-loader', function () {
 
   it('should find tsconfig in cwd', () => {
-    const result = loadTsConfig({
+    const result = tsConfigLoader({
       cwd: "/foo/bar",
       getEnv: (_: string) => undefined,
       loadSync: (cwd: string) => {
@@ -20,7 +20,7 @@ describe('tsconfig-loader', function () {
   });
 
   it('should return loaderResult.tsConfigPath as undefined when not found', () => {
-    const result = loadTsConfig({
+    const result = tsConfigLoader({
       cwd: "/foo/bar",
       getEnv: (_: string) => undefined,
       loadSync: (_: string) => {
@@ -36,7 +36,7 @@ describe('tsconfig-loader', function () {
   });
 
   it('should use TS_NODE_PROJECT env if exists', () => {
-    const result = loadTsConfig({
+    const result = tsConfigLoader({
       cwd: "/foo/bar",
       getEnv: (key: string) => key === "TS_NODE_PROJECT" ? "/foo/baz" : undefined,
       loadSync: (cwd: string) => {

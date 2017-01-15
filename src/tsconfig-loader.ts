@@ -1,22 +1,22 @@
 import * as Tsconfig from "tsconfig";
 
-export interface LoadResult {
+export interface TsConfigLoaderResult {
   tsConfigPath: string | undefined,
   baseUrl: string,
   paths: { [key: string]: Array<string> }
 }
 
-export interface LoadTsConfigProps {
+export interface TsConfigLoaderParams {
   getEnv: (key: string) => string | undefined
   cwd: string,
-  loadSync?(cwd: string, filename?: string): LoadResult;
+  loadSync?(cwd: string, filename?: string): TsConfigLoaderResult;
 }
 
-export function loadTsConfig({
+export function tsConfigLoader({
   getEnv,
   cwd,
   loadSync = loadSyncDefault
-}: LoadTsConfigProps): LoadResult {
+}: TsConfigLoaderParams): TsConfigLoaderResult {
 
   const TS_NODE_PROJECT = getEnv("TS_NODE_PROJECT");
 
@@ -26,7 +26,7 @@ export function loadTsConfig({
 
 }
 
-function loadSyncDefault(cwd: string, filename?: string): LoadResult {
+function loadSyncDefault(cwd: string, filename?: string): TsConfigLoaderResult {
   // Tsconfig.loadSync uses path.resolve. This is why we can use an absolute path as filename
   const loadResult = Tsconfig.loadSync(cwd, filename);
 
