@@ -47,7 +47,7 @@ Then run with:
 
 `node -r ./tsconfig-paths-bootstrap.js main.js`
 
-# Config loading process
+## Config loading process
 1. Use explicit params passed to register
 2. Use `process.env.TS_NODE_PROJECT` to resolve tsConfig.json and the specified baseUrl and paths.
 3. Resolves tsconfig.json from current working directory and the specified baseUrl and paths.
