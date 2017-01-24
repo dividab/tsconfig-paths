@@ -20,8 +20,8 @@ export function tsConfigLoader({
 
   const TS_NODE_PROJECT = getEnv("TS_NODE_PROJECT");
 
-  const searchStart = TS_NODE_PROJECT || cwd;
-  const loadResult = loadSync(searchStart, undefined);
+  // tsconfig.loadSync handles if TS_NODE_PROJECT is a file or directory
+  const loadResult = loadSync(cwd, TS_NODE_PROJECT);
   return loadResult;
 
 }

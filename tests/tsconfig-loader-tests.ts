@@ -39,8 +39,8 @@ describe('tsconfig-loader', function () {
     const result = tsConfigLoader({
       cwd: "/foo/bar",
       getEnv: (key: string) => key === "TS_NODE_PROJECT" ? "/foo/baz" : undefined,
-      loadSync: (cwd: string) => {
-        if (cwd === "/foo/baz") {
+      loadSync: (cwd: string, fileName: string) => {
+        if (cwd === "/foo/bar" && fileName === "/foo/baz") {
           return {
             tsConfigPath: "/foo/baz/tsconfig.json",
             baseUrl: "./",

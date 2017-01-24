@@ -19,9 +19,11 @@ export function configLoader({
 }: ConfigLoaderParams) {
 
   if (explicitParams) {
+
     const absoluteBaseUrl = path.isAbsolute(explicitParams.baseUrl)
     ? explicitParams.baseUrl
     : path.join(cwd, explicitParams.baseUrl);
+
     return {
       absoluteBaseUrl,
       paths: explicitParams.paths
