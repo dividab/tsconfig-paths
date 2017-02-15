@@ -89,6 +89,30 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/mylib/kalle");
   });
 
+  it('should resolve from main field in package.json and correctly remove file extension', () => {
+
+    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
+    const result = matchPath(
+      "/root/subfolder/file.js",
+      "lib/mylib.js",
+      (_: string) => ({ main: "./kalle.js" }),
+      (name: string) => name === "/root/location/mylib.js/kalle.js",
+      [".ts", ".js"]
+    );
+
+    // Make sure we escape the "."
+    const result2 = matchPath(
+      "/root/subfolder/file.js",
+      "lib/mylibjs",
+      (_: string) => ({ main: "./kallejs" }),
+      (name: string) => name === "/root/location/mylibjs/kallejs",
+      [".ts", ".js"]
+    );
+    console.log(result2);
+    assert.equal(result, "/root/location/mylib.js/kalle");
+    assert.equal(result2, "/root/location/mylibjs/kallejs");
+  });
+
   it('should not locate path that does not match', () => {
 
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });

@@ -16,7 +16,7 @@ export type MatchPath = (
  * @param paths The paths specified in tsconfig.
  */
 export function createMatchPath(
-  absoluteBaseUrl:string,
+  absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> }): MatchPath {
 
   // Resolve all paths to absolute form once here, this saves time on each request later
@@ -94,7 +94,9 @@ function tryResolve(physicalPath: string,
 
   if (packageJson && packageJson.main && fileExists(path.join(physicalPath, packageJson.main))) {
     const file = path.join(physicalPath, packageJson.main);
-    return file.replace(path.extname(file), "");
+    const fileExtension = path.extname(file).replace(/^\./, "");
+    const fileExtensionRegex = new RegExp(`\.${fileExtension}$`);
+    return fileExtension ? file.replace(fileExtensionRegex, "") : file;
   }
 
   const indexPath = path.join(physicalPath, "/index");
