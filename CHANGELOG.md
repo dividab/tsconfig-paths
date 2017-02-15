@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [2.1.1]
+### Fixed
+- Fixed issue [#4](https://github.com/jonaskello/tsconfig-paths/issues/4)
+
+## [2.1.0]
+### Fixed
+- Fixed issue [#3](https://github.com/jonaskello/tsconfig-paths/issues/3)
+
 ## [2.0.0]
 ### Added
 - We now look at `process.env.TS_NODE_PROJECT`
