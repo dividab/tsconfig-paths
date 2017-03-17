@@ -108,7 +108,7 @@ describe('find-path', function () {
       (name: string) => name === "/root/location/mylibjs/kallejs",
       [".ts", ".js"]
     );
-    console.log(result2);
+
     assert.equal(result, "/root/location/mylib.js/kalle");
     assert.equal(result2, "/root/location/mylibjs/kallejs");
   });
