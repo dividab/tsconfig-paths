@@ -2,8 +2,8 @@ import * as Tsconfig from "tsconfig";
 
 export interface TsConfigLoaderResult {
   tsConfigPath: string | undefined,
-  baseUrl: string,
-  paths: { [key: string]: Array<string> }
+  baseUrl: string | undefined,
+  paths: { [key: string]: Array<string> } | undefined
 }
 
 export interface TsConfigLoaderParams {

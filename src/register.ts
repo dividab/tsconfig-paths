@@ -1,17 +1,22 @@
 import { createMatchPath } from "./match-path";
-import {configLoader, ExplicitParams} from "./config-loader";
+import { configLoader, ExplicitParams } from "./config-loader";
 
 /**
  * Installs a custom module load function that can adhere to paths in tsconfig.
  */
 export function register(explicitParams: ExplicitParams) {
-  const { absoluteBaseUrl, paths } = configLoader({
+  const configLoaderResult = configLoader({
     cwd: process.cwd(),
     explicitParams,
   });
+
+  if (configLoaderResult.resultType === "failed") {
+    throw new Error(configLoaderResult.message);
+  }
+
   const matchPath = createMatchPath(
-    absoluteBaseUrl,
-    paths
+    configLoaderResult.absoluteBaseUrl,
+    configLoaderResult.paths
   );
 
   // Patch node's module loading

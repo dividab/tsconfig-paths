@@ -12,19 +12,31 @@ interface ConfigLoaderParams {
   cwd: string,
 }
 
+export interface ConfigLoaderSuccessResult {
+  resultType: "success",
+  absoluteBaseUrl: string,
+  paths: { [key: string]: Array<string> }
+}
+
+export interface ConfigLoaderFailResult {
+  resultType: "failed",
+  message: string
+}
+
 export function configLoader({
   tsConfigLoader = TsConfigLoader.tsConfigLoader,
   explicitParams,
   cwd
-}: ConfigLoaderParams) {
+}: ConfigLoaderParams): ConfigLoaderSuccessResult | ConfigLoaderFailResult {
 
   if (explicitParams) {
 
     const absoluteBaseUrl = path.isAbsolute(explicitParams.baseUrl)
-    ? explicitParams.baseUrl
-    : path.join(cwd, explicitParams.baseUrl);
+      ? explicitParams.baseUrl
+      : path.join(cwd, explicitParams.baseUrl);
 
     return {
+      resultType: "success",
       absoluteBaseUrl,
       paths: explicitParams.paths
     };
@@ -37,13 +49,31 @@ export function configLoader({
   });
 
   if (!loadResult.tsConfigPath) {
-    throw new Error("Couldn't find tsconfig");
+    return {
+      resultType: "failed",
+      message: "Couldn't find tsconfig.json"
+    };
+  }
+
+  if(!loadResult.baseUrl) {
+    return {
+      resultType: "failed",
+      message: "Missing baseUrl in compilerOptions"
+    };
+  }
+
+  if(!loadResult.paths) {
+    return {
+      resultType: "failed",
+      message: "Missing paths in compilerOptions"
+    };
   }
 
   const tsConfigDir = path.dirname(loadResult.tsConfigPath);
   const absoluteBaseUrl = path.join(tsConfigDir, loadResult.baseUrl);
 
   return {
+    resultType: "success",
     absoluteBaseUrl,
     paths: loadResult.paths
   };
