@@ -30,7 +30,6 @@ export function configLoader({
 }: ConfigLoaderParams): ConfigLoaderSuccessResult | ConfigLoaderFailResult {
 
   if (explicitParams) {
-
     const absoluteBaseUrl = path.isAbsolute(explicitParams.baseUrl)
       ? explicitParams.baseUrl
       : path.join(cwd, explicitParams.baseUrl);

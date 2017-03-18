@@ -11,7 +11,8 @@ export function register(explicitParams: ExplicitParams) {
   });
 
   if (configLoaderResult.resultType === "failed") {
-    throw new Error(configLoaderResult.message);
+    console.warn(`${configLoaderResult.message}. tsconfig-paths will be skipped`);
+    return;
   }
 
   const matchPath = createMatchPath(
