@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [2.1.2]
+### Fixed
+- Fixed issue [#6](https://github.com/jonaskello/tsconfig-paths/issues/6).
+
 ## [2.1.1]
 ### Fixed
 - Fixed issue [#4](https://github.com/jonaskello/tsconfig-paths/issues/4)
