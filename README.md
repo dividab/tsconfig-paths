@@ -1,6 +1,7 @@
 # tsconfig-paths
 
 [![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
 
 Use this to load modules whose location is specified in the `paths` section of `tsconfig.json`. Both loading at run-time and via API are supported.
 
@@ -65,3 +66,5 @@ Same structure as paths in tsconfig but all paths needs to be resolved to absolu
 
 [npm-image]: https://img.shields.io/npm/v/tsconfig-paths.svg?style=flat
 [npm-url]: https://www.npmjs.com/package/tsconfig-paths
+[travis-image]: https://travis-ci.org/jonaskello/tsconfig-paths.svg?branch=master&style=flat
+[travis-url]: https://travis-ci.org/jonaskello/tsconfig-paths
