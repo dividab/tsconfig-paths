@@ -73,7 +73,7 @@ Same structure as paths in tsconfig but all paths needs to be resolved to absolu
 [version-url]: https://www.npmjs.com/package/tsconfig-paths
 [travis-image]: https://travis-ci.org/jonaskello/tsconfig-paths.svg?branch=master&style=flat
 [travis-url]: https://travis-ci.org/jonaskello/tsconfig-paths
-[codecov-image]: https://img.shields.io/codecov/c/github/jonaskello/tsconfig-paths/master.svg&style=flat
+[codecov-image]: https://img.shields.io/codecov/c/github/jonaskello/tsconfig-paths/master.svg?style=flat
 [codecov-url]: https://img.shields.io/codecov/c/github/jonaskello/tsconfig-paths/master.svg
-[license-image]: https://img.shields.io/github/license/jonaskello/tsconfig-paths.svg&style=flat
+[license-image]: https://img.shields.io/github/license/jonaskello/tsconfig-paths.svg?style=flat
 [license-url]: https://opensource.org/licenses/MIT
