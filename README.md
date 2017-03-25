@@ -1,7 +1,12 @@
 # tsconfig-paths
 
-[![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![npm version][version-image]][version-url]
+[![travis build][travis-image]][travis-url]
+[![codecov coverage][codecov-image]][codecov-url]
+[![MIT license][license-image]][license-url]
+
+
+https://img.shields.io/codecov/c/github/codecov/example-python/master.svg
 
 Use this to load modules whose location is specified in the `paths` section of `tsconfig.json`. Both loading at run-time and via API are supported.
 
@@ -64,7 +69,11 @@ This function will create a function that can match paths. It accepts `baseUrl` 
 #### `matchFromAbsolutePaths(absolutePathMappings)`
 Same structure as paths in tsconfig but all paths needs to be resolved to absolute paths. This function is lower level and requries that the paths as already been resolved to absolute form.
 
-[npm-image]: https://img.shields.io/npm/v/tsconfig-paths.svg?style=flat
-[npm-url]: https://www.npmjs.com/package/tsconfig-paths
+[version-image]: https://img.shields.io/npm/v/tsconfig-paths.svg?style=flat
+[version-url]: https://www.npmjs.com/package/tsconfig-paths
 [travis-image]: https://travis-ci.org/jonaskello/tsconfig-paths.svg?branch=master&style=flat
 [travis-url]: https://travis-ci.org/jonaskello/tsconfig-paths
+[codecov-image]: https://img.shields.io/codecov/c/github/jonaskello/tsconfig-paths/master.svg&style=flat
+[codecov-url]: https://img.shields.io/codecov/c/github/jonaskello/tsconfig-paths/master.svg
+[license-image]: https://img.shields.io/github/license/jonaskello/tsconfig-paths.svg&style=flat
+[license-url]: https://opensource.org/licenses/MIT

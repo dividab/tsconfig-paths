@@ -11,7 +11,9 @@
     "@types/mocha": "^2.2.35",
     "@types/node": "^6.0.54",
     "chai": "^3.5.0",
+    "codecov": "^2.1.0",
     "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
     "shelljs": "^0.7.5",
     "ts-node": "^2.0.0",
     "typescript": "^2.1.4"
@@ -22,10 +24,12 @@
     "start:example:api": "cd example/api && ts-node main.ts",
     "tsc": "tsc -P src",
     "tsc:tests": "tsc -P tests",
-    "test": "mocha --compilers ts:ts-node/register tests/**/*.ts",
+    "test:unit": "mocha --compilers ts:ts-node/register \"tests/**/*.ts\"",
+    "test": "nyc --include src/**/*.ts -e '.ts' --r html -r lcov -r text yarn test:unit",
+    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "rm -rf lib && tsc -P src",
     "publish:major": "yarn run build && node scripts/publish.js major",
-    "publish:minor": "yarn run build && node scripts/publish.js minor",
+    "publish:minor": "yarn run buildß && node scripts/publish.js minor",
     "publish:patch": "yarn run build && node scripts/publish.js patch"
   },
   "dependencies": {

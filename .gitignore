@@ -7,3 +7,5 @@ js_out/
 .DS_Store
 thumbs.db
 *.log
+coverage/
+.nyc_output/
