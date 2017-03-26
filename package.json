@@ -25,11 +25,11 @@
     "tsc": "tsc -P src",
     "tsc:tests": "tsc -P tests",
     "test:unit": "mocha --compilers ts:ts-node/register \"tests/**/*.ts\"",
-    "test": "nyc --include src/**/*.ts -e '.ts' --r html -r lcov -r text yarn test:unit",
+    "test": "nyc --include src/**/*.ts -e '.ts' -r html -r lcov -r text yarn test:unit",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "rm -rf lib && tsc -P src",
     "publish:major": "yarn run build && node scripts/publish.js major",
-    "publish:minor": "yarn run buildß && node scripts/publish.js minor",
+    "publish:minor": "yarn run build && node scripts/publish.js minor",
     "publish:patch": "yarn run build && node scripts/publish.js patch"
   },
   "dependencies": {
