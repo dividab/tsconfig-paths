@@ -17,7 +17,7 @@ describe('find-path', function () {
 
   it('should resolve to correct path when many are specified', () => {
 
-    const matchPath = createMatchPath("/root/", { "lib/*": ["foo1/*", "foo2/*","location/*", "foo3/*"] });
+    const matchPath = createMatchPath("/root/", { "lib/*": ["foo1/*", "foo2/*", "location/*", "foo3/*"] });
     const result = matchPath(
       "/root/test.ts",
       "lib/mylib",
@@ -111,6 +111,18 @@ describe('find-path', function () {
 
     assert.equal(result, "/root/location/mylib.js/kalle");
     assert.equal(result2, "/root/location/mylibjs/kallejs");
+  });
+
+  it('should resolve to with the help of baseUrl when not explicitly set', () => {
+
+    const matchPath = createMatchPath("/root/", {});
+    const result = matchPath(
+      "/root/test.ts",
+      "mylib",
+      (_: string) => undefined,
+      (name: string) => name === "/root/mylib/index.ts"
+    );
+    assert.equal(result, "/root/mylib");
   });
 
   it('should not locate path that does not match', () => {

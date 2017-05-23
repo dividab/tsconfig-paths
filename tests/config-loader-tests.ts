@@ -68,20 +68,4 @@ describe('config-loader', function () {
     assert.isTrue(failResult.message.indexOf("baseUrl") > -1);
   });
 
-  it('should show an error message when paths is missing', () => {
-    const result = configLoader({
-      explicitParams: undefined,
-      cwd: "/baz",
-      tsConfigLoader: (_: any) => ({
-        tsConfigPath: "/baz/tsconfig.json",
-        baseUrl: "./src",
-        paths: undefined
-      })
-    });
-
-    const failResult = result as ConfigLoaderFailResult
-    assert.equal(failResult.resultType, "failed");
-    assert.isTrue(failResult.message.indexOf("paths") > -1);
-  });
-
 });

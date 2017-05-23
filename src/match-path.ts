@@ -19,13 +19,16 @@ export function createMatchPath(
   absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> }): MatchPath {
 
-  // Resolve all paths to absolute form once here, this saves time on each request later
+  // Resolve all paths to absolute form once here, this saves time on each request later.
+  // We also add the baseUrl as a base which will be replace if specified in paths. This is how typescript works
   const absolutePaths: { [key: string]: Array<string> } = Object.keys(paths)
     .reduce((soFar, key) => ({
       ...soFar,
       [key]: paths[key]
         .map((pathToResolve) => path.join(absoluteBaseUrl, pathToResolve))
-    }), {});
+    }), {
+      "*": [`${absoluteBaseUrl.replace(/\/$/, "")}/*`],
+    });
 
   return (sourceFileName: string, requestedModule: string, readPackageJson: (packageJsonPath: string) => any, fileExists: any, extensions?: Array<string>) =>
     matchFromAbsolutePaths(absolutePaths, sourceFileName, requestedModule, readPackageJson, fileExists, extensions);

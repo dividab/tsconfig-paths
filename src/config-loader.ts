@@ -54,17 +54,10 @@ export function configLoader({
     };
   }
 
-  if(!loadResult.baseUrl) {
+  if (!loadResult.baseUrl) {
     return {
       resultType: "failed",
       message: "Missing baseUrl in compilerOptions"
-    };
-  }
-
-  if(!loadResult.paths) {
-    return {
-      resultType: "failed",
-      message: "Missing paths in compilerOptions"
     };
   }
 
@@ -74,6 +67,6 @@ export function configLoader({
   return {
     resultType: "success",
     absoluteBaseUrl,
-    paths: loadResult.paths
+    paths: loadResult.paths || {}
   };
 }
