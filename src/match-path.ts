@@ -17,7 +17,8 @@ export type MatchPath = (
  */
 export function createMatchPath(
   absoluteBaseUrl: string,
-  paths: { [key: string]: Array<string> }): MatchPath {
+  paths: { [key: string]: Array<string> }
+): MatchPath {
 
   // Resolve all paths to absolute form once here, this saves time on each request later.
   // We also add the baseUrl as a base which will be replace if specified in paths. This is how typescript works
@@ -45,12 +46,14 @@ export function createMatchPath(
  * @param extensions File extensions to probe for (useful for testing).
  * @returns the found path, or undefined if no path was found.
  */
-export function matchFromAbsolutePaths(absolutePathMappings: { [key: string]: Array<string> },
+export function matchFromAbsolutePaths(
+  absolutePathMappings: { [key: string]: Array<string> },
   absoluteSourceFileName: string,
   requestedModule: string,
   readPackageJson: (packageJsonPath: string) => any = (packageJsonPath: string) => readPackage(packageJsonPath),
   fileExists = fs.existsSync,
-  extensions = Object.keys(require.extensions)): string | undefined {
+  extensions = Object.keys(require.extensions)
+): string | undefined {
 
   if (requestedModule[0] !== '.'
     && requestedModule[0] !== path.sep
@@ -86,9 +89,16 @@ export function matchFromAbsolutePaths(absolutePathMappings: { [key: string]: Ar
  * @param extensions File extensions to probe for (useful for testing).
  * @returns {string}
  */
-function tryResolve(physicalPath: string,
+function tryResolve(
+  physicalPath: string,
   fileExists: any,
-  readPackageJson: (packageJsonPath: string) => any, extensions: Array<string>): string | undefined {
+  readPackageJson: (packageJsonPath: string) => any, extensions: Array<string>
+): string | undefined {
+
+  if (path.extname(path.basename(physicalPath)).length > 0 && fileExists(physicalPath)) {
+    return physicalPath;
+  }
+
   if (extensions.reduce((prev, curr) => prev || fileExists(physicalPath + curr), false)) {
     return physicalPath;
   }

@@ -53,6 +53,19 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/mylib");
   });
 
+  it('should resolve request with extension specified', () => {
+
+    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
+    const result = matchPath(
+      "/root/test.ts",
+      "lib/test.jpg",
+      (_: string) => undefined,
+      (name: string) => name === "/root/location/test.jpg",
+      [".js", ".myext"]
+    );
+    assert.equal(result, "/root/location/test.jpg");
+  });
+
   it('should locate path that matches without star and exists', () => {
 
     const matchPath = createMatchPath("/root/", { "lib/foo": ["location/foo"] });
