@@ -22,14 +22,14 @@ export function register(explicitParams: ExplicitParams) {
 
   // Patch node's module loading
   const Module = require('module');
-  const originalLoader = Module._load;
-  Module._load = function (request: string, parent: any) {
+  const originalResolveFilename = Module._resolveFilename;
+  Module._resolveFilename = function (request: string, parent: any) {
     const found = matchPath(parent, request);
     if (found) {
-      const modifiedArguments = [found, ...[].slice.call(arguments, 1)];
-      return originalLoader.apply(this, modifiedArguments);
+      const modifiedArguments = [found, ...[].slice.call(arguments, 1)]; // Passes all arguments. Even those that is not specified above.
+      return originalResolveFilename.apply(this, modifiedArguments);
     }
-    return originalLoader.apply(this, arguments);
+    return originalResolveFilename.apply(this, arguments);
   }
 
 }
