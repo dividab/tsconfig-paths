@@ -13,3 +13,4 @@ base-tsconfig.json
 coverage/
 .nyc_output/
 coverage.lcov
+.travis.yml
