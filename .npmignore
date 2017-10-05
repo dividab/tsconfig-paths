@@ -10,3 +10,6 @@ thumbs.db
 .gitignore
 .npmignore
 base-tsconfig.json
+coverage/
+.nyc_output/
+coverage.lcov
