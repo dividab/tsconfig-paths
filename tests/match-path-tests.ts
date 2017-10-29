@@ -1,10 +1,8 @@
 import { assert } from "chai";
 import { createMatchPath } from "../src/match-path";
 
-describe('find-path', function () {
-
-  it('should locate path that matches with star and exists', () => {
-
+describe("find-path", function() {
+  it("should locate path that matches with star and exists", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/test.ts",
@@ -15,9 +13,10 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/mylib");
   });
 
-  it('should resolve to correct path when many are specified', () => {
-
-    const matchPath = createMatchPath("/root/", { "lib/*": ["foo1/*", "foo2/*", "location/*", "foo3/*"] });
+  it("should resolve to correct path when many are specified", () => {
+    const matchPath = createMatchPath("/root/", {
+      "lib/*": ["foo1/*", "foo2/*", "location/*", "foo3/*"]
+    });
     const result = matchPath(
       "/root/test.ts",
       "lib/mylib",
@@ -28,20 +27,22 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/mylib");
   });
 
-  it('should locate path that matches with star and prioritize pattern with longest prefix', () => {
-
-    const matchPath = createMatchPath("/root/", { "*": ["location/*"], "lib/*": ["location/*"] });
+  it("should locate path that matches with star and prioritize pattern with longest prefix", () => {
+    const matchPath = createMatchPath("/root/", {
+      "*": ["location/*"],
+      "lib/*": ["location/*"]
+    });
     const result = matchPath(
       "/root/test.ts",
       "lib/mylib",
       (_: string) => undefined,
-      (name: string) => name === "/root/location/lib/mylib" || "/root/location/mylib"
+      (name: string) =>
+        name === "/root/location/lib/mylib" || "/root/location/mylib"
     );
     assert.equal(result, "/root/location/mylib");
   });
 
-  it('should locate path that matches with star and exists with extension', () => {
-
+  it("should locate path that matches with star and exists with extension", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/test.ts",
@@ -53,8 +54,7 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/mylib");
   });
 
-  it('should resolve request with extension specified', () => {
-
+  it("should resolve request with extension specified", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/test.ts",
@@ -66,9 +66,10 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/test.jpg");
   });
 
-  it('should locate path that matches without star and exists', () => {
-
-    const matchPath = createMatchPath("/root/", { "lib/foo": ["location/foo"] });
+  it("should locate path that matches without star and exists", () => {
+    const matchPath = createMatchPath("/root/", {
+      "lib/foo": ["location/foo"]
+    });
     const result = matchPath(
       "/root/test.ts",
       "lib/foo",
@@ -78,8 +79,7 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/foo");
   });
 
-  it('should resolve to parent folder when filename is in subfolder', () => {
-
+  it("should resolve to parent folder when filename is in subfolder", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/subfolder/file.ts",
@@ -90,8 +90,7 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/mylib");
   });
 
-  it('should resolve from main field in package.json', () => {
-
+  it("should resolve from main field in package.json", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/subfolder/file.ts",
@@ -102,8 +101,7 @@ describe('find-path', function () {
     assert.equal(result, "/root/location/mylib/kalle");
   });
 
-  it('should resolve from main field in package.json and correctly remove file extension', () => {
-
+  it("should resolve from main field in package.json and correctly remove file extension", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/subfolder/file.js",
@@ -126,8 +124,7 @@ describe('find-path', function () {
     assert.equal(result2, "/root/location/mylibjs/kallejs");
   });
 
-  it('should resolve to with the help of baseUrl when not explicitly set', () => {
-
+  it("should resolve to with the help of baseUrl when not explicitly set", () => {
     const matchPath = createMatchPath("/root/", {});
     const result = matchPath(
       "/root/test.ts",
@@ -138,15 +135,14 @@ describe('find-path', function () {
     assert.equal(result, "/root/mylib");
   });
 
-  it('should not locate path that does not match', () => {
-
+  it("should not locate path that does not match", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/asd.ts",
       "mylib",
       (_: string) => undefined,
-      (name: string) => name === "root/location/mylib");
+      (name: string) => name === "root/location/mylib"
+    );
     assert.equal(result, undefined);
   });
-
 });

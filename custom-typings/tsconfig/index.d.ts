@@ -1,4 +1,4 @@
-import Promise = require('any-promise');
+import Promise = require("any-promise");
 export interface LoadResult {
   path?: string;
   config: any;
