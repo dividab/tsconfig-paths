@@ -1,9 +1,8 @@
 import { assert } from "chai";
 import { tsConfigLoader } from "../src/tsconfig-loader";
 
-describe('tsconfig-loader', function () {
-
-  it('should find tsconfig in cwd', () => {
+describe("tsconfig-loader", function() {
+  it("should find tsconfig in cwd", () => {
     const result = tsConfigLoader({
       cwd: "/foo/bar",
       getEnv: (_: string) => undefined,
@@ -19,7 +18,7 @@ describe('tsconfig-loader', function () {
     assert.equal(result.tsConfigPath, "/foo/bar/tsconfig.json");
   });
 
-  it('should return loaderResult.tsConfigPath as undefined when not found', () => {
+  it("should return loaderResult.tsConfigPath as undefined when not found", () => {
     const result = tsConfigLoader({
       cwd: "/foo/bar",
       getEnv: (_: string) => undefined,
@@ -35,10 +34,11 @@ describe('tsconfig-loader', function () {
     assert.isUndefined(result.tsConfigPath);
   });
 
-  it('should use TS_NODE_PROJECT env if exists', () => {
+  it("should use TS_NODE_PROJECT env if exists", () => {
     const result = tsConfigLoader({
       cwd: "/foo/bar",
-      getEnv: (key: string) => key === "TS_NODE_PROJECT" ? "/foo/baz" : undefined,
+      getEnv: (key: string) =>
+        key === "TS_NODE_PROJECT" ? "/foo/baz" : undefined,
       loadSync: (cwd: string, fileName: string) => {
         if (cwd === "/foo/bar" && fileName === "/foo/baz") {
           return {
@@ -58,5 +58,4 @@ describe('tsconfig-loader', function () {
 
     assert.equal(result.tsConfigPath, "/foo/baz/tsconfig.json");
   });
-
 });

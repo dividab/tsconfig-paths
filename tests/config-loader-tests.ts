@@ -1,14 +1,17 @@
 import { assert } from "chai";
-import { configLoader, ConfigLoaderFailResult, ConfigLoaderSuccessResult } from "../src/config-loader";
+import {
+  configLoader,
+  ConfigLoaderFailResult,
+  ConfigLoaderSuccessResult
+} from "../src/config-loader";
 
-describe('config-loader', function () {
-
-  it('should use explicitParams when set', () => {
+describe("config-loader", function() {
+  it("should use explicitParams when set", () => {
     const result = configLoader({
       explicitParams: {
         baseUrl: "/foo/bar",
         paths: {
-          "asd": ["asd"]
+          asd: ["asd"]
         }
       },
       cwd: "/baz"
@@ -20,12 +23,12 @@ describe('config-loader', function () {
     assert.equal(successResult.paths["asd"][0], "asd");
   });
 
-  it('should use explicitParams when set and add cwd when path is relative', () => {
+  it("should use explicitParams when set and add cwd when path is relative", () => {
     const result = configLoader({
       explicitParams: {
         baseUrl: "bar/",
         paths: {
-          "asd": ["asd"]
+          asd: ["asd"]
         }
       },
       cwd: "/baz"
@@ -36,7 +39,7 @@ describe('config-loader', function () {
     assert.equal(successResult.absoluteBaseUrl, "/baz/bar/");
   });
 
-  it('should fallback to tsConfigLoader when explicitParams is not set', () => {
+  it("should fallback to tsConfigLoader when explicitParams is not set", () => {
     const result = configLoader({
       explicitParams: undefined,
       cwd: "/baz",
@@ -52,7 +55,7 @@ describe('config-loader', function () {
     assert.equal(successResult.absoluteBaseUrl, "/baz/src");
   });
 
-  it('should show an error message when baseUrl is missing', () => {
+  it("should show an error message when baseUrl is missing", () => {
     const result = configLoader({
       explicitParams: undefined,
       cwd: "/baz",
@@ -63,9 +66,8 @@ describe('config-loader', function () {
       })
     });
 
-    const failResult = result as ConfigLoaderFailResult
+    const failResult = result as ConfigLoaderFailResult;
     assert.equal(failResult.resultType, "failed");
     assert.isTrue(failResult.message.indexOf("baseUrl") > -1);
   });
-
 });

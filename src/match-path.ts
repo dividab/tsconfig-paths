@@ -1,4 +1,4 @@
-import { readPackage } from './package-reader';
+import { readPackage } from "./package-reader";
 import * as fs from "fs";
 import * as path from "path";
 import { matchStar } from "./match-star";
@@ -7,7 +7,9 @@ export type MatchPath = (
   absoluteSourceFileName: string,
   requestedModule: string,
   readPackageJson?: (packageJsonPath: string) => any,
-  fileExists?: any, extensions?: Array<string>) => string | undefined;
+  fileExists?: any,
+  extensions?: Array<string>
+) => string | undefined;
 
 /**
  * Creates a function that can resolve paths according to tsconfig paths property.
@@ -19,21 +21,37 @@ export function createMatchPath(
   absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> }
 ): MatchPath {
-
   // Resolve all paths to absolute form once here, this saves time on each request later.
   // We also add the baseUrl as a base which will be replace if specified in paths. This is how typescript works
-  const absolutePaths: { [key: string]: Array<string> } = Object.keys(paths)
-    .reduce((soFar, key) => ({
+  const absolutePaths: { [key: string]: Array<string> } = Object.keys(
+    paths
+  ).reduce(
+    (soFar, key) => ({
       ...soFar,
-      [key]: paths[key]
-        .map((pathToResolve) => path.join(absoluteBaseUrl, pathToResolve))
-    }), {
-      "*": [`${absoluteBaseUrl.replace(/\/$/, "")}/*`],
-    });
+      [key]: paths[key].map(pathToResolve =>
+        path.join(absoluteBaseUrl, pathToResolve)
+      )
+    }),
+    {
+      "*": [`${absoluteBaseUrl.replace(/\/$/, "")}/*`]
+    }
+  );
 
-  return (sourceFileName: string, requestedModule: string, readPackageJson: (packageJsonPath: string) => any, fileExists: any, extensions?: Array<string>) =>
-    matchFromAbsolutePaths(absolutePaths, sourceFileName, requestedModule, readPackageJson, fileExists, extensions);
-
+  return (
+    sourceFileName: string,
+    requestedModule: string,
+    readPackageJson: (packageJsonPath: string) => any,
+    fileExists: any,
+    extensions?: Array<string>
+  ) =>
+    matchFromAbsolutePaths(
+      absolutePaths,
+      sourceFileName,
+      requestedModule,
+      readPackageJson,
+      fileExists,
+      extensions
+    );
 }
 
 /**
@@ -50,23 +68,38 @@ export function matchFromAbsolutePaths(
   absolutePathMappings: { [key: string]: Array<string> },
   absoluteSourceFileName: string,
   requestedModule: string,
-  readPackageJson: (packageJsonPath: string) => any = (packageJsonPath: string) => readPackage(packageJsonPath),
+  readPackageJson: (packageJsonPath: string) => any = (
+    packageJsonPath: string
+  ) => readPackage(packageJsonPath),
   fileExists = fs.existsSync,
   extensions = Object.keys(require.extensions)
 ): string | undefined {
-
-  if (requestedModule[0] !== '.'
-    && requestedModule[0] !== path.sep
-    && absolutePathMappings
-    && absoluteSourceFileName
-    && requestedModule
-    && fileExists) {
-    for (const virtualPathPattern of sortByLongestPrefix(Object.keys(absolutePathMappings))) {
-      const starMatch = virtualPathPattern === requestedModule ? '' : matchStar(virtualPathPattern, requestedModule);
+  if (
+    requestedModule[0] !== "." &&
+    requestedModule[0] !== path.sep &&
+    absolutePathMappings &&
+    absoluteSourceFileName &&
+    requestedModule &&
+    fileExists
+  ) {
+    for (const virtualPathPattern of sortByLongestPrefix(
+      Object.keys(absolutePathMappings)
+    )) {
+      const starMatch =
+        virtualPathPattern === requestedModule
+          ? ""
+          : matchStar(virtualPathPattern, requestedModule);
       if (starMatch !== undefined) {
-        for (const physicalPathPattern of absolutePathMappings[virtualPathPattern]) {
-          const physicalPath = physicalPathPattern.replace('*', starMatch);
-          const resolved = tryResolve(physicalPath, fileExists, readPackageJson, extensions);
+        for (const physicalPathPattern of absolutePathMappings[
+          virtualPathPattern
+        ]) {
+          const physicalPath = physicalPathPattern.replace("*", starMatch);
+          const resolved = tryResolve(
+            physicalPath,
+            fileExists,
+            readPackageJson,
+            extensions
+          );
           if (resolved) {
             return resolved;
           }
@@ -75,7 +108,6 @@ export function matchFromAbsolutePaths(
     }
   }
   return undefined;
-
 }
 
 /**
@@ -92,20 +124,32 @@ export function matchFromAbsolutePaths(
 function tryResolve(
   physicalPath: string,
   fileExists: any,
-  readPackageJson: (packageJsonPath: string) => any, extensions: Array<string>
+  readPackageJson: (packageJsonPath: string) => any,
+  extensions: Array<string>
 ): string | undefined {
-
-  if (path.extname(path.basename(physicalPath)).length > 0 && fileExists(physicalPath)) {
+  if (
+    path.extname(path.basename(physicalPath)).length > 0 &&
+    fileExists(physicalPath)
+  ) {
     return physicalPath;
   }
 
-  if (extensions.reduce((prev, curr) => prev || fileExists(physicalPath + curr), false)) {
+  if (
+    extensions.reduce(
+      (prev, curr) => prev || fileExists(physicalPath + curr),
+      false
+    )
+  ) {
     return physicalPath;
   }
 
   const packageJson = readPackageJson(path.join(physicalPath, "/package.json"));
 
-  if (packageJson && packageJson.main && fileExists(path.join(physicalPath, packageJson.main))) {
+  if (
+    packageJson &&
+    packageJson.main &&
+    fileExists(path.join(physicalPath, packageJson.main))
+  ) {
     const file = path.join(physicalPath, packageJson.main);
     const fileExtension = path.extname(file).replace(/^\./, "");
     const fileExtensionRegex = new RegExp(`\.${fileExtension}$`);
@@ -113,7 +157,10 @@ function tryResolve(
   }
 
   const indexPath = path.join(physicalPath, "/index");
-  return extensions.reduce((prev, curr) => prev || fileExists(indexPath + curr) && physicalPath, "");
+  return extensions.reduce(
+    (prev, curr) => prev || (fileExists(indexPath + curr) && physicalPath),
+    ""
+  );
 }
 
 /**

@@ -10,7 +10,12 @@ export function readPackage(
   loadPackageJson: (file: string) => any = loadJsonFromDisk,
   fileExists: (path: string) => boolean = fs.existsSync
 ): { main: string } | undefined {
-return (packageJsonPath.match(/package\.json$/) && fileExists(packageJsonPath) && loadPackageJson(packageJsonPath)) || undefined;
+  return (
+    (packageJsonPath.match(/package\.json$/) &&
+      fileExists(packageJsonPath) &&
+      loadPackageJson(packageJsonPath)) ||
+    undefined
+  );
 }
 
 function loadJsonFromDisk(file: string) {

@@ -2,25 +2,27 @@ import * as TsConfigLoader from "./tsconfig-loader";
 import * as path from "path";
 
 export interface ExplicitParams {
-  baseUrl: string,
-  paths: { [key: string]: Array<string> }
+  baseUrl: string;
+  paths: { [key: string]: Array<string> };
 }
 
 interface ConfigLoaderParams {
-  tsConfigLoader?: (params: TsConfigLoader.TsConfigLoaderParams) => TsConfigLoader.TsConfigLoaderResult
-  explicitParams: ExplicitParams | undefined,
-  cwd: string,
+  tsConfigLoader?: (
+    params: TsConfigLoader.TsConfigLoaderParams
+  ) => TsConfigLoader.TsConfigLoaderResult;
+  explicitParams: ExplicitParams | undefined;
+  cwd: string;
 }
 
 export interface ConfigLoaderSuccessResult {
-  resultType: "success",
-  absoluteBaseUrl: string,
-  paths: { [key: string]: Array<string> }
+  resultType: "success";
+  absoluteBaseUrl: string;
+  paths: { [key: string]: Array<string> };
 }
 
 export interface ConfigLoaderFailResult {
-  resultType: "failed",
-  message: string
+  resultType: "failed";
+  message: string;
 }
 
 export function configLoader({
@@ -28,7 +30,6 @@ export function configLoader({
   explicitParams,
   cwd
 }: ConfigLoaderParams): ConfigLoaderSuccessResult | ConfigLoaderFailResult {
-
   if (explicitParams) {
     const absoluteBaseUrl = path.isAbsolute(explicitParams.baseUrl)
       ? explicitParams.baseUrl
@@ -44,7 +45,7 @@ export function configLoader({
   // Load tsconfig and create path matching function
   const loadResult = tsConfigLoader({
     cwd,
-    getEnv: (key: string) => process.env[key],
+    getEnv: (key: string) => process.env[key]
   });
 
   if (!loadResult.tsConfigPath) {
