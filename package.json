@@ -1,7 +1,8 @@
 {
   "name": "tsconfig-paths",
   "version": "2.3.0",
-  "description": "Load node modules according to tsconfig paths, in run-time or via API.",
+  "description":
+    "Load node modules according to tsconfig paths, in run-time or via API.",
   "main": "lib/index.js",
   "author": "Jonas Kello",
   "license": "MIT",
@@ -12,25 +13,35 @@
     "@types/node": "^6.0.54",
     "chai": "^3.5.0",
     "codecov": "^2.1.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.3.0",
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
+    "prettier": "1.7.4",
     "shelljs": "^0.7.5",
     "ts-node": "^3.1.0",
     "typescript": "^2.4.1"
   },
   "scripts": {
     "start": "cd src && ts-node index.ts",
-    "start:example:node": "yarn tsc && cd example/node && ts-node -r ../register.js main.ts",
+    "start:example:node":
+      "yarn tsc && cd example/node && ts-node -r ../register.js main.ts",
     "start:example:api": "cd example/api && ts-node main.ts",
     "tsc": "tsc -P src",
     "tsc:tests": "tsc -P tests",
     "test:unit": "mocha --compilers ts:ts-node/register \"tests/**/*.ts\"",
-    "test": "nyc --include src/**/*.ts -e '.ts' -r html -r lcov -r text yarn test:unit",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "test":
+      "nyc --include src/**/*.ts -e '.ts' -r html -r lcov -r text yarn test:unit",
+    "report-coverage":
+      "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "rm -rf lib && tsc -P src",
+    "precommit": "lint-staged",
     "publish:major": "yarn run build && node scripts/publish.js major",
     "publish:minor": "yarn run build && node scripts/publish.js minor",
     "publish:patch": "yarn run build && node scripts/publish.js patch"
+  },
+  "lint-staged": {
+    "*.ts": ["tslint", "prettier --write", "git add"]
   },
   "dependencies": {
     "tsconfig": "^5.0.3"
