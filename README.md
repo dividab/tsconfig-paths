@@ -4,6 +4,7 @@
 [![travis build][travis-image]][travis-url]
 [![codecov coverage][codecov-image]][codecov-url]
 [![MIT license][license-image]][license-url]
+[![code style: prettier][prettier-image]][prettier-url]
 
 Use this to load modules whose location is specified in the `paths` section of `tsconfig.json`. Both loading at run-time and via API are supported.
 
@@ -74,3 +75,5 @@ Same structure as paths in tsconfig but all paths needs to be resolved to absolu
 [codecov-url]: https://codecov.io/gh/jonaskello/tsconfig-paths/branch/master
 [license-image]: https://img.shields.io/github/license/jonaskello/tsconfig-paths.svg?style=flat
 [license-url]: https://opensource.org/licenses/MIT
+[prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg
+[prettier-url]: https://github.com/prettier/prettier
