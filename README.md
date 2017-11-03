@@ -33,7 +33,11 @@ npm install --save-dev tsconfig-paths
 If `process.env.TS_NODE_PROJECT` is set it will be used to resolved tsconfig.json
 
 ### With mocha and ts-node
-`mocha --compilers ts:ts-node/register -r tsconfig-paths/register`
+As of Mocha >= 4.0.0 the `--compiler` was [deprecated](https://github.com/mochajs/mocha/wiki/compilers-deprecation). Instead `--require` should be used. You also have to specify a glob that includes `.ts` files because mocha looks after files with `.js` extension by default.
+
+```bash
+mocha -r ts-node/register -r tsconfig-paths/register "test/**/*.ts"
+```
 
 ### Bootstrap tsconfig-paths with explicit params
 If you want more granular control over tsconfig-paths you can bootstrap it. This can be useful if you for instance have compiled with `tsc` to another directory where `tsconfig.json` doesn't exists.
