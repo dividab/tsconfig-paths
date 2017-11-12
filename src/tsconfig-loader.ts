@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as fs from "fs";
-import * as R from "ramda";
+import * as deepmerge from "deepmerge";
 
 export interface TsConfigLoaderResult {
   tsConfigPath: string | undefined;
@@ -63,7 +63,7 @@ function loadConfig(
   if (config.extends) {
     const currentDir = path.dirname(configFilePath);
     const base = loadConfig(path.resolve(currentDir, config.extends)) || {};
-    return R.mergeDeepRight(base, config);
+    return deepmerge(base, config);
   }
   return config;
 }

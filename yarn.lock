@@ -6,6 +6,10 @@
   version "3.4.34"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.4.34.tgz#d5335792823bb09cddd5e38c3d211b709183854d"
 
+"@types/deepmerge@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@types/deepmerge/-/deepmerge-1.3.2.tgz#a87837384624d63e8c3df3ae85693d574ea6b5db"
+
 "@types/mocha@^2.2.35":
   version "2.2.35"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.35.tgz#dd3150b62a6de73368109308515c3aa86f81f1ec"
@@ -13,10 +17,6 @@
 "@types/node@^6.0.54":
   version "6.0.54"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.54.tgz#65859962ba988052cbdd5c48881395acfdd46931"
-
-"@types/ramda@^0.25.5":
-  version "0.25.5"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.25.5.tgz#8290d1e11e1043287aef9cbb6dcbe3a1b574d124"
 
 align-text@^0.1.1, align-text@^0.1.3:
   version "0.1.4"
@@ -454,6 +454,10 @@ deep-eql@^0.1.3:
   resolved "https://registry.yarnpkg.com/deep-eql/-/deep-eql-0.1.3.tgz#ef558acab8de25206cd713906d74e56930eb69f2"
   dependencies:
     type-detect "0.1.1"
+
+deepmerge@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.0.1.tgz#25c1c24f110fb914f80001b925264dd77f3f4312"
 
 default-require-extensions@^1.0.0:
   version "1.0.0"
@@ -1545,10 +1549,6 @@ punycode@^1.4.1:
 qs@~6.3.0:
   version "6.3.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.2.tgz#e75bd5f6e268122a2a0e0bda630b2550c166502c"
-
-ramda@^0.25.0:
-  version "0.25.0"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.25.0.tgz#8fdf68231cffa90bc2f9460390a0cb74a29b29a9"
 
 randomatic@^1.1.3:
   version "1.1.6"
