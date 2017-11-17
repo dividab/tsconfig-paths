@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
 import * as deepmerge from "deepmerge";
+import * as StripJsonComments from "strip-json-comments";
 
 export interface TsConfigLoaderResult {
   tsConfigPath: string | undefined;
@@ -84,13 +85,16 @@ export function walkForTsConfig(
 export function loadConfig(
   configFilePath: string,
   existsSync: (path: string) => boolean = fs.existsSync,
-  requireFunc: (id: string) => any = require
+  readFileSync: (filename: string) => string = (filename: string) =>
+    fs.readFileSync(filename, "utf8")
 ): { [key: string]: any } | undefined {
   if (!existsSync(configFilePath)) {
     return undefined;
   }
 
-  const config = requireFunc(configFilePath);
+  const configString = readFileSync(configFilePath);
+  const cleanedJson = StripJsonComments(configString);
+  const config = JSON.parse(cleanedJson);
 
   if (config.extends) {
     const currentDir = path.dirname(configFilePath);
@@ -98,8 +102,9 @@ export function loadConfig(
       loadConfig(
         path.resolve(currentDir, config.extends),
         existsSync,
-        requireFunc
+        readFileSync
       ) || {};
+
     return deepmerge(base, config);
   }
   return config;

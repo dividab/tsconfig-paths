@@ -87,13 +87,26 @@ describe("walkForTsConfig", function() {
   });
 });
 
-describe("loadConfig", function() {
+describe.only("loadConfig", function() {
   it("It should load a config", () => {
     const config = { kalle: "hej" };
     const res = loadConfig(
       "/root/dir1/tsconfig.json",
       path => path === "/root/dir1/tsconfig.json",
-      _ => config
+      _ => JSON.stringify(config)
+    );
+    assert.deepEqual(res, config);
+  });
+
+  it("It should load a config with comments", () => {
+    const config = { kalle: "hej" };
+    const res = loadConfig(
+      "/root/dir1/tsconfig.json",
+      path => path === "/root/dir1/tsconfig.json",
+      _ => `{
+          // my comment
+          "kalle": "hej"
+        }`
     );
     assert.deepEqual(res, config);
   });
@@ -116,14 +129,14 @@ describe("loadConfig", function() {
       },
       path => {
         if (path === "/root/dir1/tsconfig.json") {
-          return firstConfig;
+          return JSON.stringify(firstConfig);
         }
 
         if (path === "/root/base-config.json") {
-          return baseConfig;
+          return JSON.stringify(baseConfig);
         }
 
-        return undefined;
+        return "";
       }
     );
 
