@@ -2,6 +2,7 @@ import * as path from "path";
 import * as fs from "fs";
 import * as deepmerge from "deepmerge";
 import * as StripJsonComments from "strip-json-comments";
+import StripBom = require("strip-bom");
 
 export interface TsConfigLoaderResult {
   tsConfigPath: string | undefined;
@@ -93,7 +94,7 @@ export function loadConfig(
   }
 
   const configString = readFileSync(configFilePath);
-  const cleanedJson = StripJsonComments(configString);
+  const cleanedJson = StripBom(StripJsonComments(configString));
   const config = JSON.parse(cleanedJson);
 
   if (config.extends) {
