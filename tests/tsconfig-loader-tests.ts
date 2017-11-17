@@ -87,7 +87,7 @@ describe("walkForTsConfig", function() {
   });
 });
 
-describe.only("loadConfig", function() {
+describe("loadConfig", function() {
   it("It should load a config", () => {
     const config = { kalle: "hej" };
     const res = loadConfig(
