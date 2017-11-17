@@ -1,5 +1,9 @@
 import { assert } from "chai";
-import { tsConfigLoader, walkForTsConfig } from "../src/tsconfig-loader";
+import {
+  loadConfig,
+  tsConfigLoader,
+  walkForTsConfig
+} from "../src/tsconfig-loader";
 
 describe("tsconfig-loader", function() {
   it("should find tsconfig in cwd", () => {
@@ -60,7 +64,7 @@ describe("tsconfig-loader", function() {
   });
 });
 
-describe.only("walkForTsConfig", function() {
+describe("walkForTsConfig", function() {
   it("should find tsconfig in starting directory", () => {
     const res = walkForTsConfig(
       "/root/dir1",
@@ -80,5 +84,49 @@ describe.only("walkForTsConfig", function() {
   it("should return undefined when reaching the top", () => {
     const res = walkForTsConfig("/root/dir1/kalle", () => false);
     assert.equal(res, undefined);
+  });
+});
+
+describe("loadConfig", function() {
+  it("It should load a config", () => {
+    const config = { kalle: "hej" };
+    const res = loadConfig(
+      "/root/dir1/tsconfig.json",
+      path => path === "/root/dir1/tsconfig.json",
+      _ => config
+    );
+    assert.deepEqual(res, config);
+  });
+
+  it("It should load a config with extends", () => {
+    const firstConfig = { extends: "../base-config.json", kalle: "hej" };
+    const baseConfig = { compilerOptions: { baseUrl: "." } };
+    const res = loadConfig(
+      "/root/dir1/tsconfig.json",
+      path => {
+        if (path === "/root/dir1/tsconfig.json") {
+          return true;
+        }
+
+        if (path === "/root/base-config.json") {
+          return true;
+        }
+
+        return false;
+      },
+      path => {
+        if (path === "/root/dir1/tsconfig.json") {
+          return firstConfig;
+        }
+
+        if (path === "/root/base-config.json") {
+          return baseConfig;
+        }
+
+        return undefined;
+      }
+    );
+
+    assert.deepEqual(res, { ...baseConfig, ...firstConfig });
   });
 });

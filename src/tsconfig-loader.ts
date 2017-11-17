@@ -59,7 +59,7 @@ export function resolveConfigPath(
     return absolutePath;
   }
 
-  return path.resolve(cwd, "./tsconfig.json");
+  return walkForTsConfig(cwd);
 }
 
 export function walkForTsConfig(
@@ -81,18 +81,25 @@ export function walkForTsConfig(
   return walkForTsConfig(parentDirectory, existsSync);
 }
 
-function loadConfig(
-  configFilePath: string
+export function loadConfig(
+  configFilePath: string,
+  existsSync: (path: string) => boolean = fs.existsSync,
+  requireFunc: (id: string) => any = require
 ): { [key: string]: any } | undefined {
-  if (!fs.existsSync(configFilePath)) {
+  if (!existsSync(configFilePath)) {
     return undefined;
   }
 
-  const config = require(configFilePath);
+  const config = requireFunc(configFilePath);
 
   if (config.extends) {
     const currentDir = path.dirname(configFilePath);
-    const base = loadConfig(path.resolve(currentDir, config.extends)) || {};
+    const base =
+      loadConfig(
+        path.resolve(currentDir, config.extends),
+        existsSync,
+        requireFunc
+      ) || {};
     return deepmerge(base, config);
   }
   return config;
