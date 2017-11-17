@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { tsConfigLoader } from "../src/tsconfig-loader";
+import { tsConfigLoader, walkForTsConfig } from "../src/tsconfig-loader";
 
 describe("tsconfig-loader", function() {
   it("should find tsconfig in cwd", () => {
@@ -57,5 +57,28 @@ describe("tsconfig-loader", function() {
     });
 
     assert.equal(result.tsConfigPath, "/foo/baz/tsconfig.json");
+  });
+});
+
+describe.only("walkForTsConfig", function() {
+  it("should find tsconfig in starting directory", () => {
+    const res = walkForTsConfig(
+      "/root/dir1",
+      path => path === "/root/dir1/tsconfig.json"
+    );
+    assert.equal(res, "/root/dir1/tsconfig.json");
+  });
+
+  it("should find tsconfig in parent directory", () => {
+    const res = walkForTsConfig(
+      "/root/dir1",
+      path => path === "/root/tsconfig.json"
+    );
+    assert.equal(res, "/root/tsconfig.json");
+  });
+
+  it("should return undefined when reaching the top", () => {
+    const res = walkForTsConfig("/root/dir1/kalle", () => false);
+    assert.equal(res, undefined);
   });
 });

@@ -30,8 +30,16 @@ function loadSyncDefault(cwd: string, filename?: string): TsConfigLoaderResult {
   // Tsconfig.loadSync uses path.resolve. This is why we can use an absolute path as filename
 
   const configPath = resolveConfigPath(cwd, filename);
+
+  if (!configPath) {
+    return {
+      tsConfigPath: undefined,
+      baseUrl: undefined,
+      paths: undefined
+    };
+  }
   const config = loadConfig(configPath);
-  console.log(config);
+
   return {
     tsConfigPath: configPath,
     baseUrl: config && config.compilerOptions && config.compilerOptions.baseUrl,
@@ -39,7 +47,10 @@ function loadSyncDefault(cwd: string, filename?: string): TsConfigLoaderResult {
   };
 }
 
-function resolveConfigPath(cwd: string, filename?: string): string {
+export function resolveConfigPath(
+  cwd: string,
+  filename?: string
+): string | undefined {
   if (filename) {
     const absolutePath = fs.lstatSync(filename).isDirectory()
       ? path.resolve(filename, "./tsconfig.json")
@@ -49,6 +60,25 @@ function resolveConfigPath(cwd: string, filename?: string): string {
   }
 
   return path.resolve(cwd, "./tsconfig.json");
+}
+
+export function walkForTsConfig(
+  directory: string,
+  existsSync: (path: string) => boolean = fs.existsSync
+): string | undefined {
+  const configPath = path.resolve(directory, "./tsconfig.json");
+  if (existsSync(configPath)) {
+    return configPath;
+  }
+
+  const parentDirectory = path.resolve(directory, "../");
+
+  // If we reached the top
+  if (directory === parentDirectory) {
+    return undefined;
+  }
+
+  return walkForTsConfig(parentDirectory, existsSync);
 }
 
 function loadConfig(
