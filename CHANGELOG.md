@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [2.3.0]
+### Changed
+- Removed dependency for package `tsconfig`.
+### Fixed
+- Support for config inheritance with `extends`. Fixes [#17](https://github.com/jonaskello/tsconfig-paths/issues/17).
+
+
 ## [2.2.0]
 ### Fixed
 - Fixed issue [#7](https://github.com/jonaskello/tsconfig-paths/issues/7).
