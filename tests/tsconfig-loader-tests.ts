@@ -1,5 +1,9 @@
 import { assert } from "chai";
-import { tsConfigLoader } from "../src/tsconfig-loader";
+import {
+  loadConfig,
+  tsConfigLoader,
+  walkForTsConfig
+} from "../src/tsconfig-loader";
 
 describe("tsconfig-loader", function() {
   it("should find tsconfig in cwd", () => {
@@ -57,5 +61,85 @@ describe("tsconfig-loader", function() {
     });
 
     assert.equal(result.tsConfigPath, "/foo/baz/tsconfig.json");
+  });
+});
+
+describe("walkForTsConfig", function() {
+  it("should find tsconfig in starting directory", () => {
+    const res = walkForTsConfig(
+      "/root/dir1",
+      path => path === "/root/dir1/tsconfig.json"
+    );
+    assert.equal(res, "/root/dir1/tsconfig.json");
+  });
+
+  it("should find tsconfig in parent directory", () => {
+    const res = walkForTsConfig(
+      "/root/dir1",
+      path => path === "/root/tsconfig.json"
+    );
+    assert.equal(res, "/root/tsconfig.json");
+  });
+
+  it("should return undefined when reaching the top", () => {
+    const res = walkForTsConfig("/root/dir1/kalle", () => false);
+    assert.equal(res, undefined);
+  });
+});
+
+describe("loadConfig", function() {
+  it("It should load a config", () => {
+    const config = { kalle: "hej" };
+    const res = loadConfig(
+      "/root/dir1/tsconfig.json",
+      path => path === "/root/dir1/tsconfig.json",
+      _ => JSON.stringify(config)
+    );
+    assert.deepEqual(res, config);
+  });
+
+  it("It should load a config with comments", () => {
+    const config = { kalle: "hej" };
+    const res = loadConfig(
+      "/root/dir1/tsconfig.json",
+      path => path === "/root/dir1/tsconfig.json",
+      _ => `{
+          // my comment
+          "kalle": "hej"
+        }`
+    );
+    assert.deepEqual(res, config);
+  });
+
+  it("It should load a config with extends", () => {
+    const firstConfig = { extends: "../base-config.json", kalle: "hej" };
+    const baseConfig = { compilerOptions: { baseUrl: "." } };
+    const res = loadConfig(
+      "/root/dir1/tsconfig.json",
+      path => {
+        if (path === "/root/dir1/tsconfig.json") {
+          return true;
+        }
+
+        if (path === "/root/base-config.json") {
+          return true;
+        }
+
+        return false;
+      },
+      path => {
+        if (path === "/root/dir1/tsconfig.json") {
+          return JSON.stringify(firstConfig);
+        }
+
+        if (path === "/root/base-config.json") {
+          return JSON.stringify(baseConfig);
+        }
+
+        return "";
+      }
+    );
+
+    assert.deepEqual(res, { ...baseConfig, ...firstConfig });
   });
 });
