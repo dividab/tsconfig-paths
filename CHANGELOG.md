@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
-## [2.3.0]
+## [2.4.0]
 ### Changed
 - Removed dependency for package `tsconfig`.
 ### Fixed
