@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [2.4.2]
+### Fixed
+- Add missing types field in package.json.
+
 ## [2.4.1]
 ### Fixed
 - Include declaration files. Fixes [#22](https://github.com/dividab/tsconfig-paths/issues/22).
