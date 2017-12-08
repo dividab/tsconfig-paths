@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [2.4.3]
+### Fixed
+- Export MatchPth typing.
+
 ## [2.4.2]
 ### Fixed
 - Add missing types field in package.json.
@@ -93,7 +97,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial version.
 
 
-[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.4.2...master
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.4.3...master
+[2.4.3]: https://github.com/dividab/tsconfig-paths/compare/2.4.2...2.4.3
 [2.4.2]: https://github.com/dividab/tsconfig-paths/compare/2.4.1...2.4.2
 [2.4.1]: https://github.com/dividab/tsconfig-paths/compare/2.4.0...2.4.1
 [2.4.0]: https://github.com/dividab/tsconfig-paths/compare/2.2.0...2.4.0
