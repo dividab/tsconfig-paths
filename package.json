@@ -1,8 +1,10 @@
 {
   "name": "tsconfig-paths",
   "version": "2.4.1",
-  "description": "Load node modules according to tsconfig paths, in run-time or via API.",
+  "description":
+    "Load node modules according to tsconfig paths, in run-time or via API.",
   "main": "lib/index.js",
+  "types": "lib/index",
   "author": "Jonas Kello",
   "license": "MIT",
   "repository": "https://github.com/dividab/tsconfig-paths",
@@ -26,13 +28,16 @@
   },
   "scripts": {
     "start": "cd src && ts-node index.ts",
-    "start:example:node": "yarn tsc && cd example/node && ts-node -r ../register.js main.ts",
+    "start:example:node":
+      "yarn tsc && cd example/node && ts-node -r ../register.js main.ts",
     "start:example:api": "cd example/api && ts-node main.ts",
     "tsc": "tsc -P src",
     "tsc:tests": "tsc -P tests",
     "test:unit": "mocha --compilers ts:ts-node/register \"tests/**/*.ts\"",
-    "test": "nyc --include src/**/*.ts -e '.ts' -r html -r lcov -r text yarn test:unit",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "test":
+      "nyc --include src/**/*.ts -e '.ts' -r html -r lcov -r text yarn test:unit",
+    "report-coverage":
+      "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "rm -rf lib && tsc -P src",
     "precommit": "lint-staged",
     "publish:major": "yarn build && node scripts/publish.js major",
@@ -40,11 +45,7 @@
     "publish:patch": "yarn build && node scripts/publish.js patch"
   },
   "lint-staged": {
-    "*.ts": [
-      "tslint",
-      "prettier --write",
-      "git add"
-    ]
+    "*.ts": ["tslint", "prettier --write", "git add"]
   },
   "dependencies": {
     "deepmerge": "^2.0.1",
