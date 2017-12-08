@@ -7,33 +7,36 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [2.4.1]
+### Fixed
+- Include declaration files. Fixes [#22](https://github.com/dividab/tsconfig-paths/issues/22).
+
 ## [2.4.0]
 ### Changed
 - Removed dependency for package `tsconfig`.
 ### Fixed
-- Support for config inheritance with `extends`. Fixes [#17](https://github.com/jonaskello/tsconfig-paths/issues/17).
-
+- Support for config inheritance with `extends`. Fixes [#17](https://github.com/dividab/tsconfig-paths/issues/17).
 
 ## [2.2.0]
 ### Fixed
-- Fixed issue [#7](https://github.com/jonaskello/tsconfig-paths/issues/7).
+- Fixed issue [#7](https://github.com/dividab/tsconfig-paths/issues/7).
 
 ## [2.1.2]
 ### Fixed
-- Fixed issue [#6](https://github.com/jonaskello/tsconfig-paths/issues/6).
+- Fixed issue [#6](https://github.com/dividab/tsconfig-paths/issues/6).
 
 ## [2.1.1]
 ### Fixed
-- Fixed issue [#4](https://github.com/jonaskello/tsconfig-paths/issues/4)
+- Fixed issue [#4](https://github.com/dividab/tsconfig-paths/issues/4)
 
 ## [2.1.0]
 ### Fixed
-- Fixed issue [#3](https://github.com/jonaskello/tsconfig-paths/issues/3)
+- Fixed issue [#3](https://github.com/dividab/tsconfig-paths/issues/3)
 
 ## [2.0.0]
 ### Added
 - We now look at `process.env.TS_NODE_PROJECT`
-- Functionality to bootstrap tsconfig-paths. Documentation in [README](https://github.com/jonaskello/tsconfig-paths/blob/master/README.md)
+- Functionality to bootstrap tsconfig-paths. Documentation in [README](https://github.com/dividab/tsconfig-paths/blob/master/README.md)
 
 ### Changed
 - Changed signature for `createMatchPath`. Now only takes absoluteUrl and paths.
@@ -84,3 +87,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.1.0] - 2016-12-28
 - Initial version.
+
+
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.4.1...master
+[2.4.1]: https://github.com/dividab/tsconfig-paths/compare/2.4.0...2.4.1
+[2.4.0]: https://github.com/dividab/tsconfig-paths/compare/2.2.0...2.4.0
+[2.2.0]: https://github.com/dividab/tsconfig-paths/compare/2.1.2...2.2.0
+[2.1.2]: https://github.com/dividab/tsconfig-paths/compare/2.1.1...2.1.2
+[2.1.1]: https://github.com/dividab/tsconfig-paths/compare/2.1.0...2.1.1
