@@ -6,7 +6,7 @@ export interface ExplicitParams {
   paths: { [key: string]: Array<string> };
 }
 
-interface ConfigLoaderParams {
+export interface ConfigLoaderParams {
   tsConfigLoader?: (
     params: TsConfigLoader.TsConfigLoaderParams
   ) => TsConfigLoader.TsConfigLoaderResult;
