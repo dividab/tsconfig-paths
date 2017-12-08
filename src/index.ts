@@ -1,3 +1,7 @@
 // register is used from register.js in root dir
-export { createMatchPath, matchFromAbsolutePaths } from "./match-path";
+export {
+  createMatchPath,
+  matchFromAbsolutePaths,
+  MatchPath
+} from "./match-path";
 export { register } from "./register";

@@ -7,8 +7,8 @@ export type MatchPath = (
   absoluteSourceFileName: string,
   requestedModule: string,
   readPackageJson?: (packageJsonPath: string) => any,
-  fileExists?: any,
-  extensions?: Array<string>
+  fileExists?: boolean,
+  extensions?: ReadonlyArray<string>
 ) => string | undefined;
 
 /**
