@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [2.6.0]
+### Added
+- Add `baseUrl` and `configFileAbsolutePath` to the result of `loadConfig`.
+
 ## [2.5.0]
 ### Added
 - New function in Programmatic API `loadConfig`.

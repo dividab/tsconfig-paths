@@ -18,6 +18,8 @@ export interface ConfigLoaderParams {
 
 export interface ConfigLoaderSuccessResult {
   resultType: "success";
+  configFileAbsolutePath: string;
+  baseUrl: string;
   absoluteBaseUrl: string;
   paths: { [key: string]: Array<string> };
 }
@@ -47,6 +49,8 @@ export function configLoader({
 
     return {
       resultType: "success",
+      configFileAbsolutePath: "",
+      baseUrl: explicitParams.baseUrl,
       absoluteBaseUrl,
       paths: explicitParams.paths
     };
@@ -77,6 +81,8 @@ export function configLoader({
 
   return {
     resultType: "success",
+    configFileAbsolutePath: loadResult.tsConfigPath,
+    baseUrl: loadResult.baseUrl,
     absoluteBaseUrl,
     paths: loadResult.paths || {}
   };
