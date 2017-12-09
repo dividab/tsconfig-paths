@@ -40,7 +40,7 @@ function loadSyncDefault(cwd: string, filename?: string): TsConfigLoaderResult {
       paths: undefined
     };
   }
-  const config = loadConfig(configPath);
+  const config = loadTsconfig(configPath);
 
   return {
     tsConfigPath: configPath,
@@ -83,7 +83,7 @@ export function walkForTsConfig(
   return walkForTsConfig(parentDirectory, existsSync);
 }
 
-export function loadConfig(
+export function loadTsconfig(
   configFilePath: string,
   existsSync: (path: string) => boolean = fs.existsSync,
   readFileSync: (filename: string) => string = (filename: string) =>
@@ -100,7 +100,7 @@ export function loadConfig(
   if (config.extends) {
     const currentDir = path.dirname(configFilePath);
     const base =
-      loadConfig(
+      loadTsconfig(
         path.resolve(currentDir, config.extends),
         existsSync,
         readFileSync

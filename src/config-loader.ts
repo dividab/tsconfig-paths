@@ -31,6 +31,10 @@ export type ConfigLoaderResult =
   | ConfigLoaderSuccessResult
   | ConfigLoaderFailResult;
 
+export function loadConfig(cwd: string = process.cwd()): ConfigLoaderResult {
+  return configLoader({ cwd: cwd });
+}
+
 export function configLoader({
   cwd,
   explicitParams,

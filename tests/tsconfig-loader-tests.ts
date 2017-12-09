@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import {
-  loadConfig,
+  loadTsconfig,
   tsConfigLoader,
   walkForTsConfig
 } from "../src/tsconfig-loader";
@@ -90,7 +90,7 @@ describe("walkForTsConfig", function() {
 describe("loadConfig", function() {
   it("It should load a config", () => {
     const config = { kalle: "hej" };
-    const res = loadConfig(
+    const res = loadTsconfig(
       "/root/dir1/tsconfig.json",
       path => path === "/root/dir1/tsconfig.json",
       _ => JSON.stringify(config)
@@ -100,7 +100,7 @@ describe("loadConfig", function() {
 
   it("It should load a config with comments", () => {
     const config = { kalle: "hej" };
-    const res = loadConfig(
+    const res = loadTsconfig(
       "/root/dir1/tsconfig.json",
       path => path === "/root/dir1/tsconfig.json",
       _ => `{
@@ -114,7 +114,7 @@ describe("loadConfig", function() {
   it("It should load a config with extends", () => {
     const firstConfig = { extends: "../base-config.json", kalle: "hej" };
     const baseConfig = { compilerOptions: { baseUrl: "." } };
-    const res = loadConfig(
+    const res = loadTsconfig(
       "/root/dir1/tsconfig.json",
       path => {
         if (path === "/root/dir1/tsconfig.json") {
