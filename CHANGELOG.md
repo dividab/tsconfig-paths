@@ -105,7 +105,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial version.
 
 
-[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.5.0...master
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.6.0...master
+[2.6.0]: https://github.com/dividab/tsconfig-paths/compare/2.5.0...2.6.0
 [2.5.0]: https://github.com/dividab/tsconfig-paths/compare/2.4.3...2.5.0
 [2.4.3]: https://github.com/dividab/tsconfig-paths/compare/2.4.2...2.4.3
 [2.4.2]: https://github.com/dividab/tsconfig-paths/compare/2.4.1...2.4.2
