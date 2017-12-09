@@ -32,6 +32,10 @@ npm install --save-dev tsconfig-paths
 
 If `process.env.TS_NODE_PROJECT` is set it will be used to resolved tsconfig.json
 
+### With webpack
+
+For webpack please use the [tsconfig-paths-webpack-plugin](https://github.com/dividab/tsconfig-paths-webpack-plugin).
+
 ### With mocha and ts-node
 As of Mocha >= 4.0.0 the `--compiler` was [deprecated](https://github.com/mochajs/mocha/wiki/compilers-deprecation). Instead `--require` should be used. You also have to specify a glob that includes `.ts` files because mocha looks after files with `.js` extension by default.
 
@@ -59,10 +63,6 @@ Then run with:
 1. Use explicit params passed to register
 2. Use `process.env.TS_NODE_PROJECT` to resolve tsConfig.json and the specified baseUrl and paths.
 3. Resolves tsconfig.json from current working directory and the specified baseUrl and paths.
-
-## Using with webpack
-
-For webpack please use the [tsconfig-paths-webpack-plugin](https://github.com/dividab/tsconfig-paths-webpack-plugin).
 
 ## Programmatic use
 
