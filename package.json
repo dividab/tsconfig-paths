@@ -1,6 +1,6 @@
 {
   "name": "tsconfig-paths",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Load node modules according to tsconfig paths, in run-time or via API.",
   "main": "lib/index.js",
   "types": "lib/index",
