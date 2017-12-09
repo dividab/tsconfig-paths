@@ -60,6 +60,10 @@ Then run with:
 2. Use `process.env.TS_NODE_PROJECT` to resolve tsConfig.json and the specified baseUrl and paths.
 3. Resolves tsconfig.json from current working directory and the specified baseUrl and paths.
 
+## Using with webpack
+
+For webpack please use the [tsconfig-paths-webpack-plugin](https://github.com/dividab/tsconfig-paths-webpack-plugin).
+
 ## Programmatic use
 
 The public API consists of these functions:
