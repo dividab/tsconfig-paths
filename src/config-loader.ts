@@ -6,12 +6,14 @@ export interface ExplicitParams {
   paths: { [key: string]: Array<string> };
 }
 
+export type TsConfigLoader = (
+  params: TsConfigLoader.TsConfigLoaderParams
+) => TsConfigLoader.TsConfigLoaderResult;
+
 export interface ConfigLoaderParams {
   cwd: string;
-  explicitParams: ExplicitParams | undefined;
-  tsConfigLoader?: (
-    params: TsConfigLoader.TsConfigLoaderParams
-  ) => TsConfigLoader.TsConfigLoaderResult;
+  explicitParams?: ExplicitParams;
+  tsConfigLoader?: TsConfigLoader;
 }
 
 export interface ConfigLoaderSuccessResult {
