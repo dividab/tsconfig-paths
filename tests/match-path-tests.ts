@@ -35,9 +35,10 @@ describe("find-path", function() {
     const result = matchPath(
       "/root/test.ts",
       "lib/mylib",
-      (_: string) => undefined,
+      undefined,
       (name: string) =>
-        name === "/root/location/lib/mylib" || "/root/location/mylib"
+        name === "/root/location/lib/mylib/index.ts" ||
+        name === "/root/location/mylib/index.ts"
     );
     assert.equal(result, "/root/location/mylib");
   });

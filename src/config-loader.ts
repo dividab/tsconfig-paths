@@ -7,11 +7,11 @@ export interface ExplicitParams {
 }
 
 export interface ConfigLoaderParams {
+  cwd: string;
+  explicitParams: ExplicitParams | undefined;
   tsConfigLoader?: (
     params: TsConfigLoader.TsConfigLoaderParams
   ) => TsConfigLoader.TsConfigLoaderResult;
-  explicitParams: ExplicitParams | undefined;
-  cwd: string;
 }
 
 export interface ConfigLoaderSuccessResult {
@@ -25,11 +25,15 @@ export interface ConfigLoaderFailResult {
   message: string;
 }
 
+export type ConfigLoaderResult =
+  | ConfigLoaderSuccessResult
+  | ConfigLoaderFailResult;
+
 export function configLoader({
-  tsConfigLoader = TsConfigLoader.tsConfigLoader,
+  cwd,
   explicitParams,
-  cwd
-}: ConfigLoaderParams): ConfigLoaderSuccessResult | ConfigLoaderFailResult {
+  tsConfigLoader = TsConfigLoader.tsConfigLoader
+}: ConfigLoaderParams): ConfigLoaderResult {
   if (explicitParams) {
     const absoluteBaseUrl = path.isAbsolute(explicitParams.baseUrl)
       ? explicitParams.baseUrl
