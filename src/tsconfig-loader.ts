@@ -126,7 +126,6 @@ export function loadTsconfig(
         extendsDir,
         base.compilerOptions.baseUrl
       );
-      console.log("base.compilerOptions.baseUrl", base.compilerOptions.baseUrl);
     }
 
     return deepmerge(base, config);
