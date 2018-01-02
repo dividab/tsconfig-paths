@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [2.7.2]
+### Fixed
+- Return absolute path to tsconfig.json.
+
 ## [2.7.1]
 ### Fixed
 - Remove left over console.log.
@@ -113,7 +117,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial version.
 
 
-[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.7.1...master
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.7.2...master
+[2.7.2]: https://github.com/dividab/tsconfig-paths/compare/2.7.1...2.7.2
 [2.7.1]: https://github.com/dividab/tsconfig-paths/compare/2.7.0...2.7.1
 [2.7.0]: https://github.com/dividab/tsconfig-paths/compare/2.6.0...2.7.0
 [2.6.0]: https://github.com/dividab/tsconfig-paths/compare/2.5.0...2.6.0

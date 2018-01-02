@@ -73,7 +73,8 @@ export function resolveConfigPath(
     return absolutePath;
   }
 
-  return walkForTsConfig(cwd);
+  const configAbsolutePath = path.resolve(walkForTsConfig(cwd));
+  return configAbsolutePath;
 }
 
 export function walkForTsConfig(
