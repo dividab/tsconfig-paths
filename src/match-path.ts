@@ -6,6 +6,7 @@ import { matchStar } from "./match-star";
 export type MatchPath = (
   absoluteSourceFileName: string,
   requestedModule: string,
+  // tslint:disable-next-line:no-any
   readPackageJson?: (packageJsonPath: string) => any,
   fileExists?: (name: string) => boolean,
   extensions?: ReadonlyArray<string>
@@ -40,7 +41,9 @@ export function createMatchPath(
   return (
     sourceFileName: string,
     requestedModule: string,
+    // tslint:disable-next-line:no-any
     readPackageJson: (packageJsonPath: string) => any,
+    // tslint:disable-next-line:no-any
     fileExists: any,
     extensions?: Array<string>
   ) =>
@@ -68,11 +71,12 @@ export function matchFromAbsolutePaths(
   absolutePathMappings: { [key: string]: Array<string> },
   absoluteSourceFileName: string,
   requestedModule: string,
+  // tslint:disable-next-line:no-any
   readPackageJson: (packageJsonPath: string) => any = (
     packageJsonPath: string
   ) => readPackage(packageJsonPath),
-  fileExists = fs.existsSync,
-  extensions = Object.keys(require.extensions)
+  fileExists: Function = fs.existsSync,
+  extensions: Array<string> = Object.keys(require.extensions)
 ): string | undefined {
   if (
     requestedModule[0] !== "." &&
@@ -123,7 +127,9 @@ export function matchFromAbsolutePaths(
  */
 function tryResolve(
   physicalPath: string,
+  // tslint:disable-next-line:no-any
   fileExists: any,
+  // tslint:disable-next-line:no-any
   readPackageJson: (packageJsonPath: string) => any,
   extensions: Array<string>
 ): string | undefined {

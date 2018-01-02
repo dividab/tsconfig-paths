@@ -43,6 +43,7 @@ export function configLoader({
   tsConfigLoader = TsConfigLoader.tsConfigLoader
 }: ConfigLoaderParams): ConfigLoaderResult {
   if (explicitParams) {
+    // tslint:disable-next-line:no-shadowed-variable
     const absoluteBaseUrl = path.isAbsolute(explicitParams.baseUrl)
       ? explicitParams.baseUrl
       : path.join(cwd, explicitParams.baseUrl);

@@ -7,6 +7,7 @@ import * as fs from "fs";
  */
 export function readPackage(
   packageJsonPath: string,
+  // tslint:disable-next-line:no-any
   loadPackageJson: (file: string) => any = loadJsonFromDisk,
   fileExists: (path: string) => boolean = fs.existsSync
 ): { main: string } | undefined {
@@ -18,7 +19,7 @@ export function readPackage(
   );
 }
 
-function loadJsonFromDisk(file: string) {
+function loadJsonFromDisk(file: string): {} {
   const packageJson = require(file);
 
   return packageJson;

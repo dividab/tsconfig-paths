@@ -4,7 +4,7 @@ import { configLoader, ExplicitParams } from "./config-loader";
 /**
  * Installs a custom module load function that can adhere to paths in tsconfig.
  */
-export function register(explicitParams: ExplicitParams) {
+export function register(explicitParams: ExplicitParams): void {
   const configLoaderResult = configLoader({
     cwd: process.cwd(),
     explicitParams
@@ -23,14 +23,18 @@ export function register(explicitParams: ExplicitParams) {
   );
 
   // Patch node's module loading
+  // tslint:disable-next-line:no-require-imports variable-name
   const Module = require("module");
   const originalResolveFilename = Module._resolveFilename;
-  Module._resolveFilename = function(request: string, parent: any) {
+  // tslint:disable-next-line:no-any
+  Module._resolveFilename = function(request: string, parent: any): string {
     const found = matchPath(parent, request);
     if (found) {
       const modifiedArguments = [found, ...[].slice.call(arguments, 1)]; // Passes all arguments. Even those that is not specified above.
+      // tslint:disable-next-line:no-invalid-this
       return originalResolveFilename.apply(this, modifiedArguments);
     }
+    // tslint:disable-next-line:no-invalid-this
     return originalResolveFilename.apply(this, arguments);
   };
 }

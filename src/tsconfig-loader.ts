@@ -2,6 +2,7 @@ import * as path from "path";
 import * as fs from "fs";
 import * as deepmerge from "deepmerge";
 import * as StripJsonComments from "strip-json-comments";
+// tslint:disable-next-line:no-require-imports
 import StripBom = require("strip-bom");
 
 export interface TsConfigLoaderResult {
@@ -88,6 +89,7 @@ export function loadTsconfig(
   existsSync: (path: string) => boolean = fs.existsSync,
   readFileSync: (filename: string) => string = (filename: string) =>
     fs.readFileSync(filename, "utf8")
+  // tslint:disable-next-line:no-any
 ): { [key: string]: any } | undefined {
   if (!existsSync(configFilePath)) {
     return undefined;

@@ -5,7 +5,7 @@ import {
   ConfigLoaderSuccessResult
 } from "../src/config-loader";
 
-describe("config-loader", function() {
+describe("config-loader", (): void => {
   it("should use explicitParams when set", () => {
     const result = configLoader({
       explicitParams: {
@@ -43,6 +43,7 @@ describe("config-loader", function() {
     const result = configLoader({
       explicitParams: undefined,
       cwd: "/baz",
+      // tslint:disable-next-line:no-any
       tsConfigLoader: (_: any) => ({
         tsConfigPath: "/baz/tsconfig.json",
         baseUrl: "./src",
@@ -59,6 +60,7 @@ describe("config-loader", function() {
     const result = configLoader({
       explicitParams: undefined,
       cwd: "/baz",
+      // tslint:disable-next-line:no-any
       tsConfigLoader: (_: any) => ({
         tsConfigPath: "/baz/tsconfig.json",
         baseUrl: undefined,
