@@ -92,7 +92,7 @@ describe("walkForTsConfig", () => {
 
 describe("loadConfig", () => {
   it("It should load a config", () => {
-    const config = { kalle: "hej" };
+    const config = { compilerOptions: { baseUrl: "hej" } };
     const res = loadTsconfig(
       "/root/dir1/tsconfig.json",
       path => path === "/root/dir1/tsconfig.json",
@@ -102,47 +102,80 @@ describe("loadConfig", () => {
   });
 
   it("It should load a config with comments", () => {
-    const config = { kalle: "hej" };
+    const config = { compilerOptions: { baseUrl: "hej" } };
     const res = loadTsconfig(
       "/root/dir1/tsconfig.json",
       path => path === "/root/dir1/tsconfig.json",
       _ => `{
           // my comment
-          "kalle": "hej"
+          "compilerOptions": { 
+            "baseUrl": "hej"
+          }
         }`
     );
     assert.deepEqual(res, config);
   });
 
-  it("It should load a config with extends", () => {
-    const firstConfig = { extends: "../base-config.json", kalle: "hej" };
-    const baseConfig = { compilerOptions: { baseUrl: "." } };
+  it("It should load a config with extends and overwrite baseUrl", () => {
+    const firstConfig = {
+      extends: "../base-config.json",
+      compilerOptions: { baseUrl: "kalle" }
+    };
+    const firstConfigPath = join("/root", "dir1", "tsconfig.json");
+    const baseConfig = {
+      compilerOptions: { baseUrl: "olle", paths: { foo: ["bar"] } }
+    };
+    const baseConfigPath = join("/root", "base-config.json");
     const res = loadTsconfig(
       join("/root", "dir1", "tsconfig.json"),
+      path => path === firstConfigPath || path === baseConfigPath,
       path => {
-        if (path === join("/root", "dir1", "tsconfig.json")) {
-          return true;
-        }
-
-        if (path === join("/root", "base-config.json")) {
-          return true;
-        }
-
-        return false;
-      },
-      path => {
-        if (path === join("/root", "dir1", "tsconfig.json")) {
+        if (path === firstConfigPath) {
           return JSON.stringify(firstConfig);
         }
-
-        if (path === join("/root", "base-config.json")) {
+        if (path === baseConfigPath) {
           return JSON.stringify(baseConfig);
         }
-
         return "";
       }
     );
 
-    assert.deepEqual(res, { ...baseConfig, ...firstConfig });
+    assert.deepEqual(res, {
+      extends: "../base-config.json",
+      compilerOptions: { baseUrl: "kalle", paths: { foo: ["bar"] } }
+    });
+  });
+
+  it("Should use baseUrl relative to location of extended tsconfig", () => {
+    const firstConfig = { compilerOptions: { baseUrl: "." } };
+    const firstConfigPath = join("/root", "first-config.json");
+    const secondConfig = { extends: "../first-config.json" };
+    const secondConfigPath = join("/root", "dir1", "second-config.json");
+    const thirdConfig = { extends: "../second-config.json" };
+    const thirdConfigPath = join("/root", "dir1", "dir2", "third-config.json");
+    const res = loadTsconfig(
+      join("/root", "dir1", "dir2", "third-config.json"),
+      path =>
+        path === firstConfigPath ||
+        path === secondConfigPath ||
+        path === thirdConfigPath,
+      path => {
+        if (path === firstConfigPath) {
+          return JSON.stringify(firstConfig);
+        }
+        if (path === secondConfigPath) {
+          return JSON.stringify(secondConfig);
+        }
+        if (path === thirdConfigPath) {
+          return JSON.stringify(thirdConfig);
+        }
+        return "";
+      }
+    );
+
+    assert.deepEqual(res, {
+      extends: "../second-config.json",
+      compilerOptions: { baseUrl: join("..", "..") }
+    });
   });
 });

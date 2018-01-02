@@ -5,6 +5,17 @@ import * as StripJsonComments from "strip-json-comments";
 // tslint:disable-next-line:no-require-imports
 import StripBom = require("strip-bom");
 
+/**
+ * Typing for the parts of tsconfig that we care about
+ */
+export interface Tsconfig {
+  extends?: string;
+  compilerOptions?: {
+    baseUrl?: string;
+    paths?: { [key: string]: Array<string> };
+  };
+}
+
 export interface TsConfigLoaderResult {
   tsConfigPath: string | undefined;
   baseUrl: string | undefined;
@@ -89,15 +100,14 @@ export function loadTsconfig(
   existsSync: (path: string) => boolean = fs.existsSync,
   readFileSync: (filename: string) => string = (filename: string) =>
     fs.readFileSync(filename, "utf8")
-  // tslint:disable-next-line:no-any
-): { [key: string]: any } | undefined {
+): Tsconfig | undefined {
   if (!existsSync(configFilePath)) {
     return undefined;
   }
 
   const configString = readFileSync(configFilePath);
   const cleanedJson = StripBom(StripJsonComments(configString));
-  const config = JSON.parse(cleanedJson);
+  const config: Tsconfig = JSON.parse(cleanedJson);
 
   if (config.extends) {
     const currentDir = path.dirname(configFilePath);
@@ -107,6 +117,17 @@ export function loadTsconfig(
         existsSync,
         readFileSync
       ) || {};
+
+    // baseUrl should be interpreted as relative to the base tsconfig,
+    // but we need to update it so it is relative to the original tsconfig being loaded
+    if (base && base.compilerOptions && base.compilerOptions.baseUrl) {
+      const extendsDir = path.dirname(config.extends);
+      base.compilerOptions.baseUrl = path.join(
+        extendsDir,
+        base.compilerOptions.baseUrl
+      );
+      console.log("base.compilerOptions.baseUrl", base.compilerOptions.baseUrl);
+    }
 
     return deepmerge(base, config);
   }
