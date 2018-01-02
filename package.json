@@ -32,16 +32,13 @@
     "start:example:node":
       "yarn tsc && cd example/node && ts-node -r ../register.js main.ts",
     "start:example:api": "cd example/api && ts-node main.ts",
-    "tsc": "tsc -P src",
-    "tsc:tests": "tsc -P tests",
     "test": "mocha --compilers ts:ts-node/register \"tests/**/*.ts\"",
-    "test:nyc":
-      "nyc --require ts-node/register --include src/**/*.ts -e '.ts' -r html -r lcov -r text yarn test",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls",
-    "build": "rm -rf lib && tsc -P src",
+    "build": "rm -rf lib && tsc -p src",
     "lint": "tslint './{src,tests}/**/*.ts{,x}'",
     "verify": "yarn build && yarn lint && yarn coverage",
     "coverage": "rm -rf coverage .nyc_output && nyc yarn test",
+    "report-coverage":
+      "ls ./coverage/lcov.info && cat ./coverage/lcov.info | coveralls",
     "precommit": "lint-staged",
     "publish:major": "yarn build && node scripts/publish.js major",
     "publish:minor": "yarn build && node scripts/publish.js minor",
