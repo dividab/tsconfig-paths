@@ -33,9 +33,9 @@
     "start:example:api": "cd example/api && ts-node main.ts",
     "tsc": "tsc -P src",
     "tsc:tests": "tsc -P tests",
-    "test:unit": "mocha --compilers ts:ts-node/register \"tests/**/*.ts\"",
-    "test":
-      "nyc --include src/**/*.ts -e '.ts' -r html -r lcov -r text yarn test:unit",
+    "test": "mocha --compilers ts:ts-node/register \"tests/**/*.ts\"",
+    "test:nyc":
+      "nyc --require ts-node/register --include src/**/*.ts -e '.ts' -r html -r lcov -r text yarn test",
     "report-coverage":
       "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "rm -rf lib && tsc -P src",

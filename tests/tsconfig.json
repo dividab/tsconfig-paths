@@ -3,7 +3,7 @@
   "compilerOptions": {
     // Output
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "sourceMap": true,
     "outDir": "./js_out"
     // // Global types (seems this is needed to satisfy Webstorm)
