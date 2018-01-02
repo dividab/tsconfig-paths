@@ -14,9 +14,9 @@ describe("package-reader", () => {
   it("should process files that is named package.json", () => {
     const result = readPackage(
       "/root/my-package/package.json",
-      (_: string) => ({ asdf: "asdasd" }),
+      (_: string) => ({ main: "asdasd" }),
       (path: string) => path === "/root/my-package/package.json"
     );
-    assert.deepEqual(result, { asdf: "asdasd" });
+    assert.deepEqual(result, { main: "asdasd" });
   });
 });

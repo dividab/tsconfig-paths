@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 - Nothing for now
+## [2.6.0]
+### Added
+- Support `baseUrl` when using `extends`, see #
 
 ## [2.6.0]
 ### Added

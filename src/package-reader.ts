@@ -1,4 +1,12 @@
 import * as fs from "fs";
+
+/**
+ * Typing for the fields of package.json we care about
+ */
+export interface PackageJson {
+  main: string;
+}
+
 /**
  * @param  packageJsonPath Path to package.json
  * @param  loadPackageJson Function that reads and parses package.json.
@@ -10,7 +18,7 @@ export function readPackage(
   // tslint:disable-next-line:no-any
   loadPackageJson: (file: string) => any = loadJsonFromDisk,
   fileExists: (path: string) => boolean = fs.existsSync
-): { main: string } | undefined {
+): PackageJson | undefined {
   return (
     (packageJsonPath.match(/package\.json$/) &&
       fileExists(packageJsonPath) &&

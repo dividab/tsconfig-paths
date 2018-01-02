@@ -39,6 +39,7 @@
     "start:example:api": "cd example/api && ts-node main.ts",
     "test": "mocha",
     "build": "rm -rf lib && tsc -p src",
+    "build:test": "rm -rf ./test/js_out && tsc -p test",
     "lint": "tslint './{src,tests}/**/*.ts{,x}'",
     "verify": "yarn build && yarn lint && yarn coverage",
     "coverage": "rm -rf coverage .nyc_output && nyc yarn test",
