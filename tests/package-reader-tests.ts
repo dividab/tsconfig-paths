@@ -1,7 +1,7 @@
 import { readPackage } from "../src/package-reader";
 import { assert } from "chai";
 
-describe("package-reader", function() {
+describe("package-reader", () => {
   it("should only process files that is named package.json", () => {
     const result = readPackage(
       "/root/my-package/package.js",

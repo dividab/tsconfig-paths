@@ -39,7 +39,7 @@
     "report-coverage":
       "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "rm -rf lib && tsc -P src",
-    "lint": "tslint './{src,test}/**/*.ts{,x}'",
+    "lint": "tslint './{src,tests}/**/*.ts{,x}'",
     "precommit": "lint-staged",
     "publish:major": "yarn build && node scripts/publish.js major",
     "publish:minor": "yarn build && node scripts/publish.js minor",

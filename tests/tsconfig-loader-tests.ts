@@ -5,7 +5,7 @@ import {
   walkForTsConfig
 } from "../src/tsconfig-loader";
 
-describe("tsconfig-loader", function() {
+describe("tsconfig-loader", () => {
   it("should find tsconfig in cwd", () => {
     const result = tsConfigLoader({
       cwd: "/foo/bar",
@@ -64,7 +64,7 @@ describe("tsconfig-loader", function() {
   });
 });
 
-describe("walkForTsConfig", function() {
+describe("walkForTsConfig", () => {
   it("should find tsconfig in starting directory", () => {
     const res = walkForTsConfig(
       "/root/dir1",
@@ -87,7 +87,7 @@ describe("walkForTsConfig", function() {
   });
 });
 
-describe("loadConfig", function() {
+describe("loadConfig", () => {
   it("It should load a config", () => {
     const config = { kalle: "hej" };
     const res = loadTsconfig(
