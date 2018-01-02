@@ -15,7 +15,7 @@
     "@types/strip-bom": "^3.0.0",
     "@types/strip-json-comments": "^0.0.30",
     "chai": "^3.5.0",
-    "codecov": "^2.1.0",
+    "codecov": "^3.0.0",
     "husky": "^0.14.3",
     "lint-staged": "^4.3.0",
     "mocha": "^3.2.0",
