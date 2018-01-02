@@ -37,8 +37,7 @@
     "lint": "tslint './{src,tests}/**/*.ts{,x}'",
     "verify": "yarn build && yarn lint && yarn coverage",
     "coverage": "rm -rf coverage .nyc_output && nyc yarn test",
-    "report-coverage":
-      "ls ./coverage/lcov.info && cat ./coverage/lcov.info | coveralls",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "precommit": "lint-staged",
     "publish:major": "yarn build && node scripts/publish.js major",
     "publish:minor": "yarn build && node scripts/publish.js minor",
