@@ -6,9 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 - Nothing for now
-## [2.6.0]
+
+## [2.7.0]
 ### Added
-- Support `baseUrl` when using `extends`, see #
+- Support `baseUrl` to exist in base tsconfig.json when using `extends`, see [#23](https://github.com/dividab/tsconfig-paths/issues/23).
 
 ## [2.6.0]
 ### Added
