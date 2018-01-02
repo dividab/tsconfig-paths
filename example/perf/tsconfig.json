@@ -1,0 +1,15 @@
+{
+  "extends": "../base-tsconfig.json",
+  "compilerOptions": {
+    // Output
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": false,
+    "outDir": "../example_js_out",
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "foo/*": ["./foo"]
+    }
+  }
+}
