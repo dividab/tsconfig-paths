@@ -27,10 +27,15 @@
     "tslint": "^5.8.0",
     "typescript": "^2.4.1"
   },
+  "dependencies": {
+    "deepmerge": "^2.0.1",
+    "strip-bom": "^3.0.0",
+    "strip-json-comments": "^2.0.1"
+  },
   "scripts": {
     "start": "cd src && ts-node index.ts",
     "start:example:node":
-      "yarn tsc && cd example/node && ts-node -r ../register.js main.ts",
+      "yarn build && cd example/node && ts-node -r ../register.js main.ts",
     "start:example:api": "cd example/api && ts-node main.ts",
     "test": "mocha",
     "build": "rm -rf lib && tsc -p src",
@@ -45,10 +50,5 @@
   },
   "lint-staged": {
     "*.ts": ["tslint", "prettier --write", "git add"]
-  },
-  "dependencies": {
-    "deepmerge": "^2.0.1",
-    "strip-bom": "^3.0.0",
-    "strip-json-comments": "^2.0.1"
   }
 }
