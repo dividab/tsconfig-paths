@@ -4,6 +4,7 @@ import {
   tsConfigLoader,
   walkForTsConfig
 } from "../src/tsconfig-loader";
+import { join } from "path";
 
 describe("tsconfig-loader", () => {
   it("should find tsconfig in cwd", () => {
@@ -66,23 +67,25 @@ describe("tsconfig-loader", () => {
 
 describe("walkForTsConfig", () => {
   it("should find tsconfig in starting directory", () => {
+    const pathToTsconfig = join("/root", "dir1", "tsconfig.json");
     const res = walkForTsConfig(
-      "/root/dir1",
-      path => path === "/root/dir1/tsconfig.json"
+      join("/root", "dir1"),
+      path => path === pathToTsconfig
     );
-    assert.equal(res, "/root/dir1/tsconfig.json");
+    assert.equal(res, pathToTsconfig);
   });
 
   it("should find tsconfig in parent directory", () => {
+    const pathToTsconfig = join("/root", "tsconfig.json");
     const res = walkForTsConfig(
-      "/root/dir1",
-      path => path === "/root/tsconfig.json"
+      join("/root", "dir1"),
+      path => path === pathToTsconfig
     );
-    assert.equal(res, "/root/tsconfig.json");
+    assert.equal(res, pathToTsconfig);
   });
 
   it("should return undefined when reaching the top", () => {
-    const res = walkForTsConfig("/root/dir1/kalle", () => false);
+    const res = walkForTsConfig(join("/root", "dir1", "kalle"), () => false);
     assert.equal(res, undefined);
   });
 });
@@ -115,24 +118,24 @@ describe("loadConfig", () => {
     const firstConfig = { extends: "../base-config.json", kalle: "hej" };
     const baseConfig = { compilerOptions: { baseUrl: "." } };
     const res = loadTsconfig(
-      "/root/dir1/tsconfig.json",
+      join("/root", "dir1", "tsconfig.json"),
       path => {
-        if (path === "/root/dir1/tsconfig.json") {
+        if (path === join("/root", "dir1", "tsconfig.json")) {
           return true;
         }
 
-        if (path === "/root/base-config.json") {
+        if (path === join("/root", "base-config.json")) {
           return true;
         }
 
         return false;
       },
       path => {
-        if (path === "/root/dir1/tsconfig.json") {
+        if (path === join("/root", "dir1", "tsconfig.json")) {
           return JSON.stringify(firstConfig);
         }
 
-        if (path === "/root/base-config.json") {
+        if (path === join("/root", "base-config.json")) {
           return JSON.stringify(baseConfig);
         }
 

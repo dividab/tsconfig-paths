@@ -69,12 +69,12 @@ export function walkForTsConfig(
   directory: string,
   existsSync: (path: string) => boolean = fs.existsSync
 ): string | undefined {
-  const configPath = path.resolve(directory, "./tsconfig.json");
+  const configPath = path.join(directory, "./tsconfig.json");
   if (existsSync(configPath)) {
     return configPath;
   }
 
-  const parentDirectory = path.resolve(directory, "../");
+  const parentDirectory = path.join(directory, "../");
 
   // If we reached the top
   if (directory === parentDirectory) {
@@ -103,7 +103,7 @@ export function loadTsconfig(
     const currentDir = path.dirname(configFilePath);
     const base =
       loadTsconfig(
-        path.resolve(currentDir, config.extends),
+        path.join(currentDir, config.extends),
         existsSync,
         readFileSync
       ) || {};

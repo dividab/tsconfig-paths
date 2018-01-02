@@ -1,8 +1,8 @@
 import { assert } from "chai";
 import { createMatchPath } from "../src/match-path";
 
-describe("find-path", () => {
-  it("should locate path that matches with star and exists", () => {
+describe("match-path", () => {
+  it.only("should locate path that matches with star and exists", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/test.ts",
