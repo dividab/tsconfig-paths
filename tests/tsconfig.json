@@ -4,11 +4,10 @@
     // Output
     "module": "commonjs",
     "target": "es5",
-    "sourceMap": false,
-    "outDir": "test_js",
-    "noEmit": true,
-    // Global types (seems this is needed to satisfy Webstorm)
-    "typeRoots": ["./node_modules/@types"],
-    "types": ["mocha", "node"]
+    "sourceMap": true,
+    "outDir": "./js_out"
+    // // Global types (seems this is needed to satisfy Webstorm)
+    // "typeRoots": ["./node_modules/@types"],
+    // "types": ["mocha", "node"]
   }
 }

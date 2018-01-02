@@ -41,10 +41,8 @@ export function createMatchPath(
   return (
     sourceFileName: string,
     requestedModule: string,
-    // tslint:disable-next-line:no-any
-    readPackageJson: (packageJsonPath: string) => any,
-    // tslint:disable-next-line:no-any
-    fileExists: any,
+    readPackageJson: (packageJsonPath: string) => {},
+    fileExists: (path: string) => boolean,
     extensions?: Array<string>
   ) =>
     matchFromAbsolutePaths(
