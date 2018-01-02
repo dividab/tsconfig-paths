@@ -1,16 +1,17 @@
 import { assert } from "chai";
 import { createMatchPath } from "../src/match-path";
+import { join } from "path";
 
-describe("find-path", () => {
+describe("match-path", () => {
   it("should locate path that matches with star and exists", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
     const result = matchPath(
       "/root/test.ts",
       "lib/mylib",
       (_: string) => undefined,
-      (name: string) => name === "/root/location/mylib/index.ts"
+      (name: string) => name === join("/root", "location", "mylib", "index.ts")
     );
-    assert.equal(result, "/root/location/mylib");
+    assert.equal(result, join("/root", "location", "mylib"));
   });
 
   it("should resolve to correct path when many are specified", () => {
@@ -21,10 +22,10 @@ describe("find-path", () => {
       "/root/test.ts",
       "lib/mylib",
       (_: string) => undefined,
-      (name: string) => name === "/root/location/mylib/index.ts",
+      (name: string) => name === join("/root", "location", "mylib", "index.ts"),
       [".ts"]
     );
-    assert.equal(result, "/root/location/mylib");
+    assert.equal(result, join("/root", "location", "mylib"));
   });
 
   it("should locate path that matches with star and prioritize pattern with longest prefix", () => {
@@ -37,10 +38,10 @@ describe("find-path", () => {
       "lib/mylib",
       undefined,
       (name: string) =>
-        name === "/root/location/lib/mylib/index.ts" ||
-        name === "/root/location/mylib/index.ts"
+        name === join("/root", "location", "lib", "mylib", "index.ts") ||
+        name === join("/root", "location", "mylib", "index.ts")
     );
-    assert.equal(result, "/root/location/mylib");
+    assert.equal(result, join("/root", "location", "mylib"));
   });
 
   it("should locate path that matches with star and exists with extension", () => {
@@ -49,10 +50,10 @@ describe("find-path", () => {
       "/root/test.ts",
       "lib/mylib",
       (_: string) => undefined,
-      (name: string) => name === "/root/location/mylib.myext",
+      (name: string) => name === join("/root", "location", "mylib.myext"),
       [".js", ".myext"]
     );
-    assert.equal(result, "/root/location/mylib");
+    assert.equal(result, join("/root", "location", "mylib"));
   });
 
   it("should resolve request with extension specified", () => {
@@ -61,10 +62,10 @@ describe("find-path", () => {
       "/root/test.ts",
       "lib/test.jpg",
       (_: string) => undefined,
-      (name: string) => name === "/root/location/test.jpg",
+      (name: string) => name === join("/root", "location", "test.jpg"),
       [".js", ".myext"]
     );
-    assert.equal(result, "/root/location/test.jpg");
+    assert.equal(result, join("/root", "location", "test.jpg"));
   });
 
   it("should locate path that matches without star and exists", () => {
@@ -75,9 +76,9 @@ describe("find-path", () => {
       "/root/test.ts",
       "lib/foo",
       (_: string) => undefined,
-      (name: string) => name === "/root/location/foo.ts"
+      (name: string) => name === join("/root", "location", "foo.ts")
     );
-    assert.equal(result, "/root/location/foo");
+    assert.equal(result, join("/root", "location", "foo"));
   });
 
   it("should resolve to parent folder when filename is in subfolder", () => {
@@ -86,9 +87,9 @@ describe("find-path", () => {
       "/root/subfolder/file.ts",
       "lib/mylib",
       (_: string) => undefined,
-      (name: string) => name === "/root/location/mylib/index.ts"
+      (name: string) => name === join("/root", "location", "mylib", "index.ts")
     );
-    assert.equal(result, "/root/location/mylib");
+    assert.equal(result, join("/root", "location", "mylib"));
   });
 
   it("should resolve from main field in package.json", () => {
@@ -97,9 +98,9 @@ describe("find-path", () => {
       "/root/subfolder/file.ts",
       "lib/mylib",
       (_: string) => ({ main: "./kalle.ts" }),
-      (name: string) => name === "/root/location/mylib/kalle.ts"
+      (name: string) => name === join("/root", "location", "mylib", "kalle.ts")
     );
-    assert.equal(result, "/root/location/mylib/kalle");
+    assert.equal(result, join("/root", "location", "mylib", "kalle"));
   });
 
   it("should resolve from main field in package.json and correctly remove file extension", () => {
@@ -108,7 +109,8 @@ describe("find-path", () => {
       "/root/subfolder/file.js",
       "lib/mylib.js",
       (_: string) => ({ main: "./kalle.js" }),
-      (name: string) => name === "/root/location/mylib.js/kalle.js",
+      (name: string) =>
+        name === join("/root", "location", "mylib.js", "kalle.js"),
       [".ts", ".js"]
     );
 
@@ -117,12 +119,13 @@ describe("find-path", () => {
       "/root/subfolder/file.js",
       "lib/mylibjs",
       (_: string) => ({ main: "./kallejs" }),
-      (name: string) => name === "/root/location/mylibjs/kallejs",
+      (name: string) =>
+        name === join("/root", "location", "mylibjs", "kallejs"),
       [".ts", ".js"]
     );
 
-    assert.equal(result, "/root/location/mylib.js/kalle");
-    assert.equal(result2, "/root/location/mylibjs/kallejs");
+    assert.equal(result, join("/root", "location", "mylib.js", "kalle"));
+    assert.equal(result2, join("/root", "location", "mylibjs", "kallejs"));
   });
 
   it("should resolve to with the help of baseUrl when not explicitly set", () => {
@@ -131,7 +134,7 @@ describe("find-path", () => {
       "/root/test.ts",
       "mylib",
       (_: string) => undefined,
-      (name: string) => name === "/root/mylib/index.ts"
+      (name: string) => name === join("/root", "mylib", "index.ts")
     );
     assert.equal(result, "/root/mylib");
   });
@@ -142,7 +145,7 @@ describe("find-path", () => {
       "/root/asd.ts",
       "mylib",
       (_: string) => undefined,
-      (name: string) => name === "root/location/mylib"
+      (name: string) => name === join("root", "location", "mylib")
     );
     assert.equal(result, undefined);
   });

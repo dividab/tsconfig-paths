@@ -4,6 +4,7 @@ import {
   ConfigLoaderFailResult,
   ConfigLoaderSuccessResult
 } from "../src/config-loader";
+import { join } from "path";
 
 describe("config-loader", (): void => {
   it("should use explicitParams when set", () => {
@@ -36,7 +37,7 @@ describe("config-loader", (): void => {
 
     const successResult = result as ConfigLoaderSuccessResult;
     assert.equal(successResult.resultType, "success");
-    assert.equal(successResult.absoluteBaseUrl, "/baz/bar/");
+    assert.equal(successResult.absoluteBaseUrl, join("/baz", "bar/"));
   });
 
   it("should fallback to tsConfigLoader when explicitParams is not set", () => {
@@ -53,7 +54,7 @@ describe("config-loader", (): void => {
 
     const successResult = result as ConfigLoaderSuccessResult;
     assert.equal(successResult.resultType, "success");
-    assert.equal(successResult.absoluteBaseUrl, "/baz/src");
+    assert.equal(successResult.absoluteBaseUrl, join("/baz", "src"));
   });
 
   it("should show an error message when baseUrl is missing", () => {
