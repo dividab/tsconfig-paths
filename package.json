@@ -32,7 +32,7 @@
     "start:example:node":
       "yarn tsc && cd example/node && ts-node -r ../register.js main.ts",
     "start:example:api": "cd example/api && ts-node main.ts",
-    "test": "mocha --require ts-node/register \"tests/**/*.ts\"",
+    "test": "mocha",
     "build": "rm -rf lib && tsc -p src",
     "lint": "tslint './{src,tests}/**/*.ts{,x}'",
     "verify": "yarn build && yarn lint && yarn coverage",
