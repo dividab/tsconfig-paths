@@ -11,6 +11,6 @@ node_js:
 before_install:
 before_script:
 script:
-  - yarn test
+  - yarn verify
 after_success:
   - yarn report-coverage
