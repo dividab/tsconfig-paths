@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [2.7.1]
+### Fixed
+- Remove left over console.log.
+
 ## [2.7.0]
 ### Added
 - Support `baseUrl` to exist in base tsconfig.json when using `extends`, see [#23](https://github.com/dividab/tsconfig-paths/issues/23).
@@ -109,7 +113,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial version.
 
 
-[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.6.0...master
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.7.1...master
+[2.7.1]: https://github.com/dividab/tsconfig-paths/compare/2.7.0...2.7.1
+[2.7.0]: https://github.com/dividab/tsconfig-paths/compare/2.6.0...2.7.0
 [2.6.0]: https://github.com/dividab/tsconfig-paths/compare/2.5.0...2.6.0
 [2.5.0]: https://github.com/dividab/tsconfig-paths/compare/2.4.3...2.5.0
 [2.4.3]: https://github.com/dividab/tsconfig-paths/compare/2.4.2...2.4.3
