@@ -159,7 +159,7 @@ function tryResolve(
 
   const indexPath = path.join(physicalPath, "/index");
   for (const extension of extensions) {
-    if (fileExists(indexPath + extension) && physicalPath) {
+    if (fileExists(indexPath + extension)) {
       return physicalPath;
     }
   }
