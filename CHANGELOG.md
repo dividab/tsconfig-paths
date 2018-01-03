@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [2.7.3]
+### Fixed
+- Only resolve path if tsconfig present [#25](https://github.com/dividab/tsconfig-paths/pull/25). Thanks to @nicoschoenmaker for the PR.
+
 ## [2.7.2]
 ### Fixed
 - Return absolute path to tsconfig.json.
@@ -117,7 +121,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial version.
 
 
-[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.7.2...master
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.7.3...master
+[2.7.3]: https://github.com/dividab/tsconfig-paths/compare/2.7.2...2.7.3
 [2.7.2]: https://github.com/dividab/tsconfig-paths/compare/2.7.1...2.7.2
 [2.7.1]: https://github.com/dividab/tsconfig-paths/compare/2.7.0...2.7.1
 [2.7.0]: https://github.com/dividab/tsconfig-paths/compare/2.6.0...2.7.0
