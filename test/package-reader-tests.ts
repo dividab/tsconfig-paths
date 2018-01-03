@@ -5,7 +5,7 @@ describe("package-reader", () => {
   it("should only process files that is named package.json", () => {
     const result = readPackage(
       "/root/my-package/package.js",
-      (_: string) => ({ asdf: "asdasd" }),
+      (_: string) => ({ main: "asdasd" }),
       (path: string) => path === "/root/my-package/package.json"
     );
     assert.isUndefined(result);
