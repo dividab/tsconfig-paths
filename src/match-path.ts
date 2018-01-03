@@ -1,4 +1,4 @@
-import { readPackage } from "./package-reader";
+import { readPackage, PackageJson } from "./package-reader";
 import * as fs from "fs";
 import * as path from "path";
 import { matchStar } from "./match-star";
@@ -6,8 +6,7 @@ import { matchStar } from "./match-star";
 export type MatchPath = (
   absoluteSourceFileName: string,
   requestedModule: string,
-  // tslint:disable-next-line:no-any
-  readPackageJson?: (packageJsonPath: string) => any,
+  readPackageJson?: (packageJsonPath: string) => PackageJson,
   fileExists?: (name: string) => boolean,
   extensions?: ReadonlyArray<string>
 ) => string | undefined;
