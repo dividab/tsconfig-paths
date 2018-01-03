@@ -122,10 +122,8 @@ export function matchFromAbsolutePaths(
  */
 function tryResolve(
   physicalPath: string,
-  // tslint:disable-next-line:no-any
   fileExists: (name: string) => boolean,
-  // tslint:disable-next-line:no-any
-  readPackageJson: (packageJsonPath: string) => any,
+  readPackageJson: ReadPackageJson,
   extensions: Array<string>
 ): string | undefined {
   if (
