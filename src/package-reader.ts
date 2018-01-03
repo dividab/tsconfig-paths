@@ -4,7 +4,11 @@ import * as fs from "fs";
  * Typing for the fields of package.json we care about
  */
 export interface PackageJson {
-  main: string;
+  readonly main: string;
+}
+
+export interface ReadPackageJson {
+  (file: string): PackageJson | undefined;
 }
 
 /**
@@ -16,7 +20,7 @@ export interface PackageJson {
 export function readPackage(
   packageJsonPath: string,
   // tslint:disable-next-line:no-any
-  loadPackageJson: (file: string) => any = loadJsonFromDisk,
+  loadPackageJson: ReadPackageJson = loadJsonFromDisk,
   fileExists: (path: string) => boolean = fs.existsSync
 ): PackageJson | undefined {
   return (
@@ -27,7 +31,8 @@ export function readPackage(
   );
 }
 
-function loadJsonFromDisk(file: string): {} {
+function loadJsonFromDisk(file: string): PackageJson {
+  // tslint:disable-next-line:no-require-imports
   const packageJson = require(file);
 
   return packageJson;

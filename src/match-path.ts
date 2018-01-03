@@ -1,4 +1,4 @@
-import { readPackage, PackageJson } from "./package-reader";
+import { readPackage, ReadPackageJson } from "./package-reader";
 import * as fs from "fs";
 import * as path from "path";
 import { matchStar } from "./match-star";
@@ -6,7 +6,7 @@ import { matchStar } from "./match-star";
 export type MatchPath = (
   absoluteSourceFileName: string,
   requestedModule: string,
-  readPackageJson?: (packageJsonPath: string) => PackageJson,
+  readPackageJson?: ReadPackageJson,
   fileExists?: (name: string) => boolean,
   extensions?: ReadonlyArray<string>
 ) => string | undefined;
@@ -40,7 +40,7 @@ export function createMatchPath(
   return (
     sourceFileName: string,
     requestedModule: string,
-    readPackageJson: (packageJsonPath: string) => {},
+    readPackageJson: ReadPackageJson,
     fileExists: (path: string) => boolean,
     extensions?: Array<string>
   ) =>
@@ -68,10 +68,8 @@ export function matchFromAbsolutePaths(
   absolutePathMappings: { [key: string]: Array<string> },
   absoluteSourceFileName: string,
   requestedModule: string,
-  // tslint:disable-next-line:no-any
-  readPackageJson: (packageJsonPath: string) => any = (
-    packageJsonPath: string
-  ) => readPackage(packageJsonPath),
+  readPackageJson: ReadPackageJson = (packageJsonPath: string) =>
+    readPackage(packageJsonPath),
   fileExists: (name: string) => boolean = fs.existsSync,
   extensions: Array<string> = Object.keys(require.extensions)
 ): string | undefined {
