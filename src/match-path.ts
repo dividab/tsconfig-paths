@@ -73,7 +73,7 @@ export function matchFromAbsolutePaths(
   readPackageJson: (packageJsonPath: string) => any = (
     packageJsonPath: string
   ) => readPackage(packageJsonPath),
-  fileExists: Function = fs.existsSync,
+  fileExists: (name: string) => boolean = fs.existsSync,
   extensions: Array<string> = Object.keys(require.extensions)
 ): string | undefined {
   if (
@@ -126,7 +126,7 @@ export function matchFromAbsolutePaths(
 function tryResolve(
   physicalPath: string,
   // tslint:disable-next-line:no-any
-  fileExists: any,
+  fileExists: (name: string) => boolean,
   // tslint:disable-next-line:no-any
   readPackageJson: (packageJsonPath: string) => any,
   extensions: Array<string>
@@ -138,13 +138,10 @@ function tryResolve(
     return physicalPath;
   }
 
-  if (
-    extensions.reduce(
-      (prev, curr) => prev || fileExists(physicalPath + curr),
-      false
-    )
-  ) {
-    return physicalPath;
+  for (const extension of extensions) {
+    if (fileExists(physicalPath + extension)) {
+      return physicalPath;
+    }
   }
 
   const packageJson = readPackageJson(path.join(physicalPath, "/package.json"));
@@ -161,10 +158,12 @@ function tryResolve(
   }
 
   const indexPath = path.join(physicalPath, "/index");
-  return extensions.reduce(
-    (prev, curr) => prev || (fileExists(indexPath + curr) && physicalPath),
-    ""
-  );
+  for (const extension of extensions) {
+    if (fileExists(indexPath + extension) && physicalPath) {
+      return physicalPath;
+    }
+  }
+  return undefined;
 }
 
 /**
