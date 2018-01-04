@@ -19,7 +19,6 @@ export interface ReadPackageJson {
  */
 export function readPackage(
   packageJsonPath: string,
-  // tslint:disable-next-line:no-any
   loadPackageJson: ReadPackageJson = loadJsonFromDisk,
   fileExists: (path: string) => boolean = fs.existsSync
 ): PackageJson | undefined {
