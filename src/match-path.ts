@@ -40,8 +40,8 @@ export function createMatchPath(
   return (
     sourceFileName: string,
     requestedModule: string,
-    readPackageJson: ReadPackageJson,
-    fileExists: (path: string) => boolean,
+    readPackageJson?: ReadPackageJson,
+    fileExists?: (path: string) => boolean,
     extensions?: Array<string>
   ) =>
     matchFromAbsolutePaths(
