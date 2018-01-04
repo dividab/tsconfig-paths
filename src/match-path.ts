@@ -69,7 +69,7 @@ export function matchFromAbsolutePaths(
   absoluteSourceFileName: string,
   requestedModule: string,
   readPackageJson: ReadPackageJson = (packageJsonPath: string) =>
-    readPackage(packageJsonPath),
+    readPackage(packageJsonPath, undefined, fileExists),
   fileExists: (name: string) => boolean = fs.existsSync,
   extensions: Array<string> = Object.keys(require.extensions)
 ): string | undefined {
