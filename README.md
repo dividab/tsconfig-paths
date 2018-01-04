@@ -2,7 +2,7 @@
 
 [![npm version][version-image]][version-url]
 [![travis build][travis-image]][travis-url]
-[![codecov coverage][codecov-image]][codecov-url]
+[![coveralls coverage][coveralls-image]][coveralls-url]
 [![MIT license][license-image]][license-url]
 [![code style: prettier][prettier-image]][prettier-url]
 
@@ -131,8 +131,8 @@ The absolutePathMappings paramater has the same structure as paths in tsconfig b
 [version-url]: https://www.npmjs.com/package/tsconfig-paths
 [travis-image]: https://travis-ci.org/dividab/tsconfig-paths.svg?branch=master&style=flat
 [travis-url]: https://travis-ci.org/dividab/tsconfig-paths
-[codecov-image]: https://img.shields.io/codecov/c/github/dividab/tsconfig-paths/master.svg?style=flat
-[codecov-url]: https://codecov.io/gh/dividab/tsconfig-paths/branch/master
+[coveralls-image]: https://coveralls.io/repos/github/dividab/tsconfig-paths/badge.svg?style=flat
+[coveralls-url]: https://coveralls.io/github/dividab/tsconfig-paths
 [license-image]: https://img.shields.io/github/license/dividab/tsconfig-paths.svg?style=flat
 [license-url]: https://opensource.org/licenses/MIT
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg
