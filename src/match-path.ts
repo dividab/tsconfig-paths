@@ -1,4 +1,4 @@
-import { readPackageJsonFromDisk, ReadPackageJson } from "./package-reader";
+import { readPackageJsonFromDisk, ReadPackageJson } from "./read-package-json";
 import * as fs from "fs";
 import * as path from "path";
 import { matchStar } from "./match-star";
