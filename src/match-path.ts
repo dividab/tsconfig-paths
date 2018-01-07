@@ -123,7 +123,7 @@ function tryResolve(
   physicalPath: string,
   fileExists: (name: string) => boolean,
   readPackageJson: ReadPackageJson,
-  extensions: Array<string>
+  extensions: ReadonlyArray<string>
 ): string | undefined {
   if (
     path.extname(path.basename(physicalPath)).length > 0 &&
