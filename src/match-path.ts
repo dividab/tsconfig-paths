@@ -1,15 +1,27 @@
-import { readPackageJsonFromDisk, ReadPackageJson } from "./read-package-json";
+import { readJsonFromDisk, ReadJson } from "./read-json";
 import * as fs from "fs";
 import * as path from "path";
 import { matchStar } from "./match-star";
 
-export type MatchPath = (
-  absoluteSourceFileName: string,
-  requestedModule: string,
-  readPackageJson?: ReadPackageJson,
-  fileExists?: (name: string) => boolean,
-  extensions?: ReadonlyArray<string>
-) => string | undefined;
+/**
+ * Function that can match a path
+ */
+export interface MatchPath {
+  (
+    absoluteSourceFileName: string,
+    requestedModule: string,
+    readPackageJson?: ReadJson,
+    fileExists?: (name: string) => boolean,
+    extensions?: ReadonlyArray<string>
+  ): string | undefined;
+}
+
+/**
+ * Typing for the fields of package.json we care about
+ */
+export interface PackageJson {
+  readonly main?: string;
+}
 
 /**
  * Creates a function that can resolve paths according to tsconfig paths property.
@@ -40,7 +52,7 @@ export function createMatchPath(
   return (
     sourceFileName: string,
     requestedModule: string,
-    readPackageJson?: ReadPackageJson,
+    readJson?: ReadJson,
     fileExists?: (path: string) => boolean,
     extensions?: Array<string>
   ) =>
@@ -48,7 +60,7 @@ export function createMatchPath(
       absolutePaths,
       sourceFileName,
       requestedModule,
-      readPackageJson,
+      readJson,
       fileExists,
       extensions
     );
@@ -59,8 +71,8 @@ export function createMatchPath(
  * @param absolutePathMappings The paths to try as specified in tsconfig but resolved to absolute form.
  * @param absoluteSourceFileName Absolute path to the file that requested the module.
  * @param requestedModule The required module name.
- * @param readPackageJson Function that returns parsed package.json if exists or undefined(useful for testing).
- * @param fileExists Function that checks for existance of a file (useful for testing).
+ * @param readJson Function that can read json from a path (useful for testing).
+ * @param fileExists Function that checks for existance of a file at a path (useful for testing).
  * @param extensions File extensions to probe for (useful for testing).
  * @returns the found path, or undefined if no path was found.
  */
@@ -68,7 +80,7 @@ export function matchFromAbsolutePaths(
   absolutePathMappings: { [key: string]: Array<string> },
   absoluteSourceFileName: string,
   requestedModule: string,
-  readPackageJson: ReadPackageJson = readPackageJsonFromDisk,
+  readJson: ReadJson = readJsonFromDisk,
   fileExists: (name: string) => boolean = fs.existsSync,
   extensions: Array<string> = Object.keys(require.extensions)
 ): string | undefined {
@@ -95,7 +107,7 @@ export function matchFromAbsolutePaths(
           const resolved = tryResolve(
             physicalPath,
             fileExists,
-            readPackageJson,
+            readJson,
             extensions
           );
           if (resolved) {
@@ -115,14 +127,14 @@ export function matchFromAbsolutePaths(
  * 3. Check for a file named index ending in any of the extensions.
  * @param physicalPath The path to check.
  * @param fileExists Function that checks for existance of a file (useful for testing).
- * @param readPackageJson Function that returns parsed package.json if exists or undefined(useful for testing).
+ * @param readJson Function that returns parsed package.json if exists or undefined(useful for testing).
  * @param extensions File extensions to probe for (useful for testing).
  * @returns {string}
  */
 function tryResolve(
   physicalPath: string,
   fileExists: (name: string) => boolean,
-  readPackageJson: ReadPackageJson,
+  readJson: ReadJson,
   extensions: ReadonlyArray<string>
 ): string | undefined {
   if (
@@ -138,7 +150,9 @@ function tryResolve(
     }
   }
 
-  const packageJson = readPackageJson(path.join(physicalPath, "/package.json"));
+  const packageJson: PackageJson = readJson(
+    path.join(physicalPath, "/package.json")
+  );
 
   if (
     packageJson &&
