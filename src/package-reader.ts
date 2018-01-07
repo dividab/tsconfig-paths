@@ -1,5 +1,3 @@
-import * as fs from "fs";
-
 /**
  * Typing for the fields of package.json we care about
  */
@@ -13,19 +11,19 @@ export interface ReadPackageJson {
 
 /**
  * @param  packageJsonPath Path to package.json
- * @param  loadPackageJson Function that reads and parses package.json.
+ * @param  readPackageJson Function that reads and parses package.json.
  * @param  fileExists Function that checks for existance of a file.
  * @returns string
  */
 export function readPackage(
   packageJsonPath: string,
-  loadPackageJson: ReadPackageJson = loadJsonFromDisk,
-  fileExists: (path: string) => boolean = fs.existsSync
+  readPackageJson: ReadPackageJson = loadJsonFromDisk,
+  fileExists: (path: string) => boolean
 ): PackageJson | undefined {
   return (
     (packageJsonPath.match(/package\.json$/) &&
       fileExists(packageJsonPath) &&
-      loadPackageJson(packageJsonPath)) ||
+      readPackageJson(packageJsonPath)) ||
     undefined
   );
 }
