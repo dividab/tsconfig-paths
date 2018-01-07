@@ -1,3 +1,5 @@
+import * as fs from "fs";
+
 /**
  * Typing for the fields of package.json we care about
  */
@@ -5,32 +7,22 @@ export interface PackageJson {
   readonly main: string;
 }
 
+/**
+ * A function that reads package.json from a file
+ */
 export interface ReadPackageJson {
-  (file: string): PackageJson | undefined;
+  (packageJsonPath: string): PackageJson | undefined;
 }
 
 /**
- * @param  packageJsonPath Path to package.json
- * @param  readPackageJson Function that reads and parses package.json.
- * @param  fileExists Function that checks for existance of a file.
- * @returns string
+ * Reads package.json from disk
+ * @param file Path to package.json
  */
-export function readPackage(
-  packageJsonPath: string,
-  readPackageJson: ReadPackageJson = loadJsonFromDisk,
-  fileExists: (path: string) => boolean
+export function readPackageJsonFromDisk(
+  packageJsonPath: string
 ): PackageJson | undefined {
-  return (
-    (packageJsonPath.match(/package\.json$/) &&
-      fileExists(packageJsonPath) &&
-      readPackageJson(packageJsonPath)) ||
-    undefined
-  );
-}
-
-function loadJsonFromDisk(file: string): PackageJson {
-  // tslint:disable-next-line:no-require-imports
-  const packageJson = require(file);
-
-  return packageJson;
+  if (!fs.existsSync(packageJsonPath)) {
+    return undefined;
+  }
+  return require(packageJsonPath);
 }

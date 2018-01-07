@@ -1,4 +1,4 @@
-import { readPackage, ReadPackageJson } from "./package-reader";
+import { readPackageJsonFromDisk, ReadPackageJson } from "./package-reader";
 import * as fs from "fs";
 import * as path from "path";
 import { matchStar } from "./match-star";
@@ -68,8 +68,7 @@ export function matchFromAbsolutePaths(
   absolutePathMappings: { [key: string]: Array<string> },
   absoluteSourceFileName: string,
   requestedModule: string,
-  readPackageJson: ReadPackageJson = (packageJsonPath: string) =>
-    readPackage(packageJsonPath, undefined, fileExists),
+  readPackageJson: ReadPackageJson = readPackageJsonFromDisk,
   fileExists: (name: string) => boolean = fs.existsSync,
   extensions: Array<string> = Object.keys(require.extensions)
 ): string | undefined {
