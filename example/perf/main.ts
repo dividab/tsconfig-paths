@@ -14,8 +14,10 @@ const matchPath = createMatchPath(
   loadResult.config.compilerOptions.paths
 );
 
-console.time("Matching path 10.000 times");
-for (let i = 0; i < 10000; i++) {
+const iterations = 100000;
+
+console.time(`Matching path ${iterations} times`);
+for (let i = 0; i < iterations; i++) {
   const result = matchPath(
     path.resolve("./test.ts"),
     "foo/mylib",
@@ -24,4 +26,4 @@ for (let i = 0; i < 10000; i++) {
     [".ts", ".tsx", ".js"]
   );
 }
-console.timeEnd("Matching path 10.000 times");
+console.timeEnd(`Matching path ${iterations} times`);

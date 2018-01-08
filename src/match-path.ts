@@ -23,6 +23,11 @@ export interface PackageJson {
   readonly main?: string;
 }
 
+export interface MappingEntry {
+  readonly pattern: string;
+  readonly paths: ReadonlyArray<string>;
+}
+
 /**
  * Creates a function that can resolve paths according to tsconfig paths property.
  * @param tsConfigPath The paths where tsconfig.json is located.
@@ -33,21 +38,27 @@ export function createMatchPath(
   absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> }
 ): MatchPath {
-  // Resolve all paths to absolute form once here, this saves time on each request later.
-  // We also add the baseUrl as a base which will be replace if specified in paths. This is how typescript works
-  const absolutePaths: { [key: string]: Array<string> } = Object.keys(
-    paths
-  ).reduce(
-    (soFar, key) => ({
-      ...soFar,
-      [key]: paths[key].map(pathToResolve =>
+  // Resolve all paths to absolute form once here, and sort them by
+  // longest prefix once here, this saves time on each request later.
+  // We need to put them in an array to preseve the sorting order.
+  const sortedKeys = sortByLongestPrefix(Object.keys(paths));
+  const absolutePaths: Array<MappingEntry> = [];
+  for (const key of sortedKeys) {
+    absolutePaths.push({
+      pattern: key,
+      paths: paths[key].map(pathToResolve =>
         path.join(absoluteBaseUrl, pathToResolve)
       )
-    }),
-    {
-      "*": [`${absoluteBaseUrl.replace(/\/$/, "")}/*`]
-    }
-  );
+    });
+  }
+  // If there is no match-all path specified in the paths seciton of tsconfig, then try to match all
+  // all relative to baseUrl, this is how typescript works.
+  if (!paths["*"]) {
+    absolutePaths.push({
+      pattern: "*",
+      paths: [`${absoluteBaseUrl.replace(/\/$/, "")}/*`]
+    });
+  }
 
   return (
     sourceFileName: string,
@@ -77,7 +88,7 @@ export function createMatchPath(
  * @returns the found path, or undefined if no path was found.
  */
 export function matchFromAbsolutePaths(
-  absolutePathMappings: { [key: string]: Array<string> },
+  absolutePathMappings: ReadonlyArray<MappingEntry>,
   absoluteSourceFileName: string,
   requestedModule: string,
   readJson: ReadJson = readJsonFromDisk,
@@ -92,17 +103,13 @@ export function matchFromAbsolutePaths(
     requestedModule &&
     fileExists
   ) {
-    for (const virtualPathPattern of sortByLongestPrefix(
-      Object.keys(absolutePathMappings)
-    )) {
+    for (const entry of absolutePathMappings) {
       const starMatch =
-        virtualPathPattern === requestedModule
+        entry.pattern === requestedModule
           ? ""
-          : matchStar(virtualPathPattern, requestedModule);
+          : matchStar(entry.pattern, requestedModule);
       if (starMatch !== undefined) {
-        for (const physicalPathPattern of absolutePathMappings[
-          virtualPathPattern
-        ]) {
+        for (const physicalPathPattern of entry.paths) {
           const physicalPath = physicalPathPattern.replace("*", starMatch);
           const resolved = tryResolve(
             physicalPath,
@@ -176,7 +183,7 @@ function tryResolve(
 
 /**
  * Sort path patterns.
- * If module name can be matches with multiple patterns then pattern with the longest prefix will be picked.
+ * If a module name can be matched with multiple patterns then pattern with the longest prefix will be picked.
  */
 function sortByLongestPrefix(arr: Array<string>): Array<string> {
   return arr
