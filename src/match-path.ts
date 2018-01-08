@@ -51,7 +51,7 @@ export function createMatchPath(
       )
     });
   }
-  // If there is no match-all path specified in the paths seciton of tsconfig, then try to match all
+  // If there is no match-all path specified in the paths section of tsconfig, then try to match all
   // all relative to baseUrl, this is how typescript works.
   if (!paths["*"]) {
     absolutePaths.push({
