@@ -4,5 +4,6 @@
   "require": ["ts-node/register"],
   "reporter": ["html", "lcov", "text"],
   "sourceMap": true,
-  "instrument": true
+  "instrument": true,
+  "all": true
 }
