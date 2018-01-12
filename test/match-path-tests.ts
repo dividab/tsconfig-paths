@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { createMatchPath } from "../src/match-path";
+import { createMatchPath } from "../src/match-path-sync";
 import { join } from "path";
 
 describe("match-path", () => {

@@ -1,4 +1,4 @@
-import { createMatchPath } from "./match-path";
+import { createMatchPath } from "./match-path-sync";
 import { configLoader, ExplicitParams } from "./config-loader";
 
 /**

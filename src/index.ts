@@ -3,7 +3,7 @@ export {
   createMatchPath,
   matchFromAbsolutePaths,
   MatchPath
-} from "./match-path";
+} from "./match-path-sync";
 export {
   createMatchPathAsync,
   matchFromAbsolutePathsAsync,
