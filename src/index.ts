@@ -16,3 +16,9 @@ export {
   ConfigLoaderSuccessResult,
   ConfigLoaderFailResult
 } from "./config-loader";
+export {
+  ReadJsonSync,
+  ReadJsonAsync,
+  FileExistsSync,
+  FileExistsAsync
+} from "./filesystem";
