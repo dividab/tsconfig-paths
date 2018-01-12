@@ -6,7 +6,13 @@ import * as Filesystem from "./filesystem";
  * Function that can match a path async
  */
 export interface MatchPathAsync {
-  (requestedModule: string, callback: MatchPathAsyncCallback): void;
+  (
+    requestedModule: string,
+    readJson: Filesystem.ReadJsonAsync | undefined,
+    fileExists: Filesystem.FileExistsAsync | undefined,
+    extensions: ReadonlyArray<string> | undefined,
+    callback: MatchPathAsyncCallback
+  ): void;
 }
 
 export interface MatchPathAsyncCallback {
@@ -21,27 +27,26 @@ export interface MatchPathAsyncCallback {
  */
 export function createMatchPathAsync(
   absoluteBaseUrl: string,
-  paths: { [key: string]: Array<string> },
-  extensions: ReadonlyArray<string> | undefined = Object.keys(
-    require.extensions
-  ),
-  readJson: Filesystem.ReadJsonAsync | undefined = Filesystem.readJsonAsync,
-  fileExists:
-    | Filesystem.FileExistsAsync
-    | undefined = Filesystem.fileExistsAsync
+  paths: { [key: string]: Array<string> }
 ): MatchPathAsync {
   const absolutePaths = MappingEntry.getAbsoluteMappingEntries(
     absoluteBaseUrl,
     paths
   );
 
-  return (requestedModule: string, callback: MatchPathAsyncCallback) =>
+  return (
+    requestedModule: string,
+    readJson: Filesystem.ReadJsonAsync | undefined,
+    fileExists: Filesystem.FileExistsAsync | undefined,
+    extensions: ReadonlyArray<string> | undefined,
+    callback: MatchPathAsyncCallback
+  ) =>
     matchFromAbsolutePathsAsync(
       absolutePaths,
-      extensions,
+      requestedModule,
       readJson,
       fileExists,
-      requestedModule,
+      extensions,
       callback
     );
 }
@@ -57,10 +62,10 @@ export function createMatchPathAsync(
  */
 export function matchFromAbsolutePathsAsync(
   absolutePathMappings: ReadonlyArray<MappingEntry.MappingEntry>,
-  extensions: ReadonlyArray<string>,
-  _readJson: Filesystem.ReadJsonAsync,
-  fileExists: Filesystem.FileExistsAsync,
   requestedModule: string,
+  _readJson: Filesystem.ReadJsonAsync = Filesystem.readJsonFromDiskAsync,
+  fileExists: Filesystem.FileExistsAsync = Filesystem.fileExistsAsync,
+  extensions: ReadonlyArray<string> = Object.keys(require.extensions),
   callback: MatchPathAsyncCallback
 ): void {
   // Determine the physical paths to probe

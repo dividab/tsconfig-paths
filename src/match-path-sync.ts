@@ -1,6 +1,5 @@
-import { readJsonFromDisk, ReadJson } from "./filesystem";
-import * as fs from "fs";
 import * as path from "path";
+import * as Filesystem from "./filesystem";
 import { matchStar } from "./match-star";
 
 /**
@@ -8,9 +7,8 @@ import { matchStar } from "./match-star";
  */
 export interface MatchPath {
   (
-    absoluteSourceFileName: string,
     requestedModule: string,
-    readPackageJson?: ReadJson,
+    readJson?: Filesystem.ReadJsonSync,
     fileExists?: (name: string) => boolean,
     extensions?: ReadonlyArray<string>
   ): string | undefined;
@@ -61,15 +59,13 @@ export function createMatchPath(
   }
 
   return (
-    sourceFileName: string,
     requestedModule: string,
-    readJson?: ReadJson,
-    fileExists?: (path: string) => boolean,
+    readJson?: Filesystem.ReadJsonSync,
+    fileExists?: Filesystem.FileExistsSync,
     extensions?: Array<string>
   ) =>
     matchFromAbsolutePaths(
       absolutePaths,
-      sourceFileName,
       requestedModule,
       readJson,
       fileExists,
@@ -89,17 +85,15 @@ export function createMatchPath(
  */
 export function matchFromAbsolutePaths(
   absolutePathMappings: ReadonlyArray<MappingEntry>,
-  absoluteSourceFileName: string,
   requestedModule: string,
-  readJson: ReadJson = readJsonFromDisk,
-  fileExists: (name: string) => boolean = fs.existsSync,
+  readJson: Filesystem.ReadJsonSync = Filesystem.readJsonFromDiskSync,
+  fileExists: Filesystem.FileExistsSync = Filesystem.fileExistsSync,
   extensions: Array<string> = Object.keys(require.extensions)
 ): string | undefined {
   if (
     requestedModule[0] !== "." &&
     requestedModule[0] !== path.sep &&
     absolutePathMappings &&
-    absoluteSourceFileName &&
     requestedModule &&
     fileExists
   ) {
@@ -142,7 +136,7 @@ function tryPhysicalResolve(
   physicalPath: string,
   extensions: ReadonlyArray<string>,
   fileExists: (name: string) => boolean,
-  readJson: ReadJson
+  readJson: Filesystem.ReadJsonSync
 ): string | undefined {
   if (
     path.extname(path.basename(physicalPath)).length > 0 &&

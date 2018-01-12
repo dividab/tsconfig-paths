@@ -3,33 +3,43 @@ import * as fs from "fs";
 /**
  * A function that json from a file
  */
-export interface ReadJson {
+export interface ReadJsonSync {
   // tslint:disable-next-line:no-any
   (packageJsonPath: string): any | undefined;
 }
 
-/**
- * Reads package.json from disk
- * @param file Path to package.json
- */
-// tslint:disable-next-line:no-any
-export function readJsonFromDisk(packageJsonPath: string): any | undefined {
-  if (!fs.existsSync(packageJsonPath)) {
-    return undefined;
-  }
-  return require(packageJsonPath);
+export interface FileExistsSync {
+  (name: string): boolean;
 }
 
 export interface FileExistsAsync {
   (path: string, callback: (err?: Error, exists?: boolean) => void): void;
 }
 
-export interface ReadJsonAsync {
+export interface ReadJsonAsyncCallback {
   // tslint:disable-next-line:no-any
-  (path: string, callback: (err?: Error, content?: any) => void): void;
+  (err?: Error, content?: any): void;
 }
 
-export function readJsonAsync(
+export interface ReadJsonAsync {
+  (path: string, callback: ReadJsonAsyncCallback): void;
+}
+
+export const fileExistsSync = fs.existsSync;
+
+/**
+ * Reads package.json from disk
+ * @param file Path to package.json
+ */
+// tslint:disable-next-line:no-any
+export function readJsonFromDiskSync(packageJsonPath: string): any | undefined {
+  if (!fs.existsSync(packageJsonPath)) {
+    return undefined;
+  }
+  return require(packageJsonPath);
+}
+
+export function readJsonFromDiskAsync(
   path: string,
   // tslint:disable-next-line:no-any
   callback: (err?: Error, content?: any) => void
