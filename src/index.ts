@@ -4,6 +4,11 @@ export {
   matchFromAbsolutePaths,
   MatchPath
 } from "./match-path";
+export {
+  createMatchPathAsync,
+  matchFromAbsolutePathsAsync,
+  MatchPathAsync
+} from "./match-path-async";
 export { register } from "./register";
 export {
   loadConfig,
