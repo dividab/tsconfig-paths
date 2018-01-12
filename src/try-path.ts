@@ -3,7 +3,7 @@ import { matchStar } from "./match-star";
 import { MappingEntry } from "./mapping-entry";
 
 export interface TryPath {
-  readonly type: "file" | "package";
+  readonly type: "file" | "index" | "package";
   readonly path: string;
 }
 
@@ -49,7 +49,7 @@ export function getPathsToTry(
         const indexPath = path.join(physicalPath, "/index");
         pathsToTry.push(
           ...extensions.map(
-            e => ({ type: "file", path: indexPath + e } as TryPath)
+            e => ({ type: "index", path: indexPath + e } as TryPath)
           )
         );
       }

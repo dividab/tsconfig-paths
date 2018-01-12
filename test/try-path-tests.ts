@@ -46,15 +46,15 @@ describe("mapping-entry", () => {
       { type: "file", path: "/absolute/base/url/foo2/bar.ts" },
       { type: "file", path: "/absolute/base/url/foo2/bar.tsx" },
       { type: "package", path: "/absolute/base/url/foo2/bar/package.json" },
-      { type: "file", path: "/absolute/base/url/foo2/bar/index.ts" },
-      { type: "file", path: "/absolute/base/url/foo2/bar/index.tsx" },
+      { type: "index", path: "/absolute/base/url/foo2/bar/index.ts" },
+      { type: "index", path: "/absolute/base/url/foo2/bar/index.tsx" },
       // "*"
       { type: "file", path: "/absolute/base/url/foo1" },
       { type: "file", path: "/absolute/base/url/foo1.ts" },
       { type: "file", path: "/absolute/base/url/foo1.tsx" },
       { type: "package", path: "/absolute/base/url/foo1/package.json" },
-      { type: "file", path: "/absolute/base/url/foo1/index.ts" },
-      { type: "file", path: "/absolute/base/url/foo1/index.tsx" }
+      { type: "index", path: "/absolute/base/url/foo1/index.ts" },
+      { type: "index", path: "/absolute/base/url/foo1/index.tsx" }
     ]);
   });
 });

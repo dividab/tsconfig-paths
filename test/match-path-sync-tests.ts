@@ -1,10 +1,7 @@
 import { assert } from "chai";
 import { createMatchPath } from "../src/match-path-sync";
 import { join, dirname } from "path";
-
-function removeExtension(path: string): string {
-  return path.substring(0, path.lastIndexOf(".")) || path;
-}
+import { removeExtension } from "../src/filesystem";
 
 describe("match-path-sync", () => {
   it("should locate path that matches with star and exists", () => {

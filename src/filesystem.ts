@@ -60,3 +60,7 @@ export function fileExistsAsync(
     callback2(undefined, stats ? stats.isFile() : false);
   });
 }
+
+export function removeExtension(path: string): string {
+  return path.substring(0, path.lastIndexOf(".")) || path;
+}
