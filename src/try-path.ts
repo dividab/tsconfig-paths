@@ -10,9 +10,10 @@ export interface TryPath {
 
 /**
  * Builds a list of all physical paths to try by:
- * 1. Check for files named as last part of request and ending in any of the extensions.
- * 2. Check for file specified in package.json's main property.
- * 3. Check for a file named index ending in any of the extensions.
+ * 1. Check for file named exactly as request.
+ * 2. Check for files named as request ending in any of the extensions.
+ * 3. Check for file specified in package.json's main property.
+ * 4. Check for files named as request ending in "index" with any of the extensions.
  */
 export function getPathsToTry(
   extensions: ReadonlyArray<string>,
