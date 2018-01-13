@@ -51,8 +51,13 @@ export function readJsonFromDiskAsync(
   // tslint:disable-next-line:no-any
   callback: (err?: Error, content?: any) => void
 ): void {
-  console.log("TODO!!!", path);
-  callback(undefined, undefined);
+  fs.readFile(path, "utf8", (err, result) => {
+    if (err) {
+      callback(err);
+    }
+    const json = JSON.parse(result);
+    callback(undefined, json);
+  });
 }
 
 export function fileExistsAsync(
