@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.1.0] - 2018-01-13
+
+### Added
+- Implement default async json reader function.
+
 ## [3.0.0] - 2018-01-13
 
 ### Changed
@@ -130,7 +135,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial version.
 
 
-[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/2.7.3...master
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.1.0...master
+[3.1.0]: https://github.com/dividab/tsconfig-paths/compare/3.0.0...3.1.0
+[3.0.0]: https://github.com/dividab/tsconfig-paths/compare/2.7.3...3.0.0
 [2.7.3]: https://github.com/dividab/tsconfig-paths/compare/2.7.2...2.7.3
 [2.7.2]: https://github.com/dividab/tsconfig-paths/compare/2.7.1...2.7.2
 [2.7.1]: https://github.com/dividab/tsconfig-paths/compare/2.7.0...2.7.1
