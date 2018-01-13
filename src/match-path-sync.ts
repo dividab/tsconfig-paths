@@ -86,15 +86,12 @@ export function matchFromAbsolutePaths(
       }
     } else if (tryPath.type === "package") {
       const packageJson: Filesystem.PackageJson = readJson(tryPath.path);
-      if (
-        packageJson &&
-        packageJson.main &&
-        fileExists(path.join(dirname(tryPath.path), packageJson.main))
-      ) {
+      if (packageJson && packageJson.main) {
         const file = path.join(dirname(tryPath.path), packageJson.main);
-        const fileExtension = path.extname(file).replace(/^\./, "");
-        const fileExtensionRegex = new RegExp(`\.${fileExtension}$`);
-        return fileExtension ? file.replace(fileExtensionRegex, "") : file;
+        if (fileExists(file)) {
+          // Not sure why we don't just return the full path? Why strip it?
+          return Filesystem.removeExtension(file);
+        }
       }
     } else {
       TryPath.exhaustiveTypeException(tryPath.type);
