@@ -15,5 +15,5 @@ const matchPath = createMatchPath(
 );
 
 // Match a path and log result
-const result = matchPath(path.resolve("./test.ts"), "foo/mylib");
+const result = matchPath("foo/mylib");
 console.log(result);

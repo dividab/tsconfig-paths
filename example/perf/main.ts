@@ -18,12 +18,10 @@ const iterations = 100000;
 
 console.time(`Matching path ${iterations} times`);
 for (let i = 0; i < iterations; i++) {
-  const result = matchPath(
-    path.resolve("./test.ts"),
-    "foo/mylib",
-    undefined,
-    undefined,
-    [".ts", ".tsx", ".js"]
-  );
+  const result = matchPath("foo/mylib", undefined, undefined, [
+    ".ts",
+    ".tsx",
+    ".js"
+  ]);
 }
 console.timeEnd(`Matching path ${iterations} times`);
