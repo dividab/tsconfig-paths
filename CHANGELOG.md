@@ -138,7 +138,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 [Unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.1.1...master
-[3.1.0]: https://github.com/dividab/tsconfig-paths/compare/3.1.0...3.1.1
+[3.1.1]: https://github.com/dividab/tsconfig-paths/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/dividab/tsconfig-paths/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/dividab/tsconfig-paths/compare/2.7.3...3.0.0
 [2.7.3]: https://github.com/dividab/tsconfig-paths/compare/2.7.2...2.7.3
