@@ -94,18 +94,28 @@ This function loads the tsconfig.json. It will start searching from the specifie
 ### createMatchPath
 
 ```typescript
+/**
+ * Function that can match a path
+ */
+export interface MatchPath {
+  (
+    requestedModule: string,
+    readJson?: Filesystem.ReadJsonSync,
+    fileExists?: (name: string) => boolean,
+    extensions?: ReadonlyArray<string>
+  ): string | undefined;
+}
+
+/**
+ * Creates a function that can resolve paths according to tsconfig paths property.
+ * @param tsConfigPath The paths where tsconfig.json is located.
+ * @param baseUrl The baseUrl specified in tsconfig.
+ * @param paths The paths specified in tsconfig.
+ */
 export function createMatchPath(
   absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> }
 ): MatchPath
-
-export type MatchPath = (
-  absoluteSourceFileName: string,
-  requestedModule: string,
-  readPackageJson?: (packageJsonPath: string) => any,
-  fileExists?: (name: string) => boolean,
-  extensions?: ReadonlyArray<string>
-) => string | undefined;
 ```
 
 The `createMatchPath` function will create a function that can match paths. It accepts `baseUrl` and `paths` directly as they are specified in tsconfig and will handle resolving paths to absolute form. The created function has the signare specified by the type `MatchPath` above.
@@ -113,19 +123,33 @@ The `createMatchPath` function will create a function that can match paths. It a
 ### matchFromAbsolutePaths
 
 ```typescript
+/**
+ * Finds a path from tsconfig that matches a module load request.
+ * @param absolutePathMappings The paths to try as specified in tsconfig but resolved to absolute form.
+ * @param requestedModule The required module name.
+ * @param readJson Function that can read json from a path (useful for testing).
+ * @param fileExists Function that checks for existance of a file at a path (useful for testing).
+ * @param extensions File extensions to probe for (useful for testing).
+ * @returns the found path, or undefined if no path was found.
+ */
 export function matchFromAbsolutePaths(
-  absolutePathMappings: { [key: string]: Array<string> },
-  absoluteSourceFileName: string,
+  absolutePathMappings: ReadonlyArray<MappingEntry.MappingEntry>,
   requestedModule: string,
-  readPackageJson: (packageJsonPath: string) => any = (
-    packageJsonPath: string
-  ) => readPackage(packageJsonPath),
-  fileExists = fs.existsSync,
-  extensions = Object.keys(require.extensions)
-): string | undefined {
+  readJson: Filesystem.ReadJsonSync = Filesystem.readJsonFromDiskSync,
+  fileExists: Filesystem.FileExistsSync = Filesystem.fileExistsSync,
+  extensions: Array<string> = Object.keys(require.extensions)
+): string | undefined
 ```
 
-The absolutePathMappings paramater has the same structure as paths in tsconfig but all paths needs to be resolved to absolute paths. This function is lower level and requries that the paths as already been resolved to absolute form.
+This function is lower level and requries that the paths as already been resolved to absolute form and sorted in correct order into an array.
+
+### createMatchPathAsync
+
+This is the async version of `createMatchPath`. It has the same signature but with a callback parameter for the result.
+
+### matchFromAbsolutePathsAsync
+
+This is the async version of `matchFromAbsolutePaths`. It has the same signature but with a callback parameter for the result.
 
 [version-image]: https://img.shields.io/npm/v/tsconfig-paths.svg?style=flat
 [version-url]: https://www.npmjs.com/package/tsconfig-paths

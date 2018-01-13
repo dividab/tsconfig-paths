@@ -48,7 +48,6 @@ export function createMatchPath(
 /**
  * Finds a path from tsconfig that matches a module load request.
  * @param absolutePathMappings The paths to try as specified in tsconfig but resolved to absolute form.
- * @param absoluteSourceFileName Absolute path to the file that requested the module.
  * @param requestedModule The required module name.
  * @param readJson Function that can read json from a path (useful for testing).
  * @param fileExists Function that checks for existance of a file at a path (useful for testing).
