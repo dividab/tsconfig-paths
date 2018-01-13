@@ -6,13 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [3.1.0] - 2018-01-13
+## [3.1.1] - 2018-01-13
+### Fixed
+- Fix read json async when it does not exist
 
+## [3.1.0] - 2018-01-13
 ### Added
 - Implement default async json reader function.
 
 ## [3.0.0] - 2018-01-13
-
 ### Changed
 - Remove parameter `absoluteSourceFileName` from the `MatchPath` and `matchFromAbsolutePaths` functions. It was not used internally.
 - `matchFromAbsolutePaths` now accepts a pre-sorted array of `MappingEntry`s instead of a dictionary. This was done so the sorting could be done once which should give better performance.
@@ -135,7 +137,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial version.
 
 
-[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.1.0...master
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.1.1...master
+[3.1.0]: https://github.com/dividab/tsconfig-paths/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/dividab/tsconfig-paths/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/dividab/tsconfig-paths/compare/2.7.3...3.0.0
 [2.7.3]: https://github.com/dividab/tsconfig-paths/compare/2.7.2...2.7.3
