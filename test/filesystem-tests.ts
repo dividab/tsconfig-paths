@@ -2,7 +2,7 @@ import { assert } from "chai";
 import * as Filesystem from "../src/filesystem";
 import * as path from "path";
 
-describe.only("filesystem", () => {
+describe("filesystem", () => {
   const fileThatExists = path.join(__dirname, "../package.json");
   const fileThatNotExists = path.join(__dirname, "../package2.json");
 
