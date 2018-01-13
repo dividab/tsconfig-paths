@@ -63,7 +63,6 @@ export function matchFromAbsolutePaths(
   fileExists: Filesystem.FileExistsSync = Filesystem.fileExistsSync,
   extensions: Array<string> = Object.keys(require.extensions)
 ): string | undefined {
-  // Determine the physical paths to probe
   const tryPaths = TryPath.getPathsToTry(
     extensions,
     absolutePathMappings,
@@ -74,6 +73,14 @@ export function matchFromAbsolutePaths(
     return undefined;
   }
 
+  return findFirstExistingPath(tryPaths, readJson, fileExists);
+}
+
+function findFirstExistingPath(
+  tryPaths: ReadonlyArray<TryPath.TryPath>,
+  readJson: Filesystem.ReadJsonSync = Filesystem.readJsonFromDiskSync,
+  fileExists: Filesystem.FileExistsSync
+): string | undefined {
   for (const tryPath of tryPaths) {
     if (
       tryPath.type === "file" ||

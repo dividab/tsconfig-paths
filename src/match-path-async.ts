@@ -92,12 +92,12 @@ export function matchFromAbsolutePathsAsync(
 
 // Recursive loop to probe for physical files
 function findFirstExistingPath(
-  myTryPaths: ReadonlyArray<TryPath.TryPath>,
+  tryPaths: ReadonlyArray<TryPath.TryPath>,
   fileExists: Filesystem.FileExistsAsync,
   doneCallback: (err?: Error, result?: TryPath.TryPath) => void,
   index: number = 0
 ): void {
-  const tryPath = myTryPaths[index];
+  const tryPath = tryPaths[index];
   if (
     tryPath.type === "file" ||
     tryPath.type === "extension" ||
@@ -110,12 +110,12 @@ function findFirstExistingPath(
       if (exists) {
         return doneCallback(undefined, tryPath);
       }
-      if (index === myTryPaths.length - 1) {
+      if (index === tryPaths.length - 1) {
         return doneCallback();
       }
       // Continue with the next path
       return findFirstExistingPath(
-        myTryPaths,
+        tryPaths,
         fileExists,
         doneCallback,
         index + 1
@@ -123,12 +123,7 @@ function findFirstExistingPath(
     });
   } else if (tryPath.type === "package") {
     // TODO!
-    return findFirstExistingPath(
-      myTryPaths,
-      fileExists,
-      doneCallback,
-      index + 1
-    );
+    return findFirstExistingPath(tryPaths, fileExists, doneCallback, index + 1);
   } else {
     TryPath.exhaustiveTypeException(tryPath.type);
   }
