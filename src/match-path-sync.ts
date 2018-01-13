@@ -1,7 +1,8 @@
 import * as path from "path";
 import * as Filesystem from "./filesystem";
 import * as MappingEntry from "./mapping-entry";
-import { matchStar } from "./match-star";
+import * as TryPath from "./try-path";
+import { dirname } from "path";
 
 /**
  * Function that can match a path
@@ -62,102 +63,42 @@ export function matchFromAbsolutePaths(
   fileExists: Filesystem.FileExistsSync = Filesystem.fileExistsSync,
   extensions: Array<string> = Object.keys(require.extensions)
 ): string | undefined {
-  if (
-    requestedModule[0] !== "." &&
-    requestedModule[0] !== path.sep &&
-    absolutePathMappings &&
-    requestedModule &&
-    fileExists
-  ) {
-    for (const entry of absolutePathMappings) {
-      const starMatch =
-        entry.pattern === requestedModule
-          ? ""
-          : matchStar(entry.pattern, requestedModule);
-      if (starMatch !== undefined) {
-        for (const physicalPathPattern of entry.paths) {
-          const physicalPath = physicalPathPattern.replace("*", starMatch);
-          const resolved = tryPhysicalResolve(
-            physicalPath,
-            extensions,
-            fileExists,
-            readJson
-          );
-          if (resolved) {
-            return resolved;
-          }
-        }
-      }
-    }
-  }
-  return undefined;
-}
-
-/**
- * Tries to resolve a physical path by:
- * 1. Check for files named as last part of request and ending in any of the extensions.
- * 2. Check for file specified in package.json's main property.
- * 3. Check for a file named index ending in any of the extensions.
- * @param physicalPath The path to check.
- * @param extensions File extensions to probe for (useful for testing).
- * @param fileExists Function that checks for existance of a file (useful for testing).
- * @param readJson Function that returns parsed package.json if exists or undefined(useful for testing).
- * @returns {string}
- */
-function tryPhysicalResolve(
-  physicalPath: string,
-  extensions: ReadonlyArray<string>,
-  fileExists: (name: string) => boolean,
-  readJson: Filesystem.ReadJsonSync
-): string | undefined {
-  if (
-    path.extname(path.basename(physicalPath)).length > 0 &&
-    fileExists(physicalPath)
-  ) {
-    return physicalPath;
-  }
-
-  for (const extension of extensions) {
-    if (fileExists(physicalPath + extension)) {
-      return physicalPath;
-    }
-  }
-
-  const packageJson: Filesystem.PackageJson = readJson(
-    path.join(physicalPath, "/package.json")
+  // Determine the physical paths to probe
+  const tryPaths = TryPath.getPathsToTry(
+    extensions,
+    absolutePathMappings,
+    requestedModule
   );
 
-  if (
-    packageJson &&
-    packageJson.main &&
-    fileExists(path.join(physicalPath, packageJson.main))
-  ) {
-    const file = path.join(physicalPath, packageJson.main);
-    const fileExtension = path.extname(file).replace(/^\./, "");
-    const fileExtensionRegex = new RegExp(`\.${fileExtension}$`);
-    return fileExtension ? file.replace(fileExtensionRegex, "") : file;
+  if (!tryPaths) {
+    return undefined;
   }
 
-  const indexPath = path.join(physicalPath, "/index");
-  for (const extension of extensions) {
-    if (fileExists(indexPath + extension)) {
-      return physicalPath;
+  for (const tryPath of tryPaths) {
+    if (
+      tryPath.type === "file" ||
+      tryPath.type === "extension" ||
+      tryPath.type === "index"
+    ) {
+      if (fileExists(tryPath.path)) {
+        // Not sure why we don't just return the full path? Why strip it?
+        return TryPath.getStrippedPath(tryPath);
+      }
+    } else if (tryPath.type === "package") {
+      const packageJson: Filesystem.PackageJson = readJson(tryPath.path);
+      if (
+        packageJson &&
+        packageJson.main &&
+        fileExists(path.join(dirname(tryPath.path), packageJson.main))
+      ) {
+        const file = path.join(dirname(tryPath.path), packageJson.main);
+        const fileExtension = path.extname(file).replace(/^\./, "");
+        const fileExtensionRegex = new RegExp(`\.${fileExtension}$`);
+        return fileExtension ? file.replace(fileExtensionRegex, "") : file;
+      }
+    } else {
+      TryPath.exhaustiveTypeException(tryPath.type);
     }
   }
   return undefined;
-}
-
-/**
- * Sort path patterns.
- * If a module name can be matched with multiple patterns then pattern with the longest prefix will be picked.
- */
-function sortByLongestPrefix(arr: Array<string>): Array<string> {
-  return arr
-    .concat()
-    .sort((a: string, b: string) => getPrefixLength(b) - getPrefixLength(a));
-}
-
-function getPrefixLength(pattern: string): number {
-  const prefixLength = pattern.indexOf("*");
-  return pattern.substr(0, prefixLength).length;
 }

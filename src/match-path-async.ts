@@ -69,43 +69,43 @@ export function matchFromAbsolutePathsAsync(
   callback: MatchPathAsyncCallback
 ): void {
   // Determine the physical paths to probe
-  const pathsToTry = TryPath.getPathsToTry(
+  const tryPaths = TryPath.getPathsToTry(
     extensions,
     absolutePathMappings,
     requestedModule
   );
 
-  if (!pathsToTry) {
+  if (!tryPaths) {
     return callback();
   }
 
   // Recursive loop to probe for physical files
   const fileExistsResults: Array<boolean> = [];
   function checkFile(index: number): void {
-    if (!pathsToTry) {
+    if (!tryPaths) {
       return afterFilesChecked(new Error("pathsToTry cannot be undefined."));
     }
-    const toTry = pathsToTry[index];
+    const tryPath = tryPaths[index];
     if (
-      toTry.type === "file" ||
-      toTry.type === "extension" ||
-      toTry.type === "index"
+      tryPath.type === "file" ||
+      tryPath.type === "extension" ||
+      tryPath.type === "index"
     ) {
-      fileExists(toTry.path, (err: Error, exists: boolean) => {
+      fileExists(tryPath.path, (err: Error, exists: boolean) => {
         if (err) {
           return afterFilesChecked(err);
         }
         fileExistsResults[index] = exists;
-        if (index === pathsToTry.length - 1) {
+        if (index === tryPaths.length - 1) {
           return afterFilesChecked();
         }
         return checkFile(index + 1);
       });
-    } else if (toTry.type === "package") {
+    } else if (tryPath.type === "package") {
       // TODO!
       return checkFile(index + 1);
     } else {
-      TryPath.exhaustiveTypeException(toTry.type);
+      TryPath.exhaustiveTypeException(tryPath.type);
     }
   }
 
@@ -118,12 +118,12 @@ export function matchFromAbsolutePathsAsync(
       console.error(err);
       return callback(err);
     }
-    if (!pathsToTry) {
+    if (!tryPaths) {
       return afterFilesChecked(new Error("pathsToTry cannot be undefined."));
     }
     for (let i = 0; i < fileExistsResults.length; i++) {
       if (fileExistsResults[i]) {
-        const tryPath = pathsToTry[i];
+        const tryPath = tryPaths[i];
         // Not sure why we don't just return the full path? Why strip it?
         return callback(undefined, TryPath.getStrippedPath(tryPath));
       }
