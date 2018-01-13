@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [3.0.0] - 2018-01-13
 
 ### Changed
-- Remove parameter `absoluteSourceFileName: string` from `MatchPath` and `absolutePathMappings`. It was not used internally.
-- `absolutePathMappings` now accepts a pre-sorted array of `MappingEntry`s instead of a dictionary. 
+- Remove parameter `absoluteSourceFileName` from the `MatchPath` and `matchFromAbsolutePaths` functions. It was not used internally.
+- `matchFromAbsolutePaths` now accepts a pre-sorted array of `MappingEntry`s instead of a dictionary. This was done so the sorting could be done once which should give better performance.
 
 ### Added
 - `createMatchPathAsync`, creates an async version of the `MatchPath` function. Can be used for example by webpack plugins.
