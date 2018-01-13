@@ -126,18 +126,24 @@ describe("match-path-async", () => {
     );
   });
 
-  /*
-
-  it("should resolve from main field in package.json", () => {
-    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
+  it("should resolve from main field in package.json", done => {
+    const matchPath = createMatchPathAsync("/root/", {
+      "lib/*": ["location/*"]
+    });
     const existingPath = join("/root", "location", "mylib", "kalle.ts");
-    const result = matchPath(
+    matchPath(
       "lib/mylib",
-      (_: string) => ({ main: "./kalle.ts" }),
-      (name: string) => name === existingPath
+      (_path, callback) => callback(undefined, { main: "./kalle.ts" }),
+      (path, callback) => callback(undefined, path === existingPath),
+      undefined,
+      (_err, result) => {
+        assert.equal(result, removeExtension(existingPath));
+        done();
+      }
     );
-    assert.equal(result, removeExtension(existingPath));
   });
+
+  /*
 
   it("should resolve from main field in package.json and correctly remove file extension", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });

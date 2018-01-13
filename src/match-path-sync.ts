@@ -2,7 +2,6 @@ import * as path from "path";
 import * as Filesystem from "./filesystem";
 import * as MappingEntry from "./mapping-entry";
 import * as TryPath from "./try-path";
-import { dirname } from "path";
 
 /**
  * Function that can match a path
@@ -94,7 +93,7 @@ function findFirstExistingPath(
     } else if (tryPath.type === "package") {
       const packageJson: Filesystem.PackageJson = readJson(tryPath.path);
       if (packageJson && packageJson.main) {
-        const file = path.join(dirname(tryPath.path), packageJson.main);
+        const file = path.join(path.dirname(tryPath.path), packageJson.main);
         if (fileExists(file)) {
           // Not sure why we don't just return the full path? Why strip it?
           return Filesystem.removeExtension(file);

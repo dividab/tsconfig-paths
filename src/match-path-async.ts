@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as TryPath from "./try-path";
 import * as MappingEntry from "./mapping-entry";
 import * as Filesystem from "./filesystem";
@@ -63,7 +64,7 @@ export function createMatchPathAsync(
 export function matchFromAbsolutePathsAsync(
   absolutePathMappings: ReadonlyArray<MappingEntry.MappingEntry>,
   requestedModule: string,
-  _readJson: Filesystem.ReadJsonAsync = Filesystem.readJsonFromDiskAsync,
+  readJson: Filesystem.ReadJsonAsync = Filesystem.readJsonFromDiskAsync,
   fileExists: Filesystem.FileExistsAsync = Filesystem.fileExistsAsync,
   extensions: ReadonlyArray<string> = Object.keys(require.extensions),
   callback: MatchPathAsyncCallback
@@ -78,12 +79,13 @@ export function matchFromAbsolutePathsAsync(
     return callback();
   }
 
-  findFirstExistingPath(tryPaths, fileExists, callback);
+  findFirstExistingPath(tryPaths, readJson, fileExists, callback);
 }
 
 // Recursive loop to probe for physical files
 function findFirstExistingPath(
   tryPaths: ReadonlyArray<TryPath.TryPath>,
+  readJson: Filesystem.ReadJsonAsync,
   fileExists: Filesystem.FileExistsAsync,
   doneCallback: MatchPathAsyncCallback,
   index: number = 0
@@ -108,14 +110,46 @@ function findFirstExistingPath(
       // Continue with the next path
       return findFirstExistingPath(
         tryPaths,
+        readJson,
         fileExists,
         doneCallback,
         index + 1
       );
     });
   } else if (tryPath.type === "package") {
-    // TODO!
-    return findFirstExistingPath(tryPaths, fileExists, doneCallback, index + 1);
+    readJson(tryPath.path, (err, packageJson) => {
+      if (err) {
+        return doneCallback(err);
+      }
+      if (packageJson && packageJson.main) {
+        const file = path.join(path.dirname(tryPath.path), packageJson.main);
+        fileExists(file, (err2, exists) => {
+          if (err2) {
+            return doneCallback(err2);
+          }
+          if (exists) {
+            // Not sure why we don't just return the full path? Why strip it?
+            doneCallback(undefined, Filesystem.removeExtension(file));
+          }
+          // Continue with the next path
+          return findFirstExistingPath(
+            tryPaths,
+            readJson,
+            fileExists,
+            doneCallback,
+            index + 1
+          );
+        });
+      }
+      // Continue with the next path
+      return findFirstExistingPath(
+        tryPaths,
+        readJson,
+        fileExists,
+        doneCallback,
+        index + 1
+      );
+    });
   } else {
     TryPath.exhaustiveTypeException(tryPath.type);
   }
