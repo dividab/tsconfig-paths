@@ -78,12 +78,8 @@ export function matchFromAbsolutePathsAsync(
     return callback();
   }
 
-  findFirstExistingPath(tryPaths, fileExists, afterFilesChecked);
-
-  function afterFilesChecked(err?: Error, result?: TryPath.TryPath): void {
-    // console.log("afterFilesChecked", err, fileExistsResults);
+  findFirstExistingPath(tryPaths, fileExists, (err, result) => {
     if (err) {
-      console.error(err);
       return callback(err);
     }
     if (result) {
@@ -91,7 +87,7 @@ export function matchFromAbsolutePathsAsync(
       return callback(undefined, TryPath.getStrippedPath(result));
     }
     return callback();
-  }
+  });
 }
 
 // Recursive loop to probe for physical files
