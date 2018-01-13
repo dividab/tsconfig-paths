@@ -1,5 +1,6 @@
 import * as path from "path";
 import * as Filesystem from "./filesystem";
+import * as MappingEntry from "./mapping-entry";
 import { matchStar } from "./match-star";
 
 /**
@@ -15,18 +16,6 @@ export interface MatchPath {
 }
 
 /**
- * Typing for the fields of package.json we care about
- */
-export interface PackageJson {
-  readonly main?: string;
-}
-
-export interface MappingEntry {
-  readonly pattern: string;
-  readonly paths: ReadonlyArray<string>;
-}
-
-/**
  * Creates a function that can resolve paths according to tsconfig paths property.
  * @param tsConfigPath The paths where tsconfig.json is located.
  * @param baseUrl The baseUrl specified in tsconfig.
@@ -36,27 +25,10 @@ export function createMatchPath(
   absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> }
 ): MatchPath {
-  // Resolve all paths to absolute form once here, and sort them by
-  // longest prefix once here, this saves time on each request later.
-  // We need to put them in an array to preseve the sorting order.
-  const sortedKeys = sortByLongestPrefix(Object.keys(paths));
-  const absolutePaths: Array<MappingEntry> = [];
-  for (const key of sortedKeys) {
-    absolutePaths.push({
-      pattern: key,
-      paths: paths[key].map(pathToResolve =>
-        path.join(absoluteBaseUrl, pathToResolve)
-      )
-    });
-  }
-  // If there is no match-all path specified in the paths section of tsconfig, then try to match all
-  // all relative to baseUrl, this is how typescript works.
-  if (!paths["*"]) {
-    absolutePaths.push({
-      pattern: "*",
-      paths: [`${absoluteBaseUrl.replace(/\/$/, "")}/*`]
-    });
-  }
+  const absolutePaths = MappingEntry.getAbsoluteMappingEntries(
+    absoluteBaseUrl,
+    paths
+  );
 
   return (
     requestedModule: string,
@@ -84,7 +56,7 @@ export function createMatchPath(
  * @returns the found path, or undefined if no path was found.
  */
 export function matchFromAbsolutePaths(
-  absolutePathMappings: ReadonlyArray<MappingEntry>,
+  absolutePathMappings: ReadonlyArray<MappingEntry.MappingEntry>,
   requestedModule: string,
   readJson: Filesystem.ReadJsonSync = Filesystem.readJsonFromDiskSync,
   fileExists: Filesystem.FileExistsSync = Filesystem.fileExistsSync,
@@ -151,7 +123,7 @@ function tryPhysicalResolve(
     }
   }
 
-  const packageJson: PackageJson = readJson(
+  const packageJson: Filesystem.PackageJson = readJson(
     path.join(physicalPath, "/package.json")
   );
 

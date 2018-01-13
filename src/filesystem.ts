@@ -1,6 +1,13 @@
 import * as fs from "fs";
 
 /**
+ * Typing for the fields of package.json we care about
+ */
+export interface PackageJson {
+  readonly main?: string;
+}
+
+/**
  * A function that json from a file
  */
 export interface ReadJsonSync {
