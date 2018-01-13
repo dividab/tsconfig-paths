@@ -78,23 +78,14 @@ export function matchFromAbsolutePathsAsync(
     return callback();
   }
 
-  findFirstExistingPath(tryPaths, fileExists, (err, result) => {
-    if (err) {
-      return callback(err);
-    }
-    if (result) {
-      // Not sure why we don't just return the full path? Why strip it?
-      return callback(undefined, TryPath.getStrippedPath(result));
-    }
-    return callback();
-  });
+  findFirstExistingPath(tryPaths, fileExists, callback);
 }
 
 // Recursive loop to probe for physical files
 function findFirstExistingPath(
   tryPaths: ReadonlyArray<TryPath.TryPath>,
   fileExists: Filesystem.FileExistsAsync,
-  doneCallback: (err?: Error, result?: TryPath.TryPath) => void,
+  doneCallback: MatchPathAsyncCallback,
   index: number = 0
 ): void {
   const tryPath = tryPaths[index];
@@ -108,7 +99,8 @@ function findFirstExistingPath(
         return doneCallback(err);
       }
       if (exists) {
-        return doneCallback(undefined, tryPath);
+        // Not sure why we don't just return the full path? Why strip it?
+        return doneCallback(undefined, TryPath.getStrippedPath(tryPath));
       }
       if (index === tryPaths.length - 1) {
         return doneCallback();
