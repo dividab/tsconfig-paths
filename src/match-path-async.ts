@@ -68,43 +68,6 @@ export function matchFromAbsolutePathsAsync(
   extensions: ReadonlyArray<string> = Object.keys(require.extensions),
   callback: MatchPathAsyncCallback
 ): void {
-  // Recursive loop to probe for physical files
-  function checkFiles(
-    index: number,
-    myTryPaths: ReadonlyArray<TryPath.TryPath>,
-    fileExistsResults: Array<boolean>,
-    doneCallback: (err?: Error, result?: Array<boolean>) => void
-  ): void {
-    const tryPath = myTryPaths[index];
-    if (
-      tryPath.type === "file" ||
-      tryPath.type === "extension" ||
-      tryPath.type === "index"
-    ) {
-      fileExists(tryPath.path, (err: Error, exists: boolean) => {
-        if (err) {
-          return doneCallback(err);
-        }
-        fileExistsResults[index] = exists;
-        if (index === myTryPaths.length - 1) {
-          return doneCallback(undefined, fileExistsResults);
-        }
-        return checkFiles(
-          index + 1,
-          myTryPaths,
-          fileExistsResults,
-          doneCallback
-        );
-      });
-    } else if (tryPath.type === "package") {
-      // TODO!
-      return checkFiles(index + 1, myTryPaths, fileExistsResults, doneCallback);
-    } else {
-      TryPath.exhaustiveTypeException(tryPath.type);
-    }
-  }
-
-  // Determine the physical paths to probe
   const tryPaths = TryPath.getPathsToTry(
     extensions,
     absolutePathMappings,
@@ -115,27 +78,62 @@ export function matchFromAbsolutePathsAsync(
     return callback();
   }
 
-  const fileExistsResults2: Array<boolean> = [];
+  findFirstExistingPath(tryPaths, fileExists, afterFilesChecked);
 
-  // Start the probing at index 0
-  checkFiles(0, tryPaths, fileExistsResults2, afterFilesChecked2);
-
-  function afterFilesChecked2(err?: Error, _result?: Array<boolean>): void {
+  function afterFilesChecked(err?: Error, result?: TryPath.TryPath): void {
     // console.log("afterFilesChecked", err, fileExistsResults);
     if (err) {
       console.error(err);
       return callback(err);
     }
-    if (!tryPaths) {
-      return callback(new Error("pathsToTry cannot be undefined."));
-    }
-    for (let i = 0; i < fileExistsResults2.length; i++) {
-      if (fileExistsResults2[i]) {
-        const tryPath = tryPaths[i];
-        // Not sure why we don't just return the full path? Why strip it?
-        return callback(undefined, TryPath.getStrippedPath(tryPath));
-      }
+    if (result) {
+      // Not sure why we don't just return the full path? Why strip it?
+      return callback(undefined, TryPath.getStrippedPath(result));
     }
     return callback();
+  }
+}
+
+// Recursive loop to probe for physical files
+function findFirstExistingPath(
+  myTryPaths: ReadonlyArray<TryPath.TryPath>,
+  fileExists: Filesystem.FileExistsAsync,
+  doneCallback: (err?: Error, result?: TryPath.TryPath) => void,
+  index: number = 0
+): void {
+  const tryPath = myTryPaths[index];
+  if (
+    tryPath.type === "file" ||
+    tryPath.type === "extension" ||
+    tryPath.type === "index"
+  ) {
+    fileExists(tryPath.path, (err: Error, exists: boolean) => {
+      if (err) {
+        return doneCallback(err);
+      }
+      if (exists) {
+        return doneCallback(undefined, tryPath);
+      }
+      if (index === myTryPaths.length - 1) {
+        return doneCallback();
+      }
+      // Continue with the next path
+      return findFirstExistingPath(
+        myTryPaths,
+        fileExists,
+        doneCallback,
+        index + 1
+      );
+    });
+  } else if (tryPath.type === "package") {
+    // TODO!
+    return findFirstExistingPath(
+      myTryPaths,
+      fileExists,
+      doneCallback,
+      index + 1
+    );
+  } else {
+    TryPath.exhaustiveTypeException(tryPath.type);
   }
 }
