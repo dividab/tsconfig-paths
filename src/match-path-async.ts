@@ -21,10 +21,7 @@ export interface MatchPathAsyncCallback {
 }
 
 /**
- * Creates a function that can resolve paths according to tsconfig paths property.
- * @param tsConfigPath The paths where tsconfig.json is located.
- * @param baseUrl The baseUrl specified in tsconfig.
- * @param paths The paths specified in tsconfig.
+ * See the sync version for docs.
  */
 export function createMatchPathAsync(
   absoluteBaseUrl: string,
@@ -53,13 +50,7 @@ export function createMatchPathAsync(
 }
 
 /**
- * Finds a path from tsconfig that matches a module load request.
- * @param absolutePathMappings The paths to try as specified in tsconfig but resolved to absolute form.
- * @param requestedModule The required module name.
- * @param readJson Function that can read json from a path (useful for testing).
- * @param fileExists Function that checks for existance of a file at a path (useful for testing).
- * @param extensions File extensions to probe for (useful for testing).
- * @returns the found path, or undefined if no path was found.
+ * See the sync version for docs.
  */
 export function matchFromAbsolutePathsAsync(
   absolutePathMappings: ReadonlyArray<MappingEntry.MappingEntry>,
