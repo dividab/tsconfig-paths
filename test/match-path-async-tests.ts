@@ -143,31 +143,41 @@ describe("match-path-async", () => {
     );
   });
 
-  /*
-
-  it("should resolve from main field in package.json and correctly remove file extension", () => {
-    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
-    const result = matchPath(
+  it("should resolve from main field in package.json", done => {
+    const matchPath = createMatchPathAsync("/root/", {
+      "lib/*": ["location/*"]
+    });
+    const existingPath = join("/root", "location", "mylib.js", "kalle.js");
+    matchPath(
       "lib/mylib.js",
-      (_: string) => ({ main: "./kalle.js" }),
-      (name: string) =>
-        name === join("/root", "location", "mylib.js", "kalle.js"),
-      [".ts", ".js"]
+      (_path, callback) => callback(undefined, { main: "./kalle.js" }),
+      (path, callback) => callback(undefined, path === existingPath),
+      [".ts", ".js"],
+      (_err, result) => {
+        assert.equal(result, removeExtension(existingPath));
+        done();
+      }
     );
+  });
+
+  it("should resolve from main field in package.json and correctly remove file extension", done => {
+    const matchPath = createMatchPathAsync("/root/", {
+      "lib/*": ["location/*"]
+    });
+    const existingPath = join("/root", "location", "mylibjs", "kallejs");
 
     // Make sure we escape the "."
-    const result2 = matchPath(
+    matchPath(
       "lib/mylibjs",
-      (_: string) => ({ main: "./kallejs" }),
-      (name: string) =>
-        name === join("/root", "location", "mylibjs", "kallejs"),
-      [".ts", ".js"]
+      (_path, callback) => callback(undefined, { main: "./kallejs" }),
+      (path, callback) => callback(undefined, path === existingPath),
+      [".ts", ".js"],
+      (_err, result) => {
+        assert.equal(result, existingPath);
+        done();
+      }
     );
-
-    assert.equal(result, join("/root", "location", "mylib.js", "kalle"));
-    assert.equal(result2, join("/root", "location", "mylibjs", "kallejs"));
   });
-*/
 
   it("should resolve to with the help of baseUrl when not explicitly set", done => {
     const matchPath = createMatchPathAsync("/root/", {});

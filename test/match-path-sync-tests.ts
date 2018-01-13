@@ -103,27 +103,31 @@ describe("match-path-sync", () => {
     assert.equal(result, removeExtension(existingPath));
   });
 
-  it.only("should resolve from main field in package.json and correctly remove file extension", () => {
+  it("should resolve from main field in package.json", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
-    const existingPath1 = join("/root", "location", "mylib.js", "kalle.js");
-    const existingPath2 = join("/root", "location", "mylibjs", "kallejs");
+    const existingPath = join("/root", "location", "mylib.js", "kalle.js");
     const result = matchPath(
       "lib/mylib.js",
       (_: string) => ({ main: "./kalle.js" }),
-      (name: string) => name === existingPath1,
+      (name: string) => name === existingPath,
       [".ts", ".js"]
     );
 
+    assert.equal(result, removeExtension(existingPath));
+  });
+
+  it("should resolve from main field in package.json and correctly remove file extension", () => {
+    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
+    const existingPath = join("/root", "location", "mylibjs", "kallejs");
     // Make sure we escape the "."
-    const result2 = matchPath(
+    const result = matchPath(
       "lib/mylibjs",
       (_: string) => ({ main: "./kallejs" }),
-      (name: string) => name === existingPath2,
+      (name: string) => name === existingPath,
       [".ts", ".js"]
     );
 
-    assert.equal(result, removeExtension(existingPath1));
-    assert.equal(result2, existingPath2);
+    assert.equal(result, existingPath);
   });
 
   it("should resolve to with the help of baseUrl when not explicitly set", () => {
