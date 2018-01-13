@@ -52,11 +52,12 @@ export function readJsonFromDiskAsync(
   callback: (err?: Error, content?: any) => void
 ): void {
   fs.readFile(path, "utf8", (err, result) => {
-    if (err) {
-      callback(err);
+    // If error, assume file did not exist
+    if (err || !result) {
+      return callback();
     }
     const json = JSON.parse(result);
-    callback(undefined, json);
+    return callback(undefined, json);
   });
 }
 
