@@ -1,7 +1,6 @@
 import * as TryPath from "./try-path";
 import * as MappingEntry from "./mapping-entry";
 import * as Filesystem from "./filesystem";
-import { dirname } from "path";
 
 /**
  * Function that can match a path async
@@ -87,7 +86,11 @@ export function matchFromAbsolutePathsAsync(
       return afterFilesChecked(new Error("pathsToTry cannot be undefined."));
     }
     const toTry = pathsToTry[index];
-    if (toTry.type === "file" || toTry.type === "index") {
+    if (
+      toTry.type === "file" ||
+      toTry.type === "extension" ||
+      toTry.type === "index"
+    ) {
       fileExists(toTry.path, (err: Error, exists: boolean) => {
         if (err) {
           return afterFilesChecked(err);
@@ -98,8 +101,11 @@ export function matchFromAbsolutePathsAsync(
         }
         return checkFile(index + 1);
       });
-    } else {
+    } else if (toTry.type === "package") {
+      // TODO!
       return checkFile(index + 1);
+    } else {
+      TryPath.exhaustiveTypeException(toTry.type);
     }
   }
 
@@ -118,13 +124,8 @@ export function matchFromAbsolutePathsAsync(
     for (let i = 0; i < fileExistsResults.length; i++) {
       if (fileExistsResults[i]) {
         const tryPath = pathsToTry[i];
-        const result =
-          tryPath.type === "index"
-            ? dirname(tryPath.path)
-            : tryPath.type === "file"
-              ? Filesystem.removeExtension(tryPath.path)
-              : tryPath.path;
-        return callback(undefined, result);
+        // Not sure why we don't just return the full path? Why strip it?
+        return callback(undefined, TryPath.getStrippedPath(tryPath));
       }
     }
     return callback();

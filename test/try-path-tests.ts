@@ -43,15 +43,15 @@ describe("mapping-entry", () => {
     assert.deepEqual(result, [
       // "longest/pre/fix/*"
       { type: "file", path: "/absolute/base/url/foo2/bar" },
-      { type: "file", path: "/absolute/base/url/foo2/bar.ts" },
-      { type: "file", path: "/absolute/base/url/foo2/bar.tsx" },
+      { type: "extension", path: "/absolute/base/url/foo2/bar.ts" },
+      { type: "extension", path: "/absolute/base/url/foo2/bar.tsx" },
       { type: "package", path: "/absolute/base/url/foo2/bar/package.json" },
       { type: "index", path: "/absolute/base/url/foo2/bar/index.ts" },
       { type: "index", path: "/absolute/base/url/foo2/bar/index.tsx" },
       // "*"
       { type: "file", path: "/absolute/base/url/foo1" },
-      { type: "file", path: "/absolute/base/url/foo1.ts" },
-      { type: "file", path: "/absolute/base/url/foo1.tsx" },
+      { type: "extension", path: "/absolute/base/url/foo1.ts" },
+      { type: "extension", path: "/absolute/base/url/foo1.tsx" },
       { type: "package", path: "/absolute/base/url/foo1/package.json" },
       { type: "index", path: "/absolute/base/url/foo1/index.ts" },
       { type: "index", path: "/absolute/base/url/foo1/index.tsx" }

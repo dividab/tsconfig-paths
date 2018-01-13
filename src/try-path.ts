@@ -1,9 +1,11 @@
 import * as path from "path";
 import { matchStar } from "./match-star";
 import { MappingEntry } from "./mapping-entry";
+import { dirname } from "path";
+import { removeExtension } from "./filesystem";
 
 export interface TryPath {
-  readonly type: "file" | "index" | "package";
+  readonly type: "file" | "extension" | "index" | "package";
   readonly path: string;
 }
 
@@ -39,7 +41,7 @@ export function getPathsToTry(
         pathsToTry.push({ type: "file", path: physicalPath });
         pathsToTry.push(
           ...extensions.map(
-            e => ({ type: "file", path: physicalPath + e } as TryPath)
+            e => ({ type: "extension", path: physicalPath + e } as TryPath)
           )
         );
         pathsToTry.push({
@@ -56,4 +58,21 @@ export function getPathsToTry(
     }
   }
   return pathsToTry.length === 0 ? undefined : pathsToTry;
+}
+
+// Not sure why we don't just return the full found path?
+export function getStrippedPath(tryPath: TryPath): string {
+  return tryPath.type === "index"
+    ? dirname(tryPath.path)
+    : tryPath.type === "file"
+      ? tryPath.path
+      : tryPath.type === "extension"
+        ? removeExtension(tryPath.path)
+        : tryPath.type === "package"
+          ? tryPath.path
+          : exhaustiveTypeException(tryPath.type);
+}
+
+export function exhaustiveTypeException(check: never): never {
+  throw new Error(`Unknown type ${check}`);
 }
