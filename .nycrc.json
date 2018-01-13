@@ -1,5 +1,6 @@
 {
   "include": ["src/**/*.{ts,tsx}"],
+  "exclude": ["src/register.ts"],
   "extension": [".ts", ".tsx"],
   "reporter": ["html", "lcov", "text"],
   "sourceMap": true,

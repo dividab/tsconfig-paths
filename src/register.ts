@@ -1,4 +1,4 @@
-import { createMatchPath } from "./match-path";
+import { createMatchPath } from "./match-path-sync";
 import { configLoader, ExplicitParams } from "./config-loader";
 
 /**
@@ -27,8 +27,8 @@ export function register(explicitParams: ExplicitParams): void {
   const Module = require("module");
   const originalResolveFilename = Module._resolveFilename;
   // tslint:disable-next-line:no-any
-  Module._resolveFilename = function(request: string, parent: any): string {
-    const found = matchPath(parent, request);
+  Module._resolveFilename = function(request: string, _parent: any): string {
+    const found = matchPath(request);
     if (found) {
       const modifiedArguments = [found, ...[].slice.call(arguments, 1)]; // Passes all arguments. Even those that is not specified above.
       // tslint:disable-next-line:no-invalid-this

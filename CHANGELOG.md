@@ -5,7 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-- Nothing for now
+
+### Changed
+- Remove parameter `absoluteSourceFileName: string` from `MatchPath`. It was not used internally.
+
+### Added
+- New async version of `MatchPath`. Can be used for example by webpack.
 
 ## [2.7.3]
 ### Fixed
