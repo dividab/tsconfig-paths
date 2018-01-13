@@ -58,3 +58,14 @@ describe("mapping-entry", () => {
     ]);
   });
 });
+
+// describe("match-star", () => {
+//   it("should match star in last position", () => {
+//     const result = matchStar("lib/*", "lib/mylib");
+//     assert.equal(result, "mylib");
+//   });
+//   it("should match star in first position", () => {
+//     const result = matchStar("*/lib", "mylib/lib");
+//     assert.equal(result, "mylib");
+//   });
+// });
