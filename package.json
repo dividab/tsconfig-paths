@@ -1,7 +1,8 @@
 {
   "name": "tsconfig-paths",
   "version": "3.1.1",
-  "description": "Load node modules according to tsconfig paths, in run-time or via API.",
+  "description":
+    "Load node modules according to tsconfig paths, in run-time or via API.",
   "main": "lib/index.js",
   "types": "lib/index",
   "author": "Jonas Kello",
@@ -21,6 +22,7 @@
     "mocha": "^4.1.0",
     "nyc": "^11.4.1",
     "prettier": "1.7.4",
+    "rimraf": "^2.6.2",
     "shelljs": "^0.7.5",
     "ts-node": "^3.1.0",
     "tslint": "^5.8.0",
@@ -33,15 +35,16 @@
   },
   "scripts": {
     "start": "cd src && ts-node index.ts",
-    "example:node": "yarn build && cd example/node && ts-node -r ../register.js main.ts",
+    "example:node":
+      "yarn build && cd example/node && ts-node -r ../register.js main.ts",
     "example:api": "cd example/api && ts-node main.ts",
     "example:perf": "cd example/perf && ts-node main.ts",
     "test": "mocha",
-    "build": "rm -rf lib && tsc -p src",
-    "build:test": "rm -rf ./test/js_out && tsc -p test",
+    "build": "rimraf lib && tsc -p src",
+    "build:test": "rimraf ./test/js_out && tsc -p test",
     "lint": "tslint './{src,tests}/**/*.ts{,x}'",
     "verify": "yarn build && yarn lint && yarn coverage",
-    "coverage": "rm -rf coverage .nyc_output && nyc yarn test",
+    "coverage": "rimraf coverage .nyc_output && nyc yarn test",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "precommit": "lint-staged",
     "publish:major": "yarn build && node scripts/publish.js major",
@@ -49,10 +52,6 @@
     "publish:patch": "yarn build && node scripts/publish.js patch"
   },
   "lint-staged": {
-    "*.ts": [
-      "tslint",
-      "prettier --write",
-      "git add"
-    ]
+    "*.ts": ["tslint", "prettier --write", "git add"]
   }
 }

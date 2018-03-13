@@ -120,7 +120,7 @@ function findFirstExistingPath(
           }
           if (exists) {
             // Not sure why we don't just return the full path? Why strip it?
-            doneCallback(undefined, Filesystem.removeExtension(file));
+            return doneCallback(undefined, Filesystem.removeExtension(file));
           }
           // Continue with the next path
           return findFirstExistingPath(
