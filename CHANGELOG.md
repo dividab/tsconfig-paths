@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.1.2] - 2018-03-13
+### Fixed
+- Fix a forgotten return when doneCallback is invoked, see [#29](https://github.com/dividab/tsconfig-paths/pull/29). Thanks to [@Nayni](https://github.com/Nayni) for this fix!
+
 ## [3.1.1] - 2018-01-13
 ### Fixed
 - Fix read json async when it does not exist
