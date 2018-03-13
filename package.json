@@ -1,8 +1,7 @@
 {
   "name": "tsconfig-paths",
-  "version": "3.1.1",
-  "description":
-    "Load node modules according to tsconfig paths, in run-time or via API.",
+  "version": "3.1.2",
+  "description": "Load node modules according to tsconfig paths, in run-time or via API.",
   "main": "lib/index.js",
   "types": "lib/index",
   "author": "Jonas Kello",
@@ -35,8 +34,7 @@
   },
   "scripts": {
     "start": "cd src && ts-node index.ts",
-    "example:node":
-      "yarn build && cd example/node && ts-node -r ../register.js main.ts",
+    "example:node": "yarn build && cd example/node && ts-node -r ../register.js main.ts",
     "example:api": "cd example/api && ts-node main.ts",
     "example:perf": "cd example/perf && ts-node main.ts",
     "test": "mocha",
@@ -52,6 +50,10 @@
     "publish:patch": "yarn build && node scripts/publish.js patch"
   },
   "lint-staged": {
-    "*.ts": ["tslint", "prettier --write", "git add"]
+    "*.ts": [
+      "tslint",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
