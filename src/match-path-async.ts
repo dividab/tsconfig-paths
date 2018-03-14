@@ -131,15 +131,20 @@ function findFirstExistingPath(
             index + 1
           );
         });
+      } else {
+        // This is async code, we need to return in an else-branch otherwise the code still falls through and keeps recursing.
+        // While this might work in general, libraries that use neo-async like Webpack will actually not allow you to call the same callback twice.
+        // An example of where this caused issues: https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/11
+
+        // Continue with the next path
+        return findFirstExistingPath(
+          tryPaths,
+          readJson,
+          fileExists,
+          doneCallback,
+          index + 1
+        );
       }
-      // Continue with the next path
-      return findFirstExistingPath(
-        tryPaths,
-        readJson,
-        fileExists,
-        doneCallback,
-        index + 1
-      );
     });
   } else {
     TryPath.exhaustiveTypeException(tryPath.type);
