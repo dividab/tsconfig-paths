@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.1.3] - 2018-03-14
+### Fixed
+- Fix async recursion, see [#30](https://github.com/dividab/tsconfig-paths/pull/30). Thanks to [@Nayni](https://github.com/Nayni) for this fix!
+
 ## [3.1.2] - 2018-03-13
 ### Fixed
 - Fix a forgotten return when doneCallback is invoked, see [#29](https://github.com/dividab/tsconfig-paths/pull/29). Thanks to [@Nayni](https://github.com/Nayni) for this fix!
@@ -141,7 +145,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial version.
 
 
-[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.1.2...master
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.1.3...master
+[3.1.3]: https://github.com/dividab/tsconfig-paths/compare/3.1.2...3.1.3
 [3.1.2]: https://github.com/dividab/tsconfig-paths/compare/3.1.1...3.1.2
 [3.1.1]: https://github.com/dividab/tsconfig-paths/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/dividab/tsconfig-paths/compare/3.0.0...3.1.0
