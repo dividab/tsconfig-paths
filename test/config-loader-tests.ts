@@ -1,6 +1,7 @@
 import { assert } from "chai";
 import {
   configLoader,
+  loadConfig,
   ConfigLoaderFailResult,
   ConfigLoaderSuccessResult
 } from "../src/config-loader";
@@ -72,5 +73,18 @@ describe("config-loader", (): void => {
     const failResult = result as ConfigLoaderFailResult;
     assert.equal(failResult.resultType, "failed");
     assert.isTrue(failResult.message.indexOf("baseUrl") > -1);
+  });
+
+  it("should presume cwd to be a tsconfig file when loadConfig is called with absolute path to tsconfig.json", () => {
+    // using tsconfig-named.json to ensure that future changes to fix
+    // https://github.com/dividab/tsconfig-paths/issues/31
+    // do not pass this test case just because of a directory walk looking
+    // for tsconfig.json
+    const configFile = join(__dirname, "tsconfig-named.json");
+    const result = loadConfig(configFile);
+
+    const successResult = result as ConfigLoaderSuccessResult;
+    assert.equal(successResult.resultType, "success");
+    assert.equal(successResult.configFileAbsolutePath, configFile);
   });
 });

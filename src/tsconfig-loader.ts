@@ -73,6 +73,10 @@ export function resolveConfigPath(
     return absolutePath;
   }
 
+  if (fs.statSync(cwd).isFile()) {
+    return path.resolve(cwd);
+  }
+
   const configAbsolutePath = walkForTsConfig(cwd);
   return configAbsolutePath ? path.resolve(configAbsolutePath) : undefined;
 }
