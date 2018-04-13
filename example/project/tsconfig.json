@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "outDir": "js_out",
+    "noImplicitAny": false,
+    "sourceMap": false,
+    "baseUrl": "."
+  }
+}
