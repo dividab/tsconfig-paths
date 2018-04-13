@@ -59,6 +59,20 @@ Then run with:
 
 `node -r ./tsconfig-paths-bootstrap.js main.js`
 
+## Configuration Options
+
+You can set options by passing them before the script path, via programmatic usage or via environment variables.
+
+```bash
+ts-node --project customLocation/tsconfig.json -r tsconfig-paths/register "test/**/*.ts"
+```
+
+### CLI and Programmatic Options
+
+_Environment variable denoted in parentheses._
+
+* `-P, --project [path]` Path to TypeScript JSON project file (`TS_NODE_PROJECT`)
+
 ## Config loading process
 1. Use explicit params passed to register
 2. Use `process.env.TS_NODE_PROJECT` to resolve tsConfig.json and the specified baseUrl and paths.
