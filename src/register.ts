@@ -1,12 +1,13 @@
 import { createMatchPath } from "./match-path-sync";
 import { configLoader, ExplicitParams } from "./config-loader";
+import { options } from "./options";
 
 /**
  * Installs a custom module load function that can adhere to paths in tsconfig.
  */
 export function register(explicitParams: ExplicitParams): void {
   const configLoaderResult = configLoader({
-    cwd: process.cwd(),
+    cwd: options.cwd,
     explicitParams
   });
 
