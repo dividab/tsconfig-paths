@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.3.0] - 2018-04-14
+### Added
+- Add possibility to indicate explicitly tsconfig location, [#35](https://github.com/dividab/tsconfig-paths/issues/35). Thanks to [@procopenco](https://github.com/procopenco) for this adding this!
+
 ## [3.2.0] - 2018-03-31
 ### Added
 - Added support for passing a filename as cwd, see issue [#31](https://github.com/dividab/tsconfig-paths/issues/31) and PR [#32](https://github.com/dividab/tsconfig-paths/pull/32). Thanks to [@amodm](https://github.com/amodm) for this adding this!
@@ -149,7 +153,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial version.
 
 
-[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.2.0...master
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.3.0...master
+[3.3.0]: https://github.com/dividab/tsconfig-paths/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/dividab/tsconfig-paths/compare/3.1.3...3.2.0
 [3.1.3]: https://github.com/dividab/tsconfig-paths/compare/3.1.2...3.1.3
 [3.1.2]: https://github.com/dividab/tsconfig-paths/compare/3.1.1...3.1.2
