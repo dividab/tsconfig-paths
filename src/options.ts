@@ -7,10 +7,12 @@ const argv = minimist(process.argv.slice(2), {
   }
 });
 
+const project = argv && argv.project;
+
 export interface Options {
   cwd: string;
 }
 
 export const options: Options = {
-  cwd: argv.project || process.cwd()
+  cwd: project || process.cwd()
 };
