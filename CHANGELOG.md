@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.3.1] - 2018-04-17
+### Fixed
+- Fix project undefined error when calling register, [#37](https://github.com/dividab/tsconfig-paths/issues/37). Thanks to [@natedanner](https://github.com/natedanner) for this fixing this!
+
 ## [3.3.0] - 2018-04-14
 ### Added
 - Add possibility to indicate explicitly tsconfig location, [#35](https://github.com/dividab/tsconfig-paths/issues/35). Thanks to [@procopenco](https://github.com/procopenco) for this adding this!
