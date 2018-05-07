@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.3.2] - 2018-05-07
+### Fixed
+- Adding json file extention to extends property, [#40](https://github.com/dividab/tsconfig-paths/pull/37). Thanks to [@cwhite-connectfirst](https://github.com/cwhite-connectfirst) for this fixing this!
+
 ## [3.3.1] - 2018-04-17
 ### Fixed
 - Fix project undefined error when calling register, [#37](https://github.com/dividab/tsconfig-paths/issues/37). Thanks to [@natedanner](https://github.com/natedanner) for this fixing this!
@@ -157,7 +161,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial version.
 
 
-[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.3.0...master
+[Unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.3.2...master
+[3.3.2]: https://github.com/dividab/tsconfig-paths/compare/3.3.1...3.3.2
+[3.3.1]: https://github.com/dividab/tsconfig-paths/compare/3.3.0...3.3.1
 [3.3.0]: https://github.com/dividab/tsconfig-paths/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/dividab/tsconfig-paths/compare/3.1.3...3.2.0
 [3.1.3]: https://github.com/dividab/tsconfig-paths/compare/3.1.2...3.1.3
