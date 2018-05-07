@@ -113,12 +113,20 @@ export function loadTsconfig(
   const configString = readFileSync(configFilePath);
   const cleanedJson = StripBom(StripJsonComments(configString));
   const config: Tsconfig = JSON.parse(cleanedJson);
+  let extendedConfig = config.extends;
 
-  if (config.extends) {
+  if (extendedConfig) {
+    if (
+      typeof extendedConfig === "string" &&
+      extendedConfig.indexOf(".json") === -1
+    ) {
+      extendedConfig += ".json";
+    }
+
     const currentDir = path.dirname(configFilePath);
     const base =
       loadTsconfig(
-        path.join(currentDir, config.extends),
+        path.join(currentDir, extendedConfig),
         existsSync,
         readFileSync
       ) || {};
@@ -126,7 +134,7 @@ export function loadTsconfig(
     // baseUrl should be interpreted as relative to the base tsconfig,
     // but we need to update it so it is relative to the original tsconfig being loaded
     if (base && base.compilerOptions && base.compilerOptions.baseUrl) {
-      const extendsDir = path.dirname(config.extends);
+      const extendsDir = path.dirname(extendedConfig);
       base.compilerOptions.baseUrl = path.join(
         extendsDir,
         base.compilerOptions.baseUrl
