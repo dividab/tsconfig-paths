@@ -2,6 +2,7 @@ import * as path from "path";
 import * as TryPath from "./try-path";
 import * as MappingEntry from "./mapping-entry";
 import * as Filesystem from "./filesystem";
+import { getPrioritizedMainFieldName } from "./match-path-sync";
 
 /**
  * Function that can match a path async
@@ -81,27 +82,6 @@ export function matchFromAbsolutePathsAsync(
     0,
     mainFields
   );
-}
-
-/**
- * Given a (possibly undefiend) package.json object, return the first
- * defined field name from a prioritized list. Returns undefined if no field name
- * in the list is defined in the object.
- */
-function getPrioritizedMainFieldName(
-  packageJson: { [key: string]: Object } | undefined,
-  mainFields: string[]
-): string | undefined {
-  if (packageJson) {
-    for (let index = 0; index < mainFields.length; index++) {
-      const mainFieldsName = mainFields[index];
-      if (packageJson[mainFieldsName]) {
-        return mainFieldsName;
-      }
-    }
-  }
-
-  return undefined;
 }
 
 // Recursive loop to probe for physical files
