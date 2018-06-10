@@ -179,6 +179,31 @@ describe("match-path-async", () => {
     );
   });
 
+  it("should resolve from list of fields by priority in package.json", done => {
+    const matchPath = createMatchPathAsync(
+      "/root/",
+      {
+        "lib/*": ["location/*"]
+      },
+      ["missing", "browser", "main"]
+    );
+    const existingPath = join("/root", "location", "mylib", "christoffer.ts");
+    matchPath(
+      "lib/mylib",
+      (_path, callback) =>
+        callback(undefined, {
+          main: "./kalle.ts",
+          browser: "./christoffer.ts"
+        }),
+      (path, callback) => callback(undefined, path === existingPath),
+      undefined,
+      (_err, result) => {
+        assert.equal(result, removeExtension(existingPath), result);
+        done();
+      }
+    );
+  });
+
   it("should resolve to with the help of baseUrl when not explicitly set", done => {
     const matchPath = createMatchPathAsync("/root/", {});
     const existingPath = join("/root", "mylib", "index.ts");

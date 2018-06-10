@@ -25,7 +25,8 @@ export interface MatchPathAsyncCallback {
  */
 export function createMatchPathAsync(
   absoluteBaseUrl: string,
-  paths: { [key: string]: Array<string> }
+  paths: { [key: string]: Array<string> },
+  mainFields: string[] = ["main"]
 ): MatchPathAsync {
   const absolutePaths = MappingEntry.getAbsoluteMappingEntries(
     absoluteBaseUrl,
@@ -45,7 +46,8 @@ export function createMatchPathAsync(
       readJson,
       fileExists,
       extensions,
-      callback
+      callback,
+      mainFields
     );
 }
 
@@ -58,7 +60,8 @@ export function matchFromAbsolutePathsAsync(
   readJson: Filesystem.ReadJsonAsync = Filesystem.readJsonFromDiskAsync,
   fileExists: Filesystem.FileExistsAsync = Filesystem.fileExistsAsync,
   extensions: ReadonlyArray<string> = Object.keys(require.extensions),
-  callback: MatchPathAsyncCallback
+  callback: MatchPathAsyncCallback,
+  mainFields: string[] = ["main"]
 ): void {
   const tryPaths = TryPath.getPathsToTry(
     extensions,
@@ -70,7 +73,35 @@ export function matchFromAbsolutePathsAsync(
     return callback();
   }
 
-  findFirstExistingPath(tryPaths, readJson, fileExists, callback);
+  findFirstExistingPath(
+    tryPaths,
+    readJson,
+    fileExists,
+    callback,
+    0,
+    mainFields
+  );
+}
+
+/**
+ * Given a (possibly undefiend) package.json object, return the first
+ * defined field name from a prioritized list. Returns undefined if no field name
+ * in the list is defined in the object.
+ */
+function getPrioritizedMainFieldName(
+  packageJson: { [key: string]: Object } | undefined,
+  mainFields: string[]
+): string | undefined {
+  if (packageJson) {
+    for (let index = 0; index < mainFields.length; index++) {
+      const mainFieldsName = mainFields[index];
+      if (packageJson[mainFieldsName]) {
+        return mainFieldsName;
+      }
+    }
+  }
+
+  return undefined;
 }
 
 // Recursive loop to probe for physical files
@@ -79,7 +110,8 @@ function findFirstExistingPath(
   readJson: Filesystem.ReadJsonAsync,
   fileExists: Filesystem.FileExistsAsync,
   doneCallback: MatchPathAsyncCallback,
-  index: number = 0
+  index: number = 0,
+  mainFields: string[] = ["main"]
 ): void {
   const tryPath = tryPaths[index];
   if (
@@ -104,7 +136,8 @@ function findFirstExistingPath(
         readJson,
         fileExists,
         doneCallback,
-        index + 1
+        index + 1,
+        mainFields
       );
     });
   } else if (tryPath.type === "package") {
@@ -112,8 +145,15 @@ function findFirstExistingPath(
       if (err) {
         return doneCallback(err);
       }
-      if (packageJson && packageJson.main) {
-        const file = path.join(path.dirname(tryPath.path), packageJson.main);
+      const mainFieldName = getPrioritizedMainFieldName(
+        packageJson,
+        mainFields
+      );
+      if (mainFieldName) {
+        const file = path.join(
+          path.dirname(tryPath.path),
+          packageJson[mainFieldName]
+        );
         fileExists(file, (err2, exists) => {
           if (err2) {
             return doneCallback(err2);
@@ -128,7 +168,8 @@ function findFirstExistingPath(
             readJson,
             fileExists,
             doneCallback,
-            index + 1
+            index + 1,
+            mainFields
           );
         });
       } else {
@@ -142,7 +183,8 @@ function findFirstExistingPath(
           readJson,
           fileExists,
           doneCallback,
-          index + 1
+          index + 1,
+          mainFields
         );
       }
     });
