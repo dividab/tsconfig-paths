@@ -1,5 +1,6 @@
 import { assert } from "chai";
 import { getAbsoluteMappingEntries } from "../src/mapping-entry";
+import { join } from "path";
 
 describe("mapping-entry", () => {
   it("should change to absolute paths and sort in longest prefix order", () => {
@@ -9,11 +10,20 @@ describe("mapping-entry", () => {
       "pre/fix/*": ["/foo3"]
     });
     assert.deepEqual(result, [
-      { pattern: "longest/pre/fix/*", paths: ["/absolute/base/url/foo2/bar"] },
-      { pattern: "pre/fix/*", paths: ["/absolute/base/url/foo3"] },
+      {
+        pattern: "longest/pre/fix/*",
+        paths: [join("/absolute", "base", "url", "foo2", "bar")]
+      },
+      {
+        pattern: "pre/fix/*",
+        paths: [join("/absolute", "base", "url", "foo3")]
+      },
       {
         pattern: "*",
-        paths: ["/absolute/base/url/foo1", "/absolute/base/url/foo2"]
+        paths: [
+          join("/absolute", "base", "url", "foo1"),
+          join("/absolute", "base", "url", "foo2")
+        ]
       }
     ]);
   });
