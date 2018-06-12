@@ -125,11 +125,14 @@ export interface MatchPath {
  * @param tsConfigPath The paths where tsconfig.json is located.
  * @param baseUrl The baseUrl specified in tsconfig.
  * @param paths The paths specified in tsconfig.
+ * @param mainFields A list of package.json field names to try when resolving module files.
  */
 export function createMatchPath(
   absoluteBaseUrl: string,
-  paths: { [key: string]: Array<string> }
-): MatchPath
+  paths: { [key: string]: Array<string> },
+  mainFields: string[] = ["main"]
+): MatchPath {
+
 ```
 
 The `createMatchPath` function will create a function that can match paths. It accepts `baseUrl` and `paths` directly as they are specified in tsconfig and will handle resolving paths to absolute form. The created function has the signare specified by the type `MatchPath` above.
@@ -144,6 +147,7 @@ The `createMatchPath` function will create a function that can match paths. It a
  * @param readJson Function that can read json from a path (useful for testing).
  * @param fileExists Function that checks for existance of a file at a path (useful for testing).
  * @param extensions File extensions to probe for (useful for testing).
+ * @param mainFields A list of package.json field names to try when resolving module files.
  * @returns the found path, or undefined if no path was found.
  */
 export function matchFromAbsolutePaths(
@@ -151,8 +155,9 @@ export function matchFromAbsolutePaths(
   requestedModule: string,
   readJson: Filesystem.ReadJsonSync = Filesystem.readJsonFromDiskSync,
   fileExists: Filesystem.FileExistsSync = Filesystem.fileExistsSync,
-  extensions: Array<string> = Object.keys(require.extensions)
-): string | undefined
+  extensions: Array<string> = Object.keys(require.extensions),
+  mainFields: string[] = ["main"]
+): string | undefined {
 ```
 
 This function is lower level and requries that the paths as already been resolved to absolute form and sorted in correct order into an array.

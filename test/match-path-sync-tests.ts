@@ -130,6 +130,24 @@ describe("match-path-sync", () => {
     assert.equal(result, existingPath);
   });
 
+  it("should resolve from list of fields by priority in package.json", () => {
+    const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] }, [
+      "missing",
+      "browser",
+      "main"
+    ]);
+    const existingPath = join("/root", "location", "mylibjs", "christofferjs");
+    // Make sure we escape the "."
+    const result = matchPath(
+      "lib/mylibjs",
+      (_: string) => ({ main: "./kallejs", browser: "./christofferjs" }),
+      (name: string) => name === existingPath,
+      [".ts", ".js"]
+    );
+
+    assert.equal(result, existingPath);
+  });
+
   it("should resolve to with the help of baseUrl when not explicitly set", () => {
     const matchPath = createMatchPath("/root/", {});
     const existingPath = join("/root", "mylib", "index.ts");
