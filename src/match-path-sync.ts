@@ -20,6 +20,7 @@ export interface MatchPath {
  * @param tsConfigPath The paths where tsconfig.json is located.
  * @param baseUrl The baseUrl specified in tsconfig.
  * @param paths The paths specified in tsconfig.
+ * @param mainFields A list of package.json field names to try when resolving module files.
  */
 export function createMatchPath(
   absoluteBaseUrl: string,
@@ -54,6 +55,7 @@ export function createMatchPath(
  * @param readJson Function that can read json from a path (useful for testing).
  * @param fileExists Function that checks for existance of a file at a path (useful for testing).
  * @param extensions File extensions to probe for (useful for testing).
+ * @param mainFields A list of package.json field names to try when resolving module files.
  * @returns the found path, or undefined if no path was found.
  */
 export function matchFromAbsolutePaths(
