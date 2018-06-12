@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.4.0] - 2018-06-12
+### Added
+- Add support for providing a list of field names to try instead of just using "main", [#45](https://github.com/dividab/tsconfig-paths/pull/45). Thanks to [@christoffer-dropbox](https://github.com/christoffer-dropbox) for this addition!
+
 ## [3.3.2] - 2018-05-07
 ### Fixed
-- Adding json file extention to extends property, [#40](https://github.com/dividab/tsconfig-paths/pull/37). Thanks to [@cwhite-connectfirst](https://github.com/cwhite-connectfirst) for this fixing this!
+- Adding json file extention to extends property, [#40](https://github.com/dividab/tsconfig-paths/pull/40). Thanks to [@cwhite-connectfirst](https://github.com/cwhite-connectfirst) for this fixing this!
 
 ## [3.3.1] - 2018-04-17
 ### Fixed
