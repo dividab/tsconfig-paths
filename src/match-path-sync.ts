@@ -79,26 +79,22 @@ export function matchFromAbsolutePaths(
   return findFirstExistingPath(tryPaths, readJson, fileExists, mainFields);
 }
 
-/**
- * Given a parsed package.json object, get the first field name that is defined
- * in a list of prioritized field names to try.
- *
- * @param packageJson Parsed JSON object from package.json. May be undefined.
- * @param mainFields A list of field names to try (in order)
- * @returns The first matched field name in packageJson, or undefined.
- */
-export function getPrioritizedMainFieldName(
-  packageJson: Filesystem.PackageJson | undefined,
-  mainFields: string[]
+function findFirstExistingMainFieldMappedFile(
+  packageJson: Filesystem.PackageJson,
+  mainFields: string[],
+  packageJsonPath: string,
+  fileExists: Filesystem.FileExistsSync
 ): string | undefined {
-  if (packageJson) {
-    for (let index = 0; index < mainFields.length; index++) {
-      const mainFieldName = mainFields[index];
-      if (
-        packageJson[mainFieldName] &&
-        typeof packageJson[mainFieldName] === "string"
-      ) {
-        return mainFieldName;
+  for (let index = 0; index < mainFields.length; index++) {
+    const mainFieldName = mainFields[index];
+    const candidateMapping = packageJson[mainFieldName];
+    if (candidateMapping && typeof candidateMapping === "string") {
+      const candidateFilePath = path.join(
+        path.dirname(packageJsonPath),
+        candidateMapping
+      );
+      if (fileExists(candidateFilePath)) {
+        return candidateFilePath;
       }
     }
   }
@@ -124,18 +120,16 @@ function findFirstExistingPath(
       }
     } else if (tryPath.type === "package") {
       const packageJson: Filesystem.PackageJson = readJson(tryPath.path);
-      const mainFieldName = getPrioritizedMainFieldName(
-        packageJson,
-        mainFields
-      );
-      if (mainFieldName) {
-        const file = path.join(
-          path.dirname(tryPath.path),
-          packageJson[mainFieldName]
+      if (packageJson) {
+        const mainFieldMappedFile = findFirstExistingMainFieldMappedFile(
+          packageJson,
+          mainFields,
+          tryPath.path,
+          fileExists
         );
-        if (fileExists(file)) {
+        if (mainFieldMappedFile) {
           // Not sure why we don't just return the full path? Why strip it?
-          return Filesystem.removeExtension(file);
+          return Filesystem.removeExtension(mainFieldMappedFile);
         }
       }
     } else {
