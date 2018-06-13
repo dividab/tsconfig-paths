@@ -118,16 +118,16 @@ describe("match-path-sync", () => {
 
   it("should resolve from main field in package.json and correctly remove file extension", () => {
     const matchPath = createMatchPath("/root/", { "lib/*": ["location/*"] });
-    const existingPath = join("/root", "location", "mylibjs", "kallejs");
+    const existingPath = join("/root", "location", "mylibjs", "kalle.js");
     // Make sure we escape the "."
     const result = matchPath(
       "lib/mylibjs",
-      (_: string) => ({ main: "./kallejs" }),
+      (_: string) => ({ main: "./kalle.js" }),
       (name: string) => name === existingPath,
       [".ts", ".js"]
     );
 
-    assert.equal(result, existingPath);
+    assert.equal(result, removeExtension(existingPath));
   });
 
   it("should resolve from list of fields by priority in package.json", () => {
@@ -136,24 +136,19 @@ describe("match-path-sync", () => {
       "browser",
       "main"
     ]);
-    const mainFilePath = join("/root", "location", "mylibjs", "kallejs");
-    const browserFilePath = join(
-      "/root",
-      "location",
-      "mylibjs",
-      "christofferjs"
-    );
+    const mainFilePath = join("/root", "location", "mylibjs", "main.js");
+    const browserFilePath = join("/root", "location", "mylibjs", "browser.js");
     const existingPaths = [mainFilePath, browserFilePath];
 
     // Make sure we escape the "."
     const result = matchPath(
       "lib/mylibjs",
-      (_: string) => ({ main: "./kallejs", browser: "./christofferjs" }),
+      (_: string) => ({ main: "./main.js", browser: "./browser.js" }),
       (name: string) => existingPaths.indexOf(name) !== -1,
       [".ts", ".js"]
     );
 
-    assert.equal(result, browserFilePath);
+    assert.equal(result, removeExtension(browserFilePath));
   });
 
   it("should ignore field mappings to missing files in package.json", () => {
@@ -161,19 +156,19 @@ describe("match-path-sync", () => {
       "browser",
       "main"
     ]);
-    const existingPath = join("/root", "location", "mylibjs", "kallejs");
+    const existingPath = join("/root", "location", "mylibjs", "kalle.js");
     // Make sure we escape the "."
     const result = matchPath(
       "lib/mylibjs",
       (_: string) => ({
-        main: "./kallejs",
-        browser: "./missing-file"
+        main: "./kalle.js",
+        browser: "./nope.js"
       }),
       (name: string) => name === existingPath,
       [".ts", ".js"]
     );
 
-    assert.equal(result, existingPath);
+    assert.equal(result, removeExtension(existingPath));
   });
 
   it("should ignore advanced field mappings in package.json", () => {
@@ -181,19 +176,22 @@ describe("match-path-sync", () => {
       "browser",
       "main"
     ]);
-    const existingPath = join("/root", "location", "mylibjs", "kallejs");
+    const mainFilePath = join("/root", "location", "mylibjs", "kalle.js");
+    const browserFilePath = join("/root", "location", "mylibjs", "browser.js");
+    const existingPaths = [mainFilePath, browserFilePath];
+
     // Make sure we escape the "."
     const result = matchPath(
       "lib/mylibjs",
       (_: string) => ({
-        main: "./kallejs",
-        browser: { kallejs: "./christofferjs" }
+        main: "./kalle.js",
+        browser: { mylibjs: "./browser.js", "./kalle.js": "./browser.js" }
       }),
-      (name: string) => name === existingPath,
+      (name: string) => existingPaths.indexOf(name) !== -1,
       [".ts", ".js"]
     );
 
-    assert.equal(result, existingPath);
+    assert.equal(result, removeExtension(mainFilePath));
   });
 
   it("should resolve to with the help of baseUrl when not explicitly set", () => {

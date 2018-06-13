@@ -188,12 +188,7 @@ describe("match-path-async", () => {
       ["missing", "browser", "main"]
     );
     const mainFilePath = join("/root", "location", "mylib", "kalle.ts");
-    const browserFilePath = join(
-      "/root",
-      "location",
-      "mylib",
-      "christoffer.ts"
-    );
+    const browserFilePath = join("/root", "location", "mylib", "browser.ts");
     const existingFiles = [mainFilePath, browserFilePath];
 
     matchPath(
@@ -201,7 +196,7 @@ describe("match-path-async", () => {
       (_path, callback) =>
         callback(undefined, {
           main: "./kalle.ts",
-          browser: "./christoffer.ts"
+          browser: "./browser.ts"
         }),
       (path, callback) =>
         callback(undefined, existingFiles.indexOf(path) !== -1),
