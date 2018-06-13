@@ -94,7 +94,10 @@ export function getPrioritizedMainFieldName(
   if (packageJson) {
     for (let index = 0; index < mainFields.length; index++) {
       const mainFieldName = mainFields[index];
-      if (packageJson[mainFieldName]) {
+      if (
+        packageJson[mainFieldName] &&
+        typeof packageJson[mainFieldName] === "string"
+      ) {
         return mainFieldName;
       }
     }
