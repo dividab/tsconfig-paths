@@ -2,7 +2,6 @@ import * as path from "path";
 import * as TryPath from "./try-path";
 import * as MappingEntry from "./mapping-entry";
 import * as Filesystem from "./filesystem";
-import { getPrioritizedMainFieldName } from "./match-path-sync";
 
 /**
  * Function that can match a path async
@@ -84,6 +83,49 @@ export function matchFromAbsolutePathsAsync(
   );
 }
 
+function findFirstExistingMainFieldMappedFile(
+  packageJson: Filesystem.PackageJson,
+  mainFields: string[],
+  packageJsonPath: string,
+  fileExistsAsync: Filesystem.FileExistsAsync,
+  doneCallback: (err?: Error, filepath?: string) => void,
+  index: number = 0
+): void {
+  if (index >= mainFields.length) {
+    return doneCallback(undefined, undefined);
+  }
+
+  const tryNext = () =>
+    findFirstExistingMainFieldMappedFile(
+      packageJson,
+      mainFields,
+      packageJsonPath,
+      fileExistsAsync,
+      doneCallback,
+      index + 1
+    );
+
+  const mainFieldMapping = packageJson[mainFields[index]];
+  if (typeof mainFieldMapping !== "string") {
+    // Skip mappings that are not pointers to replacement files
+    return tryNext();
+  }
+
+  const mappedFilePath = path.join(
+    path.dirname(packageJsonPath),
+    mainFieldMapping
+  );
+  fileExistsAsync(mappedFilePath, (err?: Error, exists?: boolean) => {
+    if (err) {
+      return doneCallback(err);
+    }
+    if (exists) {
+      return doneCallback(undefined, mappedFilePath);
+    }
+    return tryNext();
+  });
+}
+
 // Recursive loop to probe for physical files
 function findFirstExistingPath(
   tryPaths: ReadonlyArray<TryPath.TryPath>,
@@ -125,48 +167,53 @@ function findFirstExistingPath(
       if (err) {
         return doneCallback(err);
       }
-      const mainFieldName = getPrioritizedMainFieldName(
-        packageJson,
-        mainFields
-      );
-      if (mainFieldName) {
-        const file = path.join(
-          path.dirname(tryPath.path),
-          packageJson[mainFieldName]
-        );
-        fileExists(file, (err2, exists) => {
-          if (err2) {
-            return doneCallback(err2);
-          }
-          if (exists) {
-            // Not sure why we don't just return the full path? Why strip it?
-            return doneCallback(undefined, Filesystem.removeExtension(file));
-          }
-          // Continue with the next path
-          return findFirstExistingPath(
-            tryPaths,
-            readJson,
-            fileExists,
-            doneCallback,
-            index + 1,
-            mainFields
-          );
-        });
-      } else {
-        // This is async code, we need to return in an else-branch otherwise the code still falls through and keeps recursing.
-        // While this might work in general, libraries that use neo-async like Webpack will actually not allow you to call the same callback twice.
-        // An example of where this caused issues: https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/11
-
-        // Continue with the next path
-        return findFirstExistingPath(
-          tryPaths,
-          readJson,
+      if (packageJson) {
+        return findFirstExistingMainFieldMappedFile(
+          packageJson,
+          mainFields,
+          tryPath.path,
           fileExists,
-          doneCallback,
-          index + 1,
-          mainFields
+          (mainFieldErr?: Error, mainFieldMappedFile?: string) => {
+            if (mainFieldErr) {
+              return doneCallback(mainFieldErr);
+            }
+            if (mainFieldMappedFile) {
+              // Not sure why we don't just return the full path? Why strip it?
+              return doneCallback(
+                undefined,
+                Filesystem.removeExtension(mainFieldMappedFile)
+              );
+            }
+
+            // No field in package json was a valid option. Continue with the next path.
+            return findFirstExistingPath(
+              tryPaths,
+              readJson,
+              fileExists,
+              doneCallback,
+              index + 1,
+              mainFields
+            );
+          }
         );
       }
+
+      // This is async code, we need to return unconditionally, otherwise the code still falls
+      // through and keeps recursing. While this might work in general, libraries that use neo-async
+      // like Webpack will actually not allow you to call the same callback twice.
+      //
+      // An example of where this caused issues:
+      // https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/11
+      //
+      // Continue with the next path
+      return findFirstExistingPath(
+        tryPaths,
+        readJson,
+        fileExists,
+        doneCallback,
+        index + 1,
+        mainFields
+      );
     });
   } else {
     TryPath.exhaustiveTypeException(tryPath.type);

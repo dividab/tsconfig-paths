@@ -187,18 +187,82 @@ describe("match-path-async", () => {
       },
       ["missing", "browser", "main"]
     );
-    const existingPath = join("/root", "location", "mylib", "christoffer.ts");
+    const mainFilePath = join("/root", "location", "mylib", "kalle.ts");
+    const browserFilePath = join("/root", "location", "mylib", "browser.ts");
+    const existingFiles = [mainFilePath, browserFilePath];
+
     matchPath(
       "lib/mylib",
       (_path, callback) =>
         callback(undefined, {
           main: "./kalle.ts",
-          browser: "./christoffer.ts"
+          browser: "./browser.ts"
         }),
-      (path, callback) => callback(undefined, path === existingPath),
+      (path, callback) =>
+        callback(undefined, existingFiles.indexOf(path) !== -1),
       undefined,
       (_err, result) => {
-        assert.equal(result, removeExtension(existingPath), result);
+        assert.equal(result, removeExtension(browserFilePath), result);
+        done();
+      }
+    );
+  });
+
+  it("should not resolve field name mapped file that doesn't exist", done => {
+    const matchPath = createMatchPathAsync(
+      "/root/",
+      {
+        "lib/*": ["location/*"]
+      },
+      ["browser", "main"]
+    );
+    const existingFile = join("/root", "location", "mylib", "kalle.ts");
+
+    matchPath(
+      "lib/mylib",
+      (_path, callback) =>
+        callback(undefined, {
+          main: "./kalle.ts",
+          browser: "./missing-file.ts"
+        }),
+      (path, callback) => callback(undefined, path === existingFile),
+      undefined,
+      (_err, result) => {
+        assert.equal(result, removeExtension(existingFile), result);
+        done();
+      }
+    );
+  });
+
+  it("should not resolve advanced field name mappings", done => {
+    const matchPath = createMatchPathAsync(
+      "/root/",
+      {
+        "lib/*": ["location/*"]
+      },
+      ["browser", "main"]
+    );
+    const mainFilePath = join("/root", "location", "mylib", "kalle.ts");
+    const browserFilePath = join(
+      "/root",
+      "location",
+      "mylib",
+      "advanced-replacement.ts"
+    );
+    const existingFiles = [mainFilePath, browserFilePath];
+
+    matchPath(
+      "lib/mylib",
+      (_path, callback) =>
+        callback(undefined, {
+          main: "./kalle.ts",
+          browser: { mylib: "./advanced-replacement.ts" }
+        }),
+      (path, callback) =>
+        callback(undefined, existingFiles.indexOf(path) !== -1),
+      undefined,
+      (_err, result) => {
+        assert.equal(result, removeExtension(mainFilePath), result);
         done();
       }
     );
