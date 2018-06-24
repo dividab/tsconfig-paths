@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.4.1] - 2018-06-24
+
+### Fixed
+
+Ignore field name mappings in package.json files that are not paths of existing files [#46](https://github.com/dividab/tsconfig-paths/pull/45). Thanks to [@christoffer](https://github.com/christoffer) for this fix!
+
 ## [3.4.0] - 2018-06-12
 
 ### Added
@@ -239,7 +245,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Initial version.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.3.2...master
+[unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.4.1...master
+[3.4.1]: https://github.com/dividab/tsconfig-paths/compare/3.4.0...3.4.1
+[3.4.0]: https://github.com/dividab/tsconfig-paths/compare/3.3.2...3.4.0
 [3.3.2]: https://github.com/dividab/tsconfig-paths/compare/3.3.1...3.3.2
 [3.3.1]: https://github.com/dividab/tsconfig-paths/compare/3.3.0...3.3.1
 [3.3.0]: https://github.com/dividab/tsconfig-paths/compare/3.2.0...3.3.0
