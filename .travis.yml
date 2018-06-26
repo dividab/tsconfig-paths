@@ -5,9 +5,8 @@ cache:
 notifications:
   email: false
 node_js:
-  - "7"
-  - "6"
-  - "4"
+  - "lts/*"
+  - "10"
 before_install:
 before_script:
 script:
