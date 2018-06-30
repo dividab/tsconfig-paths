@@ -188,5 +188,25 @@ export const tests: ReadonlyArray<OneTest> = [
     existingPaths: [join("root", "location", "mylib")],
     requestedModule: "mylib",
     expectedPath: undefined
+  },
+  {
+    name: "should not resolve typings file (index.d.ts)",
+    absoluteBaseUrl: "/root/",
+    paths: {
+      "lib/*": ["location/*"]
+    },
+    existingPaths: [join("/root", "location", "mylib", "index.d.ts")],
+    requestedModule: "lib/mylib",
+    expectedPath: undefined
+  },
+  {
+    name: "should not resolve typings file (index.d.ts) from star",
+    absoluteBaseUrl: "/root/",
+    paths: {
+      "*": ["*", "./types/*"]
+    },
+    existingPaths: [join("/root", "types", "mylib", "index.d.ts")],
+    requestedModule: "mylib",
+    expectedPath: undefined
   }
 ];
