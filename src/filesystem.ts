@@ -32,7 +32,15 @@ export interface ReadJsonAsync {
   (path: string, callback: ReadJsonAsyncCallback): void;
 }
 
-export const fileExistsSync = fs.existsSync;
+export function fileExistsSync(path: string): boolean {
+  try {
+    const stats = fs.statSync(path);
+    return stats.isFile();
+  } catch (err) {
+    // If error, assume file did not exist
+    return false;
+  }
+}
 
 /**
  * Reads package.json from disk

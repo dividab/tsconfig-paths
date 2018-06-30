@@ -14,7 +14,7 @@ describe("match-path-async", () => {
         t.requestedModule,
         (_path, callback) => callback(undefined, t.packageJson),
         (path, callback) =>
-          callback(undefined, t.existingPaths.indexOf(path) !== -1),
+          callback(undefined, t.existingFiles.indexOf(path) !== -1),
         t.extensions,
         (_err, result) => {
           assert.equal(result, t.expectedPath);

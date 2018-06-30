@@ -13,7 +13,7 @@ describe("match-path-sync", () => {
       const result = matchPath(
         t.requestedModule,
         (_: string) => t.packageJson,
-        (name: string) => t.existingPaths.indexOf(name) !== -1, // fileExists
+        (name: string) => t.existingFiles.indexOf(name) !== -1, // fileExists
         t.extensions
       );
       assert.equal(result, t.expectedPath);
