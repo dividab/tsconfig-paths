@@ -14,5 +14,5 @@ export interface Options {
 }
 
 export const options: Options = {
-  cwd: project || process.cwd()
+  cwd: (!argv.r && !argv.require && project) || process.cwd()
 };
