@@ -91,9 +91,26 @@ _Environment variable denoted in parentheses._
 
 The public API consists of these functions:
 
+- [register](#register)
 - [loadConfig](#loadConfig)
 - [createMatchPath](#createMatchPath) / [createMatchPathAsync](#createMatchPathAsync)
 - [matchFromAbsolutePaths](#matchFromAbsolutePaths) / [matchFromAbsolutePathsAsync](#matchFromAbsolutePathsAsync)
+
+### register
+
+```typescript
+export interface ExplicitParams {
+  baseUrl: string;
+  paths: { [key: string]: Array<string> };
+}
+
+/**
+ * Installs a custom module load function that can adhere to paths in tsconfig.
+ */
+export function register(explicitParams: ExplicitParams): void;
+```
+
+This function will patch the node's module loading so it will look for modules in paths specified by tsconfig.json.
 
 ### loadConfig
 
