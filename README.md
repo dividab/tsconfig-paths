@@ -48,6 +48,10 @@ As of Mocha >= 4.0.0 the `--compiler` was [deprecated](https://github.com/mochaj
 mocha -r ts-node/register -r tsconfig-paths/register "test/**/*.ts"
 ```
 
+### With other commands
+
+As long as the command has something similar to a `--require` option that can load a module before it starts, tsconfig-paths should be able to work with it.
+
 ### Bootstrap tsconfig-paths with explicit params
 
 If you want more granular control over tsconfig-paths you can bootstrap it. This can be useful if you for instance have compiled with `tsc` to another directory where `tsconfig.json` doesn't exists.
