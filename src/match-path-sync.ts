@@ -17,10 +17,10 @@ export interface MatchPath {
 
 /**
  * Creates a function that can resolve paths according to tsconfig paths property.
- * @param tsConfigPath The paths where tsconfig.json is located.
- * @param baseUrl The baseUrl specified in tsconfig.
- * @param paths The paths specified in tsconfig.
+ * @param absoluteBaseUrl Absolute version of baseUrl as specified in tsconfig.
+ * @param paths The paths as specified in tsconfig.
  * @param mainFields A list of package.json field names to try when resolving module files.
+ * @returns a function that can resolve paths.
  */
 export function createMatchPath(
   absoluteBaseUrl: string,

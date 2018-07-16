@@ -17,7 +17,9 @@ If you require this package's `tsconfig-paths/register` module it will read the 
 ```
 yarn add --dev tsconfig-paths
 ```
+
 or
+
 ```
 npm install --save-dev tsconfig-paths
 ```
@@ -25,9 +27,11 @@ npm install --save-dev tsconfig-paths
 ## How to use
 
 ### With node
+
 `node -r tsconfig-paths/register main.js`
 
 ### With ts-node
+
 `ts-node -r tsconfig-paths/register main.ts`
 
 If `process.env.TS_NODE_PROJECT` is set it will be used to resolved tsconfig.json
@@ -37,6 +41,7 @@ If `process.env.TS_NODE_PROJECT` is set it will be used to resolved tsconfig.jso
 For webpack please use the [tsconfig-paths-webpack-plugin](https://github.com/dividab/tsconfig-paths-webpack-plugin).
 
 ### With mocha and ts-node
+
 As of Mocha >= 4.0.0 the `--compiler` was [deprecated](https://github.com/mochajs/mocha/wiki/compilers-deprecation). Instead `--require` should be used. You also have to specify a glob that includes `.ts` files because mocha looks after files with `.js` extension by default.
 
 ```bash
@@ -44,17 +49,20 @@ mocha -r ts-node/register -r tsconfig-paths/register "test/**/*.ts"
 ```
 
 ### Bootstrap tsconfig-paths with explicit params
+
 If you want more granular control over tsconfig-paths you can bootstrap it. This can be useful if you for instance have compiled with `tsc` to another directory where `tsconfig.json` doesn't exists.
+
 ```javascript
 const tsConfig = require("./tsconfig.json");
 const tsConfigPaths = require("tsconfig-paths");
 
 const baseUrl = "./"; // Either absolute or relative path. If relative it's resolved to current working directory.
 tsConfigPaths.register({
-    baseUrl,
-    paths: tsConfig.compilerOptions.paths
+  baseUrl,
+  paths: tsConfig.compilerOptions.paths
 });
 ```
+
 Then run with:
 
 `node -r ./tsconfig-paths-bootstrap.js main.js`
@@ -71,21 +79,26 @@ ts-node --project customLocation/tsconfig.json -r tsconfig-paths/register "test/
 
 _Environment variable denoted in parentheses._
 
-* `-P, --project [path]` Path to TypeScript JSON project file (`TS_NODE_PROJECT`)
+- `-P, --project [path]` Path to TypeScript JSON project file (`TS_NODE_PROJECT`)
 
 ## Config loading process
-1. Use explicit params passed to register
-2. Use `process.env.TS_NODE_PROJECT` to resolve tsConfig.json and the specified baseUrl and paths.
-3. Resolves tsconfig.json from current working directory and the specified baseUrl and paths.
+
+1.  Use explicit params passed to register
+2.  Use `process.env.TS_NODE_PROJECT` to resolve tsConfig.json and the specified baseUrl and paths.
+3.  Resolves tsconfig.json from current working directory and the specified baseUrl and paths.
 
 ## Programmatic use
 
 The public API consists of these functions:
 
+- [loadConfig](#loadConfig)
+- [createMatchPath](#createMatchPath) / [createMatchPathAsync](#createMatchPathAsync)
+- [matchFromAbsolutePaths](#matchFromAbsolutePaths) / [matchFromAbsolutePathsAsync](#matchFromAbsolutePathsAsync)
+
 ### loadConfig
 
 ```typescript
-export function loadConfig(cwd: string = process.cwd()): ConfigLoaderResult
+export function loadConfig(cwd: string = process.cwd()): ConfigLoaderResult;
 
 export type ConfigLoaderResult =
   | ConfigLoaderSuccessResult
@@ -122,17 +135,16 @@ export interface MatchPath {
 
 /**
  * Creates a function that can resolve paths according to tsconfig paths property.
- * @param tsConfigPath The paths where tsconfig.json is located.
- * @param baseUrl The baseUrl specified in tsconfig.
- * @param paths The paths specified in tsconfig.
+ * @param absoluteBaseUrl Absolute version of baseUrl as specified in tsconfig.
+ * @param paths The paths as specified in tsconfig.
  * @param mainFields A list of package.json field names to try when resolving module files.
+ * @returns a function that can resolve paths.
  */
 export function createMatchPath(
   absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> },
   mainFields: string[] = ["main"]
 ): MatchPath {
-
 ```
 
 The `createMatchPath` function will create a function that can match paths. It accepts `baseUrl` and `paths` directly as they are specified in tsconfig and will handle resolving paths to absolute form. The created function has the signare specified by the type `MatchPath` above.
