@@ -61,10 +61,7 @@ function loadSyncDefault(cwd: string, filename?: string): TsConfigLoaderResult {
   };
 }
 
-export function resolveConfigPath(
-  cwd: string,
-  filename?: string
-): string | undefined {
+function resolveConfigPath(cwd: string, filename?: string): string | undefined {
   if (filename) {
     const absolutePath = fs.lstatSync(filename).isDirectory()
       ? path.resolve(filename, "./tsconfig.json")
