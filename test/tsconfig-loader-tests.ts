@@ -116,6 +116,20 @@ describe("loadConfig", () => {
     assert.deepEqual(res, config);
   });
 
+  it("It should load a config with trailing commas", () => {
+    const config = { compilerOptions: { baseUrl: "hej" } };
+    const res = loadTsconfig(
+      "/root/dir1/tsconfig.json",
+      path => path === "/root/dir1/tsconfig.json",
+      _ => `{
+          "compilerOptions": { 
+            "baseUrl": "hej",
+          },
+        }`
+    );
+    assert.deepEqual(res, config);
+  });
+
   it("It should load a config with extends and overwrite baseUrl", () => {
     const firstConfig = {
       extends: "../base-config.json",

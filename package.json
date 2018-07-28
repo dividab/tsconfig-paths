@@ -30,9 +30,9 @@
   },
   "dependencies": {
     "deepmerge": "^2.0.1",
+    "json5": "^1.0.1",
     "minimist": "^1.2.0",
-    "strip-bom": "^3.0.0",
-    "strip-json-comments": "^2.0.1"
+    "strip-bom": "^3.0.0"
   },
   "scripts": {
     "start": "cd src && ts-node index.ts",

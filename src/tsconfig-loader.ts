@@ -1,9 +1,10 @@
 import * as path from "path";
 import * as fs from "fs";
 import * as deepmerge from "deepmerge";
-import * as StripJsonComments from "strip-json-comments";
-// tslint:disable-next-line:no-require-imports
+// tslint:disable:no-require-imports
+import JSON5 = require("json5");
 import StripBom = require("strip-bom");
+// tslint:enable:no-require-imports
 
 /**
  * Typing for the parts of tsconfig that we care about
@@ -108,8 +109,8 @@ export function loadTsconfig(
   }
 
   const configString = readFileSync(configFilePath);
-  const cleanedJson = StripBom(StripJsonComments(configString));
-  const config: Tsconfig = JSON.parse(cleanedJson);
+  const cleanedJson = StripBom(configString);
+  const config: Tsconfig = JSON5.parse(cleanedJson);
   let extendedConfig = config.extends;
 
   if (extendedConfig) {
