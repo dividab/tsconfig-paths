@@ -29,6 +29,7 @@
     "typescript": "^2.4.1"
   },
   "dependencies": {
+    "@types/json5": "^0.0.29",
     "deepmerge": "^2.0.1",
     "json5": "^1.0.1",
     "minimist": "^1.2.0",
