@@ -257,7 +257,8 @@ Ignore field name mappings in package.json files that are not paths of existing 
 
 - Initial version.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.4.2...master
+[unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.5.0...master
+[3.5.0]: https://github.com/dividab/tsconfig-paths/compare/3.4.2...3.5.0
 [3.4.2]: https://github.com/dividab/tsconfig-paths/compare/3.4.1...3.4.2
 [3.4.1]: https://github.com/dividab/tsconfig-paths/compare/3.4.0...3.4.1
 [3.4.0]: https://github.com/dividab/tsconfig-paths/compare/3.3.2...3.4.0
