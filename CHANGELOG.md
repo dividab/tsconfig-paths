@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.5.0] - 2018-07-28
+
+### Added
+
+Add support for trailing commas in tsconfig.json (use JSON5 to parse). See issue [#51](https://github.com/dividab/tsconfig-paths/issues/51), and PR [#58](https://github.com/dividab/tsconfig-paths/pull/58). Thanks to [@jshado1](https://github.com/jshado1) for this addition!
+
 ## [3.4.2] - 2018-06-30
 
 ### Fixed
