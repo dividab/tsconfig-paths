@@ -7,23 +7,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.6.0] - 2018-09-10
+
+### Added
+
+- Prefer Node's core modules over file modules. See PR [#60](https://github.com/dividab/tsconfig-paths/pull/60) and issue [56](https://github.com/dividab/tsconfig-paths/issues/56). Thanks to @ljani for this addition! (#60)
+
 ## [3.5.0] - 2018-07-28
 
 ### Added
 
-Add support for trailing commas in tsconfig.json (use JSON5 to parse). See issue [#48](https://github.com/dividab/tsconfig-paths/issues/48), and PR [#58](https://github.com/dividab/tsconfig-paths/pull/58). Thanks to [@jshado1](https://github.com/jshado1) for this addition!
+- Add support for trailing commas in tsconfig.json (use JSON5 to parse). See issue [#48](https://github.com/dividab/tsconfig-paths/issues/48), and PR [#58](https://github.com/dividab/tsconfig-paths/pull/58). Thanks to [@jshado1](https://github.com/jshado1) for this addition!
 
 ## [3.4.2] - 2018-06-30
 
 ### Fixed
 
-Do not resolve directories, only files, sse issue [#51](https://github.com/dividab/tsconfig-paths/issues/51).
+- Do not resolve directories, only files, sse issue [#51](https://github.com/dividab/tsconfig-paths/issues/51).
 
 ## [3.4.1] - 2018-06-24
 
 ### Fixed
 
-Ignore field name mappings in package.json files that are not paths of existing files [#46](https://github.com/dividab/tsconfig-paths/pull/45). Thanks to [@christoffer](https://github.com/christoffer) for this fix!
+- Ignore field name mappings in package.json files that are not paths of existing files [#46](https://github.com/dividab/tsconfig-paths/pull/45). Thanks to [@christoffer](https://github.com/christoffer) for this fix!
 
 ## [3.4.0] - 2018-06-12
 
@@ -257,7 +263,8 @@ Ignore field name mappings in package.json files that are not paths of existing 
 
 - Initial version.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.5.0...master
+[unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.6.0...master
+[3.6.0]: https://github.com/dividab/tsconfig-paths/compare/3.5.0...3.6.0
 [3.5.0]: https://github.com/dividab/tsconfig-paths/compare/3.4.2...3.5.0
 [3.4.2]: https://github.com/dividab/tsconfig-paths/compare/3.4.1...3.4.2
 [3.4.1]: https://github.com/dividab/tsconfig-paths/compare/3.4.0...3.4.1
