@@ -61,10 +61,13 @@ const tsConfig = require("./tsconfig.json");
 const tsConfigPaths = require("tsconfig-paths");
 
 const baseUrl = "./"; // Either absolute or relative path. If relative it's resolved to current working directory.
-tsConfigPaths.register({
+const cleanup = tsConfigPaths.register({
   baseUrl,
   paths: tsConfig.compilerOptions.paths
 });
+
+// When path registration is no longer needed
+cleanup()
 ```
 
 Then run with:
@@ -111,10 +114,11 @@ export interface ExplicitParams {
 /**
  * Installs a custom module load function that can adhere to paths in tsconfig.
  */
-export function register(explicitParams: ExplicitParams): void;
+export function register(explicitParams: ExplicitParams): () => void;
 ```
 
 This function will patch the node's module loading so it will look for modules in paths specified by tsconfig.json.
+A function is returned for you to reinstate Node's original module loading.
 
 ### loadConfig
 

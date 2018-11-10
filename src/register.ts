@@ -2,6 +2,8 @@ import { createMatchPath } from "./match-path-sync";
 import { configLoader, ExplicitParams } from "./config-loader";
 import { options } from "./options";
 
+const noOp = (): void => void 0;
+
 function getCoreModules(
   builtinModules: string[] | undefined
 ): { [key: string]: boolean } {
@@ -45,8 +47,9 @@ function getCoreModules(
 
 /**
  * Installs a custom module load function that can adhere to paths in tsconfig.
+ * Returns a function to undo paths registration.
  */
-export function register(explicitParams: ExplicitParams): void {
+export function register(explicitParams: ExplicitParams): () => void {
   const configLoaderResult = configLoader({
     cwd: options.cwd,
     explicitParams
@@ -56,7 +59,8 @@ export function register(explicitParams: ExplicitParams): void {
     console.warn(
       `${configLoaderResult.message}. tsconfig-paths will be skipped`
     );
-    return;
+
+    return noOp;
   }
 
   const matchPath = createMatchPath(
@@ -82,5 +86,10 @@ export function register(explicitParams: ExplicitParams): void {
     }
     // tslint:disable-next-line:no-invalid-this
     return originalResolveFilename.apply(this, arguments);
+  };
+
+  return () => {
+    // Return node's module loading to original state.
+    Module._resolveFilename = originalResolveFilename;
   };
 }
