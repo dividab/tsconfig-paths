@@ -7,11 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.7.0] - 2018-11-11
+
+### Added
+
+- Allow cleanup of register(). See PR [#64](https://github.com/dividab/tsconfig-paths/pull/64) and issue [63](https://github.com/dividab/tsconfig-paths/issues/63). Thanks to [@TylorS](https://github.com/TylorS) for this addition!
+
 ## [3.6.0] - 2018-09-10
 
 ### Added
 
-- Prefer Node's core modules over file modules. See PR [#60](https://github.com/dividab/tsconfig-paths/pull/60) and issue [56](https://github.com/dividab/tsconfig-paths/issues/56). Thanks to @ljani for this addition! (#60)
+- Prefer Node's core modules over file modules. See PR [#60](https://github.com/dividab/tsconfig-paths/pull/60) and issue [56](https://github.com/dividab/tsconfig-paths/issues/56). Thanks to @ljani for this addition!
 
 ## [3.5.0] - 2018-07-28
 
