@@ -67,7 +67,7 @@ const cleanup = tsConfigPaths.register({
 });
 
 // When path registration is no longer needed
-cleanup()
+cleanup();
 ```
 
 Then run with:
@@ -209,8 +209,8 @@ This is the async version of `matchFromAbsolutePaths`. It has the same signature
 
 [version-image]: https://img.shields.io/npm/v/tsconfig-paths.svg?style=flat
 [version-url]: https://www.npmjs.com/package/tsconfig-paths
-[travis-image]: https://travis-ci.org/dividab/tsconfig-paths.svg?branch=master&style=flat
-[travis-url]: https://travis-ci.org/dividab/tsconfig-paths
+[travis-image]: https://travis-ci.com/dividab/tsconfig-paths.svg?branch=master&style=flat
+[travis-url]: https://travis-ci.com/dividab/tsconfig-paths
 [coveralls-image]: https://coveralls.io/repos/github/dividab/tsconfig-paths/badge.svg?style=flat
 [coveralls-url]: https://coveralls.io/github/dividab/tsconfig-paths
 [license-image]: https://img.shields.io/github/license/dividab/tsconfig-paths.svg?style=flat
