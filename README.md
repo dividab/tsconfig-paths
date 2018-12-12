@@ -2,7 +2,7 @@
 
 [![npm version][version-image]][version-url]
 [![travis build][travis-image]][travis-url]
-[![coveralls coverage][coveralls-image]][coveralls-url]
+[![Coverage Status][codecov-image]][codecov-url]
 [![MIT license][license-image]][license-url]
 [![code style: prettier][prettier-image]][prettier-url]
 
@@ -211,8 +211,8 @@ This is the async version of `matchFromAbsolutePaths`. It has the same signature
 [version-url]: https://www.npmjs.com/package/tsconfig-paths
 [travis-image]: https://travis-ci.com/dividab/tsconfig-paths.svg?branch=master&style=flat
 [travis-url]: https://travis-ci.com/dividab/tsconfig-paths
-[coveralls-image]: https://coveralls.io/repos/github/dividab/tsconfig-paths/badge.svg?style=flat
-[coveralls-url]: https://coveralls.io/github/dividab/tsconfig-paths
+[codecov-image]: https://codecov.io/gh/dividab/tsconfig-paths/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/dividab/tsconfig-paths
 [license-image]: https://img.shields.io/github/license/dividab/tsconfig-paths.svg?style=flat
 [license-url]: https://opensource.org/licenses/MIT
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg

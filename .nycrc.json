@@ -2,7 +2,7 @@
   "include": ["src/**/*.{ts,tsx}"],
   "exclude": ["src/register.ts"],
   "extension": [".ts", ".tsx"],
-  "reporter": ["html", "lcov", "text"],
+  "reporter": ["json"],
   "sourceMap": true,
   "all": true
 }
