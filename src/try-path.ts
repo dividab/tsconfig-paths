@@ -21,10 +21,10 @@ export function getPathsToTry(
   requestedModule: string
 ): ReadonlyArray<TryPath> | undefined {
   if (
-    requestedModule[0] === "." ||
-    requestedModule[0] === path.sep ||
     !absolutePathMappings ||
-    !requestedModule
+    !requestedModule ||
+    requestedModule[0] === "." ||
+    requestedModule[0] === path.sep
   ) {
     return undefined;
   }
