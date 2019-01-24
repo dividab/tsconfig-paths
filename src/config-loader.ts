@@ -5,6 +5,8 @@ import { options } from "./options";
 export interface ExplicitParams {
   baseUrl: string;
   paths: { [key: string]: Array<string> };
+  mainFields?: Array<string>;
+  addMatchAll?: boolean;
 }
 
 export type TsConfigLoader = (
@@ -23,6 +25,8 @@ export interface ConfigLoaderSuccessResult {
   baseUrl: string;
   absoluteBaseUrl: string;
   paths: { [key: string]: Array<string> };
+  mainFields?: Array<string>;
+  addMatchAll?: boolean;
 }
 
 export interface ConfigLoaderFailResult {
@@ -54,7 +58,9 @@ export function configLoader({
       configFileAbsolutePath: "",
       baseUrl: explicitParams.baseUrl,
       absoluteBaseUrl,
-      paths: explicitParams.paths
+      paths: explicitParams.paths,
+      mainFields: explicitParams.mainFields,
+      addMatchAll: explicitParams.addMatchAll
     };
   }
 

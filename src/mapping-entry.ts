@@ -16,10 +16,12 @@ export interface Paths {
  * sort by keys each time we use the mappings. 
  * @param absoluteBaseUrl 
  * @param paths 
+ * @param addMatchAll 
  */
 export function getAbsoluteMappingEntries(
   absoluteBaseUrl: string,
-  paths: Paths
+  paths: Paths,
+  addMatchAll: boolean
 ): ReadonlyArray<MappingEntry> {
   // Resolve all paths to absolute form once here, and sort them by
   // longest prefix once here, this saves time on each request later.
@@ -34,9 +36,9 @@ export function getAbsoluteMappingEntries(
       )
     });
   }
-  // If there is no match-all path specified in the paths section of tsconfig, then try to match all
-  // all relative to baseUrl, this is how typescript works.
-  if (!paths["*"]) {
+  // If there is no match-all path specified in the paths section of tsconfig, then try to match
+  // all paths relative to baseUrl, this is how typescript works.
+  if (!paths["*"] && addMatchAll) {
     absolutePaths.push({
       pattern: "*",
       paths: [`${absoluteBaseUrl.replace(/\/$/, "")}/*`]

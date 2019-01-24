@@ -8,6 +8,7 @@ export interface OneTest {
   readonly absoluteBaseUrl: string;
   readonly paths: { [key: string]: Array<string> };
   readonly mainFields?: string[];
+  readonly addMatchAll?: boolean;
   readonly existingFiles: ReadonlyArray<string>;
   readonly requestedModule: string;
   readonly extensions?: ReadonlyArray<string>;
@@ -180,6 +181,15 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("/root", "mylib", "index.ts")],
     requestedModule: "mylib",
     expectedPath: dirname(join("/root", "mylib", "index.ts"))
+  },
+  {
+    name: "should not resolve with the help of baseUrl when asked not to",
+    absoluteBaseUrl: "/root/",
+    paths: {},
+    addMatchAll: false,
+    existingFiles: [join("/root", "mylib", "index.ts")],
+    requestedModule: "mylib",
+    expectedPath: undefined
   },
   {
     name: "should not locate path that does not match",

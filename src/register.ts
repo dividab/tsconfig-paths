@@ -65,7 +65,9 @@ export function register(explicitParams: ExplicitParams): () => void {
 
   const matchPath = createMatchPath(
     configLoaderResult.absoluteBaseUrl,
-    configLoaderResult.paths
+    configLoaderResult.paths,
+    configLoaderResult.mainFields,
+    configLoaderResult.addMatchAll
   );
 
   // Patch node's module loading

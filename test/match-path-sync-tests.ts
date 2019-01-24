@@ -8,7 +8,8 @@ describe("match-path-sync", () => {
       const matchPath = createMatchPath(
         t.absoluteBaseUrl,
         t.paths,
-        t.mainFields
+        t.mainFields,
+        t.addMatchAll
       );
       const result = matchPath(
         t.requestedModule,
