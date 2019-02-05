@@ -26,11 +26,13 @@ export interface MatchPathAsyncCallback {
 export function createMatchPathAsync(
   absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> },
-  mainFields: string[] = ["main"]
+  mainFields: string[] = ["main"],
+  addMatchAll: boolean = true
 ): MatchPathAsync {
   const absolutePaths = MappingEntry.getAbsoluteMappingEntries(
     absoluteBaseUrl,
-    paths
+    paths,
+    addMatchAll
   );
 
   return (

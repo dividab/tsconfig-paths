@@ -20,16 +20,19 @@ export interface MatchPath {
  * @param absoluteBaseUrl Absolute version of baseUrl as specified in tsconfig.
  * @param paths The paths as specified in tsconfig.
  * @param mainFields A list of package.json field names to try when resolving module files.
+ * @param addMatchAll Add a match-all "*" rule if none is present
  * @returns a function that can resolve paths.
  */
 export function createMatchPath(
   absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> },
-  mainFields: string[] = ["main"]
+  mainFields: string[] = ["main"],
+  addMatchAll: boolean = true
 ): MatchPath {
   const absolutePaths = MappingEntry.getAbsoluteMappingEntries(
     absoluteBaseUrl,
-    paths
+    paths,
+    addMatchAll
   );
 
   return (
