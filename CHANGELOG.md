@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.8.0] - 2019-02-05
+
+### Added
+
+- Add option to avoid adding a match-all rule. See PR [#73](https://github.com/dividab/tsconfig-paths/pull/73) and issue [72](https://github.com/dividab/tsconfig-paths/issues/72). Thanks to [@Swatinem](https://github.com/Swatinem) for this addition!
+
 ## [3.7.0] - 2018-11-11
 
 ### Added
