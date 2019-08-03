@@ -143,7 +143,7 @@ export interface ConfigLoaderFailResult {
 }
 ```
 
-This function loads the tsconfig.json. It will start searching from the specified `cwd` directory.
+This function loads the tsconfig.json. It will start searching from the specified `cwd` directory. Passing the tsconfig.json file directly instead of a directory also works.
 
 ### createMatchPath
 
