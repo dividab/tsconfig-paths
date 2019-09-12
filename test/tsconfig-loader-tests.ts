@@ -130,14 +130,18 @@ describe("loadConfig", () => {
     assert.deepEqual(res, config);
   });
 
-  it("It should load a config with extends and overwrite baseUrl", () => {
+  it("It should load a config with extends and overwrite all options", () => {
     const firstConfig = {
       extends: "../base-config.json",
-      compilerOptions: { baseUrl: "kalle" }
+      compilerOptions: { baseUrl: "kalle", paths: { foo: ["bar2"] } }
     };
     const firstConfigPath = join("/root", "dir1", "tsconfig.json");
     const baseConfig = {
-      compilerOptions: { baseUrl: "olle", paths: { foo: ["bar"] } }
+      compilerOptions: {
+        baseUrl: "olle",
+        paths: { foo: ["bar1"] },
+        strict: true
+      }
     };
     const baseConfigPath = join("/root", "base-config.json");
     const res = loadTsconfig(
@@ -156,7 +160,11 @@ describe("loadConfig", () => {
 
     assert.deepEqual(res, {
       extends: "../base-config.json",
-      compilerOptions: { baseUrl: "kalle", paths: { foo: ["bar"] } }
+      compilerOptions: {
+        baseUrl: "kalle",
+        paths: { foo: ["bar2"] },
+        strict: true
+      }
     });
   });
 

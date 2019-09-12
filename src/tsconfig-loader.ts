@@ -1,6 +1,5 @@
 import * as path from "path";
 import * as fs from "fs";
-import * as deepmerge from "deepmerge";
 // tslint:disable:no-require-imports
 import JSON5 = require("json5");
 import StripBom = require("strip-bom");
@@ -14,6 +13,7 @@ export interface Tsconfig {
   compilerOptions?: {
     baseUrl?: string;
     paths?: { [key: string]: Array<string> };
+    strict?: boolean;
   };
 }
 
@@ -139,7 +139,14 @@ export function loadTsconfig(
       );
     }
 
-    return deepmerge(base, config);
+    return {
+      ...base,
+      ...config,
+      compilerOptions: {
+        ...base.compilerOptions,
+        ...config.compilerOptions
+      }
+    };
   }
   return config;
 }

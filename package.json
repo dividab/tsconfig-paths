@@ -9,7 +9,6 @@
   "repository": "https://github.com/dividab/tsconfig-paths",
   "devDependencies": {
     "@types/chai": "^4.1.4",
-    "@types/deepmerge": "^1.3.2",
     "@types/minimist": "^1.2.0",
     "@types/mocha": "^5.2.3",
     "@types/node": "^6.0.54",
@@ -30,7 +29,6 @@
   },
   "dependencies": {
     "@types/json5": "^0.0.29",
-    "deepmerge": "^2.0.1",
     "json5": "^1.0.1",
     "minimist": "^1.2.0",
     "strip-bom": "^3.0.0"
