@@ -211,6 +211,14 @@ This is the async version of `createMatchPath`. It has the same signature but wi
 
 This is the async version of `matchFromAbsolutePaths`. It has the same signature but with a callback parameter for the result.
 
+## How to publish
+
+```
+yarn version --patch
+yarn version --minor
+yarn version --major
+```
+
 [version-image]: https://img.shields.io/npm/v/tsconfig-paths.svg?style=flat
 [version-url]: https://www.npmjs.com/package/tsconfig-paths
 [travis-image]: https://travis-ci.com/dividab/tsconfig-paths.svg?branch=master&style=flat
