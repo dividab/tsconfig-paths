@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.9.0] - 2019-09-12
+
+### Added
+
+- Make extension config override instead of deep merge. See PR [#95](https://github.com/dividab/tsconfig-paths/pull/95) and issue [#94](https://github.com/dividab/tsconfig-paths/issues/94). Thanks to [@OliverJAsh](https://github.com/OliverJAsh) for this addition!
+
 ## [3.8.0] - 2019-02-05
 
 ### Added
@@ -275,7 +281,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Initial version.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths/compare/3.8.0...master
+[unreleased]: https://github.com/dividab/tsconfig-paths/compare/v3.9.0...master
+[3.9.0]: https://github.com/dividab/tsconfig-paths/compare/v3.8.0...v3.9.0
 [3.8.0]: https://github.com/dividab/tsconfig-paths/compare/3.7.0...3.8.0
 [3.7.0]: https://github.com/dividab/tsconfig-paths/compare/3.6.0...3.7.0
 [3.6.0]: https://github.com/dividab/tsconfig-paths/compare/3.5.0...3.6.0
