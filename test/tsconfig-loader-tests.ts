@@ -108,7 +108,7 @@ describe("loadConfig", () => {
       path => path === "/root/dir1/tsconfig.json",
       _ => `{
           // my comment
-          "compilerOptions": { 
+          "compilerOptions": {
             "baseUrl": "hej"
           }
         }`
@@ -122,7 +122,7 @@ describe("loadConfig", () => {
       "/root/dir1/tsconfig.json",
       path => path === "/root/dir1/tsconfig.json",
       _ => `{
-          "compilerOptions": { 
+          "compilerOptions": {
             "baseUrl": "hej",
           },
         }`
@@ -161,7 +161,64 @@ describe("loadConfig", () => {
     assert.deepEqual(res, {
       extends: "../base-config.json",
       compilerOptions: {
-        baseUrl: "kalle",
+        baseUrl: "../kalle",
+        paths: { foo: ["bar2"] },
+        strict: true
+      }
+    });
+  });
+
+  it("It should correctly handle mutilple tsconfig 'extends'", () => {
+    const secondConfig = {
+      extends: "../tsconfig.json",
+      compilerOptions: {
+        strict: true,
+        baseUrl: "deut"
+      }
+    };
+    const secondConfigPath = join(
+      "/root",
+      "dir1",
+      "dir2",
+      "tsconfig.second.json"
+    );
+    const firstConfig = {
+      extends: "../base-config.json",
+      compilerOptions: { baseUrl: "k  alle", paths: { foo: ["bar2"] } }
+    };
+    const firstConfigPath = join("/root", "dir1", "tsconfig.json");
+    const baseConfig = {
+      compilerOptions: {
+        baseUrl: "olle",
+        strict: false,
+        paths: { foo: ["bar1"] }
+      }
+    };
+    const baseConfigPath = join("/root", "base-config.json");
+    const res = loadTsconfig(
+      join("/root", "dir1", "dir2", "tsconfig.second.json"),
+      path =>
+        path === firstConfigPath ||
+        path === secondConfigPath ||
+        path === baseConfigPath,
+      path => {
+        if (path === firstConfigPath) {
+          return JSON.stringify(firstConfig);
+        }
+        if (path === secondConfigPath) {
+          return JSON.stringify(secondConfig);
+        }
+        if (path === baseConfigPath) {
+          return JSON.stringify(baseConfig);
+        }
+        return "";
+      }
+    );
+
+    assert.deepEqual(res, {
+      extends: "../tsconfig.json",
+      compilerOptions: {
+        baseUrl: "../../deut",
         paths: { foo: ["bar2"] },
         strict: true
       }

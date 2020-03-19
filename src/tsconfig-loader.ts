@@ -108,45 +108,51 @@ export function loadTsconfig(
     return undefined;
   }
 
-  const configString = readFileSync(configFilePath);
-  const cleanedJson = StripBom(configString);
-  const config: Tsconfig = JSON5.parse(cleanedJson);
-  let extendedConfig = config.extends;
-
-  if (extendedConfig) {
+  // Compose a config object by looping through all tsconfig files for
+  // as long as 'extends' is set
+  let extensionPath: string | null = configFilePath;
+  let extendsDir: string = ".";
+  let config: Tsconfig = {};
+  while (extensionPath !== null) {
     if (
-      typeof extendedConfig === "string" &&
-      extendedConfig.indexOf(".json") === -1
+      typeof extensionPath === "string" &&
+      extensionPath.indexOf(".json") === -1
     ) {
-      extendedConfig += ".json";
+      extensionPath += ".json";
     }
 
-    const currentDir = path.dirname(configFilePath);
-    const base =
-      loadTsconfig(
-        path.join(currentDir, extendedConfig),
-        existsSync,
-        readFileSync
-      ) || {};
+    const configString = readFileSync(extensionPath);
+    const cleanedJson = StripBom(configString);
+    const newConfig: Tsconfig = JSON5.parse(cleanedJson);
 
-    // baseUrl should be interpreted as relative to the base tsconfig,
-    // but we need to update it so it is relative to the original tsconfig being loaded
-    if (base && base.compilerOptions && base.compilerOptions.baseUrl) {
-      const extendsDir = path.dirname(extendedConfig);
-      base.compilerOptions.baseUrl = path.join(
-        extendsDir,
-        base.compilerOptions.baseUrl
-      );
-    }
-
-    return {
-      ...base,
+    // Merge new and previous config. Since the loop is walking 'backwards'
+    // we need to make sure the 'old' config is prioritized over the 'new' one.
+    config = {
+      ...newConfig,
       ...config,
       compilerOptions: {
-        ...base.compilerOptions,
+        ...newConfig.compilerOptions,
         ...config.compilerOptions
       }
     };
+
+    // baseUrl should be interpreted as relative to the base tsconfig,
+    // but we need to update it so it is relative to the original tsconfig being loaded
+    // we therefore need to compose the 'extendsDir' path
+    extendsDir = newConfig.extends
+      ? path.join(extendsDir, path.dirname(newConfig.extends))
+      : extendsDir;
+    extensionPath = newConfig.extends
+      ? path.resolve(path.dirname(extensionPath), newConfig.extends)
+      : null;
   }
+
+  if (config.compilerOptions && config.compilerOptions.baseUrl) {
+    config.compilerOptions.baseUrl = path.join(
+      extendsDir,
+      config.compilerOptions.baseUrl
+    );
+  }
+
   return config;
 }
