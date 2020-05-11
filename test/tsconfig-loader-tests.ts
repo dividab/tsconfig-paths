@@ -65,6 +65,41 @@ describe("tsconfig-loader", () => {
   });
 });
 
+it("should use TS_NODE_BASEURL env if exists", () => {
+  const result = tsConfigLoader({
+    cwd: "/foo/bar",
+    getEnv: (key: string) =>
+      key === "TS_NODE_BASEURL" ? "SOME_BASEURL" : undefined,
+    loadSync: (cwd: string, fileName: string, baseUrl: string) => {
+      return {
+        tsConfigPath: undefined,
+        baseUrl,
+        paths: {}
+      };
+    }
+  });
+
+  assert.equal(result.baseUrl, "SOME_BASEURL");
+});
+
+it("should not use TS_NODE_BASEURL env if it does not exist", () => {
+  const result = tsConfigLoader({
+    cwd: "/foo/bar",
+    getEnv: (key: string) => {
+      return undefined;
+    },
+    loadSync: (cwd: string, fileName: string, baseUrl: string) => {
+      return {
+        tsConfigPath: undefined,
+        baseUrl,
+        paths: {}
+      };
+    }
+  });
+
+  assert.equal(result.baseUrl, undefined);
+});
+
 describe("walkForTsConfig", () => {
   it("should find tsconfig in starting directory", () => {
     const pathToTsconfig = join("/root", "dir1", "tsconfig.json");
