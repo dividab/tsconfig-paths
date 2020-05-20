@@ -49,11 +49,13 @@ describe("mapping-entry", () => {
       { type: "file", path: join("/absolute", "base", "url", "foo2", "bar") },
       {
         type: "extension",
-        path: join("/absolute", "base", "url", "foo2", "bar.ts")
+        path: join("/absolute", "base", "url", "foo2", "bar.ts"),
+        extensionLength: 3
       },
       {
         type: "extension",
-        path: join("/absolute", "base", "url", "foo2", "bar.tsx")
+        path: join("/absolute", "base", "url", "foo2", "bar.tsx"),
+        extensionLength: 4
       },
       {
         type: "package",
@@ -69,8 +71,16 @@ describe("mapping-entry", () => {
       },
       // "*"
       { type: "file", path: join("/absolute", "base", "url", "foo1") },
-      { type: "extension", path: join("/absolute", "base", "url", "foo1.ts") },
-      { type: "extension", path: join("/absolute", "base", "url", "foo1.tsx") },
+      {
+        type: "extension",
+        path: join("/absolute", "base", "url", "foo1.ts"),
+        extensionLength: 3
+      },
+      {
+        type: "extension",
+        path: join("/absolute", "base", "url", "foo1.tsx"),
+        extensionLength: 4
+      },
       {
         type: "package",
         path: join("/absolute", "base", "url", "foo1", "package.json")
