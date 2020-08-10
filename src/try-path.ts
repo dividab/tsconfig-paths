@@ -1,6 +1,7 @@
 import * as path from "path";
 import { MappingEntry } from "./mapping-entry";
 import { dirname } from "path";
+import { removeExtension } from "./filesystem";
 
 export interface TryPath {
   readonly type: "file" | "extension" | "index" | "package";
@@ -59,12 +60,15 @@ export function getPathsToTry(
   return pathsToTry.length === 0 ? undefined : pathsToTry;
 }
 
+// Not sure why we don't just return the full found path?
 export function getStrippedPath(tryPath: TryPath): string {
   return tryPath.type === "index"
     ? dirname(tryPath.path)
-    : tryPath.type === "file" ||
-      tryPath.type === "extension" ||
-      tryPath.type === "package"
+    : tryPath.type === "file"
+    ? tryPath.path
+    : tryPath.type === "extension"
+    ? removeExtension(tryPath.path)
+    : tryPath.type === "package"
     ? tryPath.path
     : exhaustiveTypeException(tryPath.type);
 }

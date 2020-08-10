@@ -1,4 +1,5 @@
 import { join, dirname } from "path";
+import { removeExtension } from "../../src/filesystem";
 
 export interface OneTest {
   readonly name: string;
@@ -59,7 +60,7 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("/root", "location", "mylib.myext")],
     requestedModule: "lib/mylib",
     extensions: [".js", ".myext"],
-    expectedPath: join("/root", "location", "mylib.myext"),
+    expectedPath: removeExtension(join("/root", "location", "mylib.myext")),
   },
   {
     name: "should resolve request with extension specified",
@@ -77,7 +78,7 @@ export const tests: ReadonlyArray<OneTest> = [
     },
     existingFiles: [join("/root", "location", "foo.ts")],
     requestedModule: "lib/foo",
-    expectedPath: join("/root", "location", "foo.ts"),
+    expectedPath: removeExtension(join("/root", "location", "foo.ts")),
   },
   {
     name: "should resolve to parent folder when filename is in subfolder",
@@ -105,17 +106,6 @@ export const tests: ReadonlyArray<OneTest> = [
     requestedModule: "lib/mylib.js",
     extensions: [".ts", ".js"],
     expectedPath: join("/root", "location", "mylib.js", "kalle.js"),
-  },
-  {
-    name:
-      "should resolve from main field in package.json and correctly remove file extension",
-    absoluteBaseUrl: "/root/",
-    paths: { "lib/*": ["location/*"] },
-    existingFiles: [join("/root", "location", "mylibjs", "kalle.js")],
-    packageJson: { main: "./kalle.js" },
-    extensions: [".ts", ".js"],
-    requestedModule: "lib/mylibjs",
-    expectedPath: join("/root", "location", "mylibjs", "kalle.js"),
   },
   {
     name: "should resolve from list of fields by priority in package.json",
