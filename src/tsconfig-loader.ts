@@ -12,6 +12,7 @@ export interface Tsconfig {
   extends?: string;
   compilerOptions?: {
     baseUrl?: string;
+    outDir?: string;
     paths?: { [key: string]: Array<string> };
     strict?: boolean;
   };
@@ -57,6 +58,7 @@ function loadSyncDefault(cwd: string, filename?: string): TsConfigLoaderResult {
 
   return {
     tsConfigPath: configPath,
+    outDir: config && config.compilerOptions && config.compilerOptions.outDir,
     baseUrl: config && config.compilerOptions && config.compilerOptions.baseUrl,
     paths: config && config.compilerOptions && config.compilerOptions.paths,
   };

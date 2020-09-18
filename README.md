@@ -30,6 +30,10 @@ npm install --save-dev tsconfig-paths
 
 `node -r tsconfig-paths/register main.js`
 
+if you configure tsconfig outDir it reedirect output structure to another direcotry you can use it this way
+
+`node -r tsconfig-paths/node dist/main.js`
+
 ### With ts-node
 
 `ts-node -r tsconfig-paths/register main.ts`
