@@ -21,6 +21,7 @@ export interface Tsconfig {
 export interface TsConfigLoaderResult {
   tsConfigPath: string | undefined;
   baseUrl: string | undefined;
+  outDir: string | undefined;
   paths: { [key: string]: Array<string> } | undefined;
 }
 
@@ -52,6 +53,7 @@ function loadSyncDefault(cwd: string, filename?: string): TsConfigLoaderResult {
       tsConfigPath: undefined,
       baseUrl: undefined,
       paths: undefined,
+      outDir: undefined,
     };
   }
   const config = loadTsconfig(configPath);

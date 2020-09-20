@@ -50,6 +50,7 @@ describe("config-loader", (): void => {
         tsConfigPath: "/baz/tsconfig.json",
         baseUrl: "./src",
         paths: {},
+        outDir: undefined,
       }),
     });
 
@@ -67,6 +68,7 @@ describe("config-loader", (): void => {
         tsConfigPath: "/baz/tsconfig.json",
         baseUrl: undefined,
         paths: {},
+        outDir: undefined,
       }),
     });
 

@@ -16,6 +16,7 @@ describe("tsconfig-loader", () => {
           tsConfigPath: `${cwd}/tsconfig.json`,
           baseUrl: "./",
           paths: {},
+          outDir: undefined,
         };
       },
     });
@@ -32,6 +33,7 @@ describe("tsconfig-loader", () => {
           tsConfigPath: undefined,
           baseUrl: "./",
           paths: {},
+          outDir: undefined,
         };
       },
     });
@@ -50,6 +52,7 @@ describe("tsconfig-loader", () => {
             tsConfigPath: "/foo/baz/tsconfig.json",
             baseUrl: "./",
             paths: {},
+            outDir: undefined,
           };
         }
 
@@ -57,6 +60,7 @@ describe("tsconfig-loader", () => {
           tsConfigPath: undefined,
           baseUrl: "./",
           paths: {},
+          outDir: undefined,
         };
       },
     });
