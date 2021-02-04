@@ -1,8 +1,0 @@
-example
-scripts
-test
-.gitignore
-.nycrc.json
-.travis.yml
-tslint.json
-yarn.lock
