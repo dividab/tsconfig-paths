@@ -23,8 +23,7 @@ export function getPathsToTry(
   if (
     !absolutePathMappings ||
     !requestedModule ||
-    requestedModule[0] === "." ||
-    requestedModule[0] === path.sep
+    requestedModule[0] === "."
   ) {
     return undefined;
   }
