@@ -2,7 +2,13 @@ import { createMatchPath } from "./match-path-sync";
 import { configLoader, ExplicitParams } from "./config-loader";
 import { options } from "./options";
 
+interface IMatchCase {
+  [key: string]: string | undefined;
+}
+
 const noOp = (): void => void 0;
+const matchCache: IMatchCase = {};
+const NOT_MATCH_FOR_CACHE = "NO_TYPESCRIPT";
 
 function getCoreModules(
   builtinModules: string[] | undefined
@@ -79,9 +85,13 @@ export function register(explicitParams: ExplicitParams): () => void {
   Module._resolveFilename = function (request: string, _parent: any): string {
     const isCoreModule = coreModules.hasOwnProperty(request);
     if (!isCoreModule) {
-      const found = matchPath(request);
-      if (found) {
-        const modifiedArguments = [found, ...[].slice.call(arguments, 1)]; // Passes all arguments. Even those that is not specified above.
+      let found = matchCache[request];
+      if (!found) {
+        found = matchPath(request);
+        matchCache[request] = found || NOT_MATCH_FOR_CACHE;
+      }
+      if (found && found !== NOT_MATCH_FOR_CACHE) {
+        const modifiedArguments = [found].concat([].slice.call(arguments, 1)); // Passes all arguments. Even those that is not specified above.
         // tslint:disable-next-line:no-invalid-this
         return originalResolveFilename.apply(this, modifiedArguments);
       }
