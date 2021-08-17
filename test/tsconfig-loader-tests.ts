@@ -171,15 +171,15 @@ describe("loadConfig", () => {
   it("It should load a config with extends from node_modules and overwrite all options", () => {
     const firstConfig = {
       extends: "my-package/base-config.json",
-      compilerOptions: { baseUrl: "kalle", paths: { foo: ["bar2"] } }
+      compilerOptions: { baseUrl: "kalle", paths: { foo: ["bar2"] } },
     };
     const firstConfigPath = join("/root", "dir1", "tsconfig.json");
     const baseConfig = {
       compilerOptions: {
         baseUrl: "olle",
         paths: { foo: ["bar1"] },
-        strict: true
-      }
+        strict: true,
+      },
     };
     const baseConfigPath = join(
       "/root",
@@ -190,8 +190,8 @@ describe("loadConfig", () => {
     );
     const res = loadTsconfig(
       join("/root", "dir1", "tsconfig.json"),
-      path => path === firstConfigPath || path === baseConfigPath,
-      path => {
+      (path) => path === firstConfigPath || path === baseConfigPath,
+      (path) => {
         if (path === firstConfigPath) {
           return JSON.stringify(firstConfig);
         }
@@ -207,8 +207,53 @@ describe("loadConfig", () => {
       compilerOptions: {
         baseUrl: "kalle",
         paths: { foo: ["bar2"] },
-        strict: true
+        strict: true,
+      },
+    });
+  });
+
+  it("It should load a config with extends from node_modules and resolve relative baseUrl", () => {
+    const firstConfig = {
+      extends: "my-package/node/base-config.json",
+      compilerOptions: { paths: { foo: ["bar2"] } },
+    };
+    const firstConfigPath = join("/root", "dir1", "tsconfig.json");
+    const baseConfig = {
+      compilerOptions: {
+        baseUrl: "../../..",
+        paths: { foo: ["bar1"] },
+        strict: true,
+      },
+    };
+    const baseConfigPath = join(
+      "/root",
+      "dir1",
+      "node_modules",
+      "my-package",
+      "node",
+      "base-config.json"
+    );
+    const res = loadTsconfig(
+      join("/root", "dir1", "tsconfig.json"),
+      (path) => path === firstConfigPath || path === baseConfigPath,
+      (path) => {
+        if (path === firstConfigPath) {
+          return JSON.stringify(firstConfig);
+        }
+        if (path === baseConfigPath) {
+          return JSON.stringify(baseConfig);
+        }
+        return "";
       }
+    );
+
+    assert.deepEqual(res, {
+      extends: "my-package/node/base-config.json",
+      compilerOptions: {
+        baseUrl: ".",
+        paths: { foo: ["bar2"] },
+        strict: true,
+      },
     });
   });
 

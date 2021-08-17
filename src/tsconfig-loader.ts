@@ -125,13 +125,13 @@ export function loadTsconfig(
     if (
       extendedConfig.indexOf("/") !== -1 &&
       extendedConfig.indexOf(".") !== -1 &&
-      !existsSync(extendedConfigPath)
+      !existsSync(extendedConfigPath) &&
+      existsSync(path.join(currentDir, "node_modules", extendedConfig))
     ) {
-      extendedConfigPath = path.join(
-        currentDir,
-        "node_modules",
-        extendedConfig
-      );
+      // update extendedConfig from path relative node_modules to relative to
+      // current dir
+      extendedConfig = path.join("node_modules", extendedConfig);
+      extendedConfigPath = path.join(currentDir, extendedConfig);
     }
 
     const base =
