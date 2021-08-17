@@ -122,11 +122,13 @@ export function loadTsconfig(
     }
     const currentDir = path.dirname(configFilePath);
     let extendedConfigPath = path.join(currentDir, extendedConfig);
+    let isExtendedInNodeModules = false;
     if (
       extendedConfig.indexOf("/") !== -1 &&
       extendedConfig.indexOf(".") !== -1 &&
       !existsSync(extendedConfigPath)
     ) {
+      isExtendedInNodeModules = true;
       extendedConfigPath = path.join(
         currentDir,
         "node_modules",
@@ -141,10 +143,19 @@ export function loadTsconfig(
     // but we need to update it so it is relative to the original tsconfig being loaded
     if (base.compilerOptions && base.compilerOptions.baseUrl) {
       const extendsDir = path.dirname(extendedConfig);
-      base.compilerOptions.baseUrl = path.join(
-        extendsDir,
-        base.compilerOptions.baseUrl
-      );
+      if (isExtendedInNodeModules) {
+        // baseUrl should be resolved related to the node_modules not the current dir
+        base.compilerOptions.baseUrl = path.join(
+          "node_modules",
+          extendsDir,
+          base.compilerOptions.baseUrl
+        );
+      } else {
+        base.compilerOptions.baseUrl = path.join(
+          extendsDir,
+          base.compilerOptions.baseUrl
+        );
+      }
     }
 
     return {
