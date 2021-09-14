@@ -130,6 +130,20 @@ describe("loadConfig", () => {
     assert.deepEqual(res, config);
   });
 
+  it("It should throw an error including the file path when encountering invalid JSON5", () => {
+    assert.throws(
+      () =>
+        loadTsconfig(
+          "/root/dir1/tsconfig.json",
+          (path) => path === "/root/dir1/tsconfig.json",
+          (_) => `{
+            "compilerOptions": {
+          }`
+        ),
+      "/root/dir1/tsconfig.json is malformed JSON5: invalid end of input at 3:12"
+    );
+  });
+
   it("It should load a config with extends and overwrite all options", () => {
     const firstConfig = {
       extends: "../base-config.json",
@@ -171,15 +185,15 @@ describe("loadConfig", () => {
   it("It should load a config with extends from node_modules and overwrite all options", () => {
     const firstConfig = {
       extends: "my-package/base-config.json",
-      compilerOptions: { baseUrl: "kalle", paths: { foo: ["bar2"] } }
+      compilerOptions: { baseUrl: "kalle", paths: { foo: ["bar2"] } },
     };
     const firstConfigPath = join("/root", "dir1", "tsconfig.json");
     const baseConfig = {
       compilerOptions: {
         baseUrl: "olle",
         paths: { foo: ["bar1"] },
-        strict: true
-      }
+        strict: true,
+      },
     };
     const baseConfigPath = join(
       "/root",
@@ -190,8 +204,8 @@ describe("loadConfig", () => {
     );
     const res = loadTsconfig(
       join("/root", "dir1", "tsconfig.json"),
-      path => path === firstConfigPath || path === baseConfigPath,
-      path => {
+      (path) => path === firstConfigPath || path === baseConfigPath,
+      (path) => {
         if (path === firstConfigPath) {
           return JSON.stringify(firstConfig);
         }
@@ -207,8 +221,8 @@ describe("loadConfig", () => {
       compilerOptions: {
         baseUrl: "kalle",
         paths: { foo: ["bar2"] },
-        strict: true
-      }
+        strict: true,
+      },
     });
   });
 
