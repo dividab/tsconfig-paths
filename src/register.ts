@@ -69,6 +69,7 @@ export function register(explicitParams: ExplicitParams): () => void {
     configLoaderResult.mainFields,
     configLoaderResult.addMatchAll
   );
+  const matchPathCache: Record<string, string | undefined> = {};
 
   // Patch node's module loading
   // tslint:disable-next-line:no-require-imports variable-name
@@ -79,7 +80,10 @@ export function register(explicitParams: ExplicitParams): () => void {
   Module._resolveFilename = function (request: string, _parent: any): string {
     const isCoreModule = coreModules.hasOwnProperty(request);
     if (!isCoreModule) {
-      const found = matchPath(request);
+      if (!(request in matchPathCache)) {
+        matchPathCache[request] = matchPath(request);
+      }
+      const found = matchPathCache[request];
       if (found) {
         const modifiedArguments = [found, ...[].slice.call(arguments, 1)]; // Passes all arguments. Even those that is not specified above.
         // tslint:disable-next-line:no-invalid-this
