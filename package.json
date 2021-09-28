@@ -46,7 +46,7 @@
   "dependencies": {
     "json5": "^1.0.1",
     "minimist": "^1.2.5",
-    "strip-bom": "^4.0.0"
+    "strip-bom": "^5.0.0"
   },
   "scripts": {
     "start": "cd src && ts-node index.ts",
