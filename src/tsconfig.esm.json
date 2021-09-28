@@ -1,0 +1,10 @@
+{
+  "extends": "../base-tsconfig.json",
+  "compilerOptions": {
+    "module": "ES2015",
+    "target": "es5",
+    "sourceMap": false,
+    "declaration": true,
+    "outDir": "../lib"
+  }
+}

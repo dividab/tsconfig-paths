@@ -1,9 +1,8 @@
 import * as path from "path";
 import * as fs from "fs";
-// tslint:disable:no-require-imports
-import JSON5 = require("json5");
-import StripBom = require("strip-bom");
-// tslint:enable:no-require-imports
+import * as JSON5 from "json5";
+// @ts-ignore
+import StripBom from "strip-bom";
 
 /**
  * Typing for the parts of tsconfig that we care about

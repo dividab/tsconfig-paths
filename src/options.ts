@@ -1,4 +1,5 @@
-import * as minimist from "minimist";
+// @ts-ignore
+import minimist from "minimist";
 
 const argv = minimist(process.argv.slice(2), {
   string: ["project"],

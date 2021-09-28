@@ -3,10 +3,17 @@
   "version": "3.11.0",
   "description": "Load node modules according to tsconfig paths, in run-time or via API.",
   "main": "lib/index.js",
+  "module": "lib/esm/index.js",
   "types": "lib/index.d.ts",
   "author": "Jonas Kello",
   "license": "MIT",
   "repository": "https://github.com/dividab/tsconfig-paths",
+  "exports": {
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/index.js"
+    }
+  },
   "files": [
     "/src",
     "/lib",
@@ -18,10 +25,10 @@
   ],
   "devDependencies": {
     "@types/chai": "^4.1.4",
-    "@types/minimist": "^1.2.0",
+    "@types/json5": "^0.0.29",
+    "@types/minimist": "^1.2.2",
     "@types/mocha": "^5.2.3",
     "@types/node": "^6.0.54",
-    "@types/strip-bom": "^3.0.0",
     "@types/strip-json-comments": "^0.0.30",
     "chai": "^4.1.2",
     "codecov": "^3.1.0",
@@ -37,10 +44,9 @@
     "typescript": "^2.4.1"
   },
   "dependencies": {
-    "@types/json5": "^0.0.29",
     "json5": "^1.0.1",
-    "minimist": "^1.2.0",
-    "strip-bom": "^3.0.0"
+    "minimist": "^1.2.5",
+    "strip-bom": "^4.0.0"
   },
   "scripts": {
     "start": "cd src && ts-node index.ts",
@@ -49,7 +55,7 @@
     "example:api": "cd example/api && ts-node main.ts",
     "example:perf": "cd example/perf && ts-node main.ts",
     "test": "mocha",
-    "build": "rimraf lib && tsc -p src",
+    "build": "rimraf lib && tsc -p src && tsc -p src/tsconfig.esm.json",
     "build:test": "rimraf ./test/js_out && tsc -p test",
     "lint": "tslint './{src,tests}/**/*.ts{,x}'",
     "verify": "yarn build && yarn lint && yarn coverage",
