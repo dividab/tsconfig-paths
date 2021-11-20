@@ -2,12 +2,13 @@ import * as Filesystem from "../filesystem";
 import * as path from "path";
 
 describe("filesystem", () => {
-  const fileThatExists = path.join(__dirname, "../package.json");
-  const fileThatNotExists = path.join(__dirname, "../package2.json");
+  const fileThatExists = path.join(__dirname, "../../package.json");
+  const fileThatNotExists = path.join(__dirname, "../../package2.json");
 
   it("should find file that exists, sync", () => {
     const result = Filesystem.fileExistsSync(fileThatExists);
     // assert.equal(result, true);
+    console.log("result", result);
     expect(result).toBe(true);
   });
 
@@ -19,17 +20,25 @@ describe("filesystem", () => {
 
   it("should find file that exists, async", (done) => {
     Filesystem.fileExistsAsync(fileThatExists, (_err, result) => {
-      // assert.equal(result, true);
-      expect(result).toBe(true);
-      done();
+      try {
+        // assert.equal(result, true);
+        expect(result).toBe(true);
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
 
   it("should not find file that not exists, async", (done) => {
     Filesystem.fileExistsAsync(fileThatNotExists, (_err, result) => {
-      // assert.equal(result, false);
-      expect(result).toBe(false);
-      done();
+      try {
+        // assert.equal(result, false);
+        expect(result).toBe(false);
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
 
@@ -43,11 +52,15 @@ describe("filesystem", () => {
 
   it("should load json, async", (done) => {
     Filesystem.readJsonFromDiskAsync(fileThatExists, (_err, result) => {
-      // assert.isOk(result); // Asserts that object is truthy.
-      expect(result).toBeTruthy();
-      // assert.equal(result.main, "lib/index.js");
-      expect(result.main).toBe("lib/index.js");
-      done();
+      try {
+        // assert.isOk(result); // Asserts that object is truthy.
+        expect(result).toBeTruthy();
+        // assert.equal(result.main, "lib/index.js");
+        expect(result.main).toBe("lib/index.js");
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
 });
