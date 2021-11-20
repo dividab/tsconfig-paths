@@ -1,5 +1,5 @@
 import { join, dirname } from "path";
-// import { removeExtension } from "../../filesystem";
+import { removeExtension } from "../../filesystem";
 
 export interface OneTest {
   readonly name: string;
@@ -11,10 +11,18 @@ export interface OneTest {
   readonly addMatchAll?: boolean;
   readonly existingFiles: ReadonlyArray<string>;
   readonly requestedModule: string;
-  readonly extensions?: ReadonlyArray<string>;
+  readonly extensions: ReadonlyArray<string>;
   readonly packageJson?: {};
   readonly expectedPath: string | undefined;
 }
+
+const defaultExtensionsWhenRunningInTsNode = [
+  ".js",
+  ".json",
+  ".node",
+  ".ts",
+  ".tsx",
+];
 
 export const tests: ReadonlyArray<OneTest> = [
   {
@@ -26,8 +34,8 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("/root", "location", "mylib", "index.ts")],
     requestedModule: "lib/mylib",
     expectedPath: dirname(join("/root", "location", "mylib", "index.ts")),
+    extensions: defaultExtensionsWhenRunningInTsNode,
   },
-  /*
   {
     name: "should resolve to correct path when many are specified",
     absoluteBaseUrl: "/root/",
@@ -53,6 +61,7 @@ export const tests: ReadonlyArray<OneTest> = [
     ],
     requestedModule: "lib/mylib",
     expectedPath: dirname(join("/root", "location", "mylib", "index.ts")),
+    extensions: defaultExtensionsWhenRunningInTsNode,
   },
   {
     name: "should locate path that matches with star and exists with extension",
@@ -70,6 +79,7 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("/root", "location", "test.jpg")],
     requestedModule: "lib/test.jpg",
     expectedPath: join("/root", "location", "test.jpg"),
+    extensions: defaultExtensionsWhenRunningInTsNode,
   },
   {
     name: "should locate path that matches without star and exists",
@@ -80,6 +90,7 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("/root", "location", "foo.ts")],
     requestedModule: "lib/foo",
     expectedPath: removeExtension(join("/root", "location", "foo.ts")),
+    extensions: defaultExtensionsWhenRunningInTsNode,
   },
   {
     name: "should resolve to parent folder when filename is in subfolder",
@@ -88,6 +99,7 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("/root", "location", "mylib", "index.ts")],
     requestedModule: "lib/mylib",
     expectedPath: dirname(join("/root", "location", "mylib", "index.ts")),
+    extensions: defaultExtensionsWhenRunningInTsNode,
   },
   {
     name: "should resolve from main field in package.json",
@@ -99,6 +111,7 @@ export const tests: ReadonlyArray<OneTest> = [
     expectedPath: removeExtension(
       join("/root", "location", "mylib", "kalle.ts")
     ),
+    extensions: defaultExtensionsWhenRunningInTsNode,
   },
   {
     name: "should resolve from main field in package.json (js)",
@@ -182,6 +195,7 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("/root", "mylib", "index.ts")],
     requestedModule: "mylib",
     expectedPath: dirname(join("/root", "mylib", "index.ts")),
+    extensions: defaultExtensionsWhenRunningInTsNode,
   },
   {
     name: "should not resolve with the help of baseUrl when asked not to",
@@ -191,6 +205,7 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("/root", "mylib", "index.ts")],
     requestedModule: "mylib",
     expectedPath: undefined,
+    extensions: defaultExtensionsWhenRunningInTsNode,
   },
   {
     name: "should not locate path that does not match",
@@ -199,6 +214,7 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("root", "location", "mylib")],
     requestedModule: "mylib",
     expectedPath: undefined,
+    extensions: defaultExtensionsWhenRunningInTsNode,
   },
   {
     name: "should not resolve typings file (index.d.ts)",
@@ -209,5 +225,6 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("/root", "location", "mylib", "index.d.ts")],
     requestedModule: "lib/mylib",
     expectedPath: undefined,
-  },*/
+    extensions: defaultExtensionsWhenRunningInTsNode,
+  },
 ];
