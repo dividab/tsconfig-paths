@@ -122,8 +122,6 @@ describe("walkForTsConfig", () => {
       (path) => path === pathToTsconfig
     );
     // assert.equal(res, pathToTsconfig);
-    console.log("res", res);
-    console.log("pathToTsconfig", pathToTsconfig);
     expect(res).toBe(pathToTsconfig);
   });
 

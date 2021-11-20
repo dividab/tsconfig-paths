@@ -1,5 +1,5 @@
 import { join, dirname } from "path";
-import { removeExtension } from "../../filesystem";
+// import { removeExtension } from "../../filesystem";
 
 export interface OneTest {
   readonly name: string;
@@ -27,6 +27,7 @@ export const tests: ReadonlyArray<OneTest> = [
     requestedModule: "lib/mylib",
     expectedPath: dirname(join("/root", "location", "mylib", "index.ts")),
   },
+  /*
   {
     name: "should resolve to correct path when many are specified",
     absoluteBaseUrl: "/root/",
@@ -208,5 +209,5 @@ export const tests: ReadonlyArray<OneTest> = [
     existingFiles: [join("/root", "location", "mylib", "index.d.ts")],
     requestedModule: "lib/mylib",
     expectedPath: undefined,
-  },
+  },*/
 ];

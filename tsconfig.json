@@ -6,7 +6,7 @@
     "module": "commonjs",
     "target": "es5",
     // "esModuleInterop": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "declaration": true,
     "lib": ["es2015"],
     "forceConsistentCasingInFileNames": true,
