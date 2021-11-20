@@ -1,5 +1,5 @@
 import { join, dirname } from "path";
-import { removeExtension } from "../../src/filesystem";
+import { removeExtension } from "../../filesystem";
 
 export interface OneTest {
   readonly name: string;

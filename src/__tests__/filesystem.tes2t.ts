@@ -1,5 +1,4 @@
-import { assert } from "chai";
-import * as Filesystem from "../src/filesystem";
+import * as Filesystem from "../filesystem";
 import * as path from "path";
 
 describe("filesystem", () => {
@@ -8,38 +7,46 @@ describe("filesystem", () => {
 
   it("should find file that exists, sync", () => {
     const result = Filesystem.fileExistsSync(fileThatExists);
-    assert.equal(result, true);
+    // assert.equal(result, true);
+    expect(result).toBe(true);
   });
 
   it("should not find file that not exists, sync", () => {
     const result = Filesystem.fileExistsSync(fileThatNotExists);
-    assert.equal(result, false);
+    // assert.equal(result, false);
+    expect(result).toBe(false);
   });
 
   it("should find file that exists, async", (done) => {
     Filesystem.fileExistsAsync(fileThatExists, (_err, result) => {
-      assert.equal(result, true);
+      // assert.equal(result, true);
+      expect(result).toBe(true);
       done();
     });
   });
 
   it("should not find file that not exists, async", (done) => {
     Filesystem.fileExistsAsync(fileThatNotExists, (_err, result) => {
-      assert.equal(result, false);
+      // assert.equal(result, false);
+      expect(result).toBe(false);
       done();
     });
   });
 
   it("should load json, sync", () => {
     const result = Filesystem.readJsonFromDiskSync(fileThatExists);
-    assert.isOk(result);
-    assert.equal(result.main, "lib/index.js");
+    // assert.isOk(result);
+    expect(result);
+    // assert.equal(result.main, "lib/index.js");
+    expect(result.main).toBe("lib/index.js");
   });
 
   it("should load json, async", (done) => {
     Filesystem.readJsonFromDiskAsync(fileThatExists, (_err, result) => {
-      assert.isOk(result);
-      assert.equal(result.main, "lib/index.js");
+      // assert.isOk(result); // Asserts that object is truthy.
+      expect(result).toBeTruthy();
+      // assert.equal(result.main, "lib/index.js");
+      expect(result.main).toBe("lib/index.js");
       done();
     });
   });
