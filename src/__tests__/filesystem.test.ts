@@ -8,7 +8,6 @@ describe("filesystem", () => {
   it("should find file that exists, sync", () => {
     const result = Filesystem.fileExistsSync(fileThatExists);
     // assert.equal(result, true);
-    console.log("result", result);
     expect(result).toBe(true);
   });
 
