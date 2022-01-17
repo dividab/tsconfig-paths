@@ -31,7 +31,7 @@ export function getAbsoluteMappingEntries(
   for (const key of sortedKeys) {
     absolutePaths.push({
       pattern: key,
-      paths: paths[key].map((pathToResolve) => 
+      paths: paths[key].map((pathToResolve) =>
         path.isAbsolute(pathToResolve) ? pathToResolve : path.join(absoluteBaseUrl, pathToResolve)
       ),
     });
