@@ -18,7 +18,7 @@
   ],
   "devDependencies": {
     "@types/jest": "^27.0.3",
-    "@types/minimist": "^1.2.0",
+    "@types/minimist": "^1.2.6",
     "@types/node": "^6.0.54",
     "@types/strip-bom": "^3.0.0",
     "@types/strip-json-comments": "^0.0.30",
@@ -35,7 +35,7 @@
   "dependencies": {
     "@types/json5": "^0.0.29",
     "json5": "^1.0.1",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.6",
     "strip-bom": "^3.0.0"
   },
   "scripts": {
