@@ -20,7 +20,6 @@
     "@types/jest": "^27.0.3",
     "@types/minimist": "^1.2.2",
     "@types/node": "^6.0.54",
-    "@types/strip-bom": "^3.0.0",
     "@types/strip-json-comments": "^0.0.30",
     "husky": "^4.2.5",
     "jest": "^27.3.1",
@@ -33,10 +32,9 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "@types/json5": "^0.0.29",
-    "json5": "^1.0.1",
+    "json5": "^2.2.1",
     "minimist": "^1.2.6",
-    "strip-bom": "^3.0.0"
+    "strip-bom": "^4.0.0"
   },
   "scripts": {
     "start": "cd src && ts-node index.ts",
