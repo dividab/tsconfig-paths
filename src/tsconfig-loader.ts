@@ -1,9 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
-// tslint:disable:no-require-imports
-import JSON5 = require("json5");
-import StripBom = require("strip-bom");
-// tslint:enable:no-require-imports
+import * as JSON5 from "json5";
+import stripBom from "strip-bom";
 
 /**
  * Typing for the parts of tsconfig that we care about
@@ -121,7 +119,7 @@ export function loadTsconfig(
   }
 
   const configString = readFileSync(configFilePath);
-  const cleanedJson = StripBom(configString);
+  const cleanedJson = stripBom(configString);
   const config: Tsconfig = JSON5.parse(cleanedJson);
   let extendedConfig = config.extends;
 

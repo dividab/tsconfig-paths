@@ -5,7 +5,7 @@
     "outDir": "./lib",
     "module": "commonjs",
     "target": "es5",
-    // "esModuleInterop": true,
+    "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,
     "lib": ["es2015"],
