@@ -115,8 +115,28 @@ describe("walkForTsConfig", () => {
     expect(res).toBe(pathToTsconfig);
   });
 
+  it("should find jsconfig in starting directory", () => {
+    const pathToJsconfig = join("/root", "dir1", "jsconfig.json");
+    const res = walkForTsConfig(
+      join("/root", "dir1"),
+      (path) => path === pathToJsconfig
+    );
+    // assert.equal(res, pathToTsconfig);
+    expect(res).toBe(pathToJsconfig);
+  });
+
   it("should find tsconfig in parent directory", () => {
     const pathToTsconfig = join("/root", "tsconfig.json");
+    const res = walkForTsConfig(
+      join("/root", "dir1"),
+      (path) => path === pathToTsconfig
+    );
+    // assert.equal(res, pathToTsconfig);
+    expect(res).toBe(pathToTsconfig);
+  });
+
+  it("should find jsconfig in parent directory", () => {
+    const pathToTsconfig = join("/root", "jsconfig.json");
     const res = walkForTsConfig(
       join("/root", "dir1"),
       (path) => path === pathToTsconfig

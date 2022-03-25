@@ -96,7 +96,12 @@ export function walkForTsConfig(
   // eslint-disable-next-line no-shadow
   existsSync: (path: string) => boolean = fs.existsSync
 ): string | undefined {
-  const configPath = path.join(directory, "./tsconfig.json");
+  let configPath = path.join(directory, "./tsconfig.json");
+  if (existsSync(configPath)) {
+    return configPath;
+  }
+
+  configPath = path.join(directory, "./jsconfig.json");
   if (existsSync(configPath)) {
     return configPath;
   }
