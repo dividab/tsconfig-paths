@@ -134,7 +134,7 @@ describe("walkForTsConfig", () => {
 
 describe("loadConfig", () => {
   it("It should load a config", () => {
-    const config = { compilerOptions: { baseUrl: "hej" } };
+    const config = { compilerOptions: { baseUrl: "/root/dir1/hej" } };
     const res = loadTsconfig(
       "/root/dir1/tsconfig.json",
       (path) => path === "/root/dir1/tsconfig.json",
@@ -145,7 +145,7 @@ describe("loadConfig", () => {
   });
 
   it("It should load a config with comments", () => {
-    const config = { compilerOptions: { baseUrl: "hej" } };
+    const config = { compilerOptions: { baseUrl: "/root/dir1/hej" } };
     const res = loadTsconfig(
       "/root/dir1/tsconfig.json",
       (path) => path === "/root/dir1/tsconfig.json",
@@ -161,7 +161,7 @@ describe("loadConfig", () => {
   });
 
   it("It should load a config with trailing commas", () => {
-    const config = { compilerOptions: { baseUrl: "hej" } };
+    const config = { compilerOptions: { baseUrl: "/root/dir1/hej" } };
     const res = loadTsconfig(
       "/root/dir1/tsconfig.json",
       (path) => path === "/root/dir1/tsconfig.json",
@@ -214,7 +214,7 @@ describe("loadConfig", () => {
     expect(res).toEqual({
       extends: "../base-config.json",
       compilerOptions: {
-        baseUrl: "kalle",
+        baseUrl: "/root/dir1/kalle",
         paths: { foo: ["bar2"] },
         strict: true,
       },
@@ -266,9 +266,176 @@ describe("loadConfig", () => {
     expect(res).toEqual({
       extends: "my-package/base-config.json",
       compilerOptions: {
-        baseUrl: "kalle",
+        baseUrl: "/root/dir1/kalle",
         paths: { foo: ["bar2"] },
         strict: true,
+      },
+    });
+  });
+
+  it("extends package when node_modules is a level upper to tsconfig.json", () => {
+    const firstConfig = {
+      extends: "@package/foo",
+    };
+    const firstConfigPath = join("/root", "project", "src", "tsconfig.json");
+    const baseConfig = {
+      compilerOptions: {
+        baseUrl: "olle",
+        paths: { foo: ["bar1"] },
+        strict: true,
+      },
+    };
+    const baseConfigPath = join(
+      "/root",
+      "project",
+      "node_modules",
+      "@package/foo",
+      "tsconfig.json"
+    );
+    const res = loadTsconfig(
+      join("/root", "project", "src", "tsconfig.json"),
+      (path) => path === firstConfigPath || path === baseConfigPath,
+      (path) => {
+        if (path === firstConfigPath) {
+          return JSON.stringify(firstConfig);
+        }
+        if (path === baseConfigPath) {
+          return JSON.stringify(baseConfig);
+        }
+        return "";
+      }
+    );
+
+    expect(res).toEqual({
+      extends: "@package/foo",
+      compilerOptions: {
+        baseUrl: "/root/project/node_modules/@package/foo/olle",
+        paths: { foo: ["bar1"] },
+        strict: true,
+      },
+    });
+  });
+
+  it("omit `tsconfig.json` prefix when extends package", () => {
+    const firstConfig = {
+      extends: "my-package",
+      compilerOptions: { baseUrl: "kalle", paths: { foo: ["bar2"] } },
+    };
+    const firstConfigPath = join("/root", "dir1", "tsconfig.json");
+    const baseConfig = {
+      compilerOptions: {
+        baseUrl: "olle",
+        paths: { foo: ["bar1"] },
+        strict: true,
+      },
+    };
+    const baseConfigPath = join(
+      "/root",
+      "dir1",
+      "node_modules",
+      "my-package",
+      "tsconfig.json"
+    );
+    const res = loadTsconfig(
+      join("/root", "dir1", "tsconfig.json"),
+      (path) => path === firstConfigPath || path === baseConfigPath,
+      (path) => {
+        if (path === firstConfigPath) {
+          return JSON.stringify(firstConfig);
+        }
+        if (path === baseConfigPath) {
+          return JSON.stringify(baseConfig);
+        }
+        return "";
+      }
+    );
+
+    expect(res).toEqual({
+      extends: "my-package",
+      compilerOptions: {
+        baseUrl: "/root/dir1/kalle",
+        paths: { foo: ["bar2"] },
+        strict: true,
+      },
+    });
+  });
+
+  it("omit `.json` extension prefix when extends package", () => {
+    const firstConfig = {
+      extends: "my-package/base-config",
+      compilerOptions: { baseUrl: "kalle", paths: { foo: ["bar2"] } },
+    };
+    const firstConfigPath = join("/root", "dir1", "tsconfig.json");
+    const baseConfig = {
+      compilerOptions: {
+        baseUrl: "olle",
+        paths: { foo: ["bar1"] },
+        strict: true,
+      },
+    };
+    const baseConfigPath = join(
+      "/root",
+      "dir1",
+      "node_modules",
+      "my-package",
+      "base-config.json"
+    );
+    const res = loadTsconfig(
+      join("/root", "dir1", "tsconfig.json"),
+      (path) => path === firstConfigPath || path === baseConfigPath,
+      (path) => {
+        if (path === firstConfigPath) {
+          return JSON.stringify(firstConfig);
+        }
+        if (path === baseConfigPath) {
+          return JSON.stringify(baseConfig);
+        }
+        return "";
+      }
+    );
+
+    expect(res).toEqual({
+      extends: "my-package/base-config",
+      compilerOptions: {
+        baseUrl: "/root/dir1/kalle",
+        paths: { foo: ["bar2"] },
+        strict: true,
+      },
+    });
+  });
+
+  it("should stop resolve base config when detect an extends loop", () => {
+    const firstConfig = {
+      extends: "./base-config.json",
+      compilerOptions: { baseUrl: "kalle" },
+    };
+    const firstConfigPath = join("/root", "dir1", "tsconfig.json");
+    const baseConfig = {
+      extends: "./tsconfig.json",
+      compilerOptions: {
+        paths: { foo: ["bar1"] },
+      },
+    };
+    const baseConfigPath = join("/root", "dir1", "base-config.json");
+    const res = loadTsconfig(
+      join("/root", "dir1", "tsconfig.json"),
+      (path) => path === firstConfigPath || path === baseConfigPath,
+      (path) => {
+        if (path === firstConfigPath) {
+          return JSON.stringify(firstConfig);
+        }
+        if (path === baseConfigPath) {
+          return JSON.stringify(baseConfig);
+        }
+        return "";
+      }
+    );
+
+    expect(res).toEqual({
+      extends: "./base-config.json",
+      compilerOptions: {
+        baseUrl: "/root/dir1/kalle",
+        paths: { foo: ["bar1"] },
       },
     });
   });
@@ -306,7 +473,7 @@ describe("loadConfig", () => {
     // });
     expect(res).toEqual({
       extends: "../second-config.json",
-      compilerOptions: { baseUrl: join("..", "..") },
+      compilerOptions: { baseUrl: "/root" },
     });
   });
 });

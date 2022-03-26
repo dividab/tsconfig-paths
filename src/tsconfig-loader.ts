@@ -114,8 +114,15 @@ export function loadTsconfig(
   configFilePath: string,
   existsSync: (path: string) => boolean = fs.existsSync,
   readFileSync: (filename: string) => string = (filename: string) =>
-    fs.readFileSync(filename, "utf8")
+    fs.readFileSync(filename, "utf8"),
+  visited: Record<string, boolean> = {}
 ): Tsconfig | undefined {
+  // Don't infinite loop if a series of "extends" links forms a cycle
+  if (visited[configFilePath]) {
+    return undefined;
+  }
+  visited[configFilePath] = true;
+
   if (!existsSync(configFilePath)) {
     return undefined;
   }
@@ -123,50 +130,124 @@ export function loadTsconfig(
   const configString = readFileSync(configFilePath);
   const cleanedJson = StripBom(configString);
   const config: Tsconfig = JSON5.parse(cleanedJson);
-  let extendedConfig = config.extends;
 
-  if (extendedConfig) {
-    if (
-      typeof extendedConfig === "string" &&
-      extendedConfig.indexOf(".json") === -1
-    ) {
-      extendedConfig += ".json";
-    }
-    const currentDir = path.dirname(configFilePath);
-    let extendedConfigPath = path.join(currentDir, extendedConfig);
-    if (
-      extendedConfig.indexOf("/") !== -1 &&
-      extendedConfig.indexOf(".") !== -1 &&
-      !existsSync(extendedConfigPath)
-    ) {
-      extendedConfigPath = path.join(
-        currentDir,
-        "node_modules",
-        extendedConfig
-      );
-    }
+  const base = getExtendedConfig(
+    config,
+    configFilePath,
+    visited,
+    existsSync,
+    readFileSync
+  );
 
-    const base =
-      loadTsconfig(extendedConfigPath, existsSync, readFileSync) || {};
-
-    // baseUrl should be interpreted as relative to the base tsconfig,
-    // but we need to update it so it is relative to the original tsconfig being loaded
-    if (base.compilerOptions && base.compilerOptions.baseUrl) {
-      const extendsDir = path.dirname(extendedConfig);
-      base.compilerOptions.baseUrl = path.join(
-        extendsDir,
-        base.compilerOptions.baseUrl
-      );
-    }
-
-    return {
-      ...base,
-      ...config,
-      compilerOptions: {
-        ...base.compilerOptions,
-        ...config.compilerOptions,
-      },
-    };
+  if (
+    config.compilerOptions?.baseUrl &&
+    !path.isAbsolute(config.compilerOptions.baseUrl)
+  ) {
+    const fileDir = path.dirname(configFilePath);
+    config.compilerOptions.baseUrl = path.join(
+      fileDir,
+      config.compilerOptions.baseUrl
+    );
   }
-  return config;
+
+  return {
+    ...base,
+    ...config,
+    compilerOptions: {
+      ...base?.compilerOptions,
+      ...config.compilerOptions,
+    },
+  };
+}
+
+function getExtendedConfig(
+  sourceConfig: Tsconfig,
+  sourceConfigFilePath: string,
+  visited: Record<string, boolean>,
+  existsSync: (path: string) => boolean,
+  readFileSync: (filename: string) => string
+): Tsconfig | undefined {
+  let extendedConfig = sourceConfig.extends;
+  if (!extendedConfig) {
+    return undefined;
+  }
+
+  const extendedConfigPath = getExtendedConfigPath(
+    extendedConfig,
+    sourceConfigFilePath,
+    existsSync
+  );
+  if (!extendedConfigPath) {
+    return undefined;
+  }
+
+  return loadTsconfig(extendedConfigPath, existsSync, readFileSync, visited);
+}
+
+function getExtendedConfigPath(
+  extendedConfig: string,
+  sourceConfigFilePath: string,
+  existsSync: (path: string) => boolean
+): string | undefined {
+  const currentDir = path.dirname(sourceConfigFilePath);
+  // If this is a package path, try to resolve it to a "node_modules" folder.
+  if (isPackagePath(extendedConfig)) {
+    return forEachAncestorDirectory(currentDir, (ancestor) => {
+      // Skip "node_modules" folders
+      if (path.basename(ancestor) !== "node_modules") {
+        const extendedPackage = path.join(
+          ancestor,
+          "node_modules",
+          extendedConfig
+        );
+        const fileToCheck = [
+          extendedPackage,
+          path.join(extendedPackage, "tsconfig.json"),
+          `${extendedPackage}.json`,
+        ];
+        return fileToCheck.find(existsSync);
+      }
+      return undefined;
+    });
+  } else {
+    // If this is a regular path, search relative to the enclosing directory
+    let extendedConfigPath = extendedConfig;
+    if (!path.isAbsolute(extendedConfig)) {
+      extendedConfigPath = path.join(currentDir, extendedConfig);
+    }
+    if (extendedConfigPath.indexOf(".json") === -1) {
+      extendedConfigPath += ".json";
+    }
+    return extendedConfigPath;
+  }
+}
+
+/**
+ * Calls `callback` on `directory` and every ancestor directory it has, returning the first defined result.
+ */
+export function forEachAncestorDirectory<T>(
+  directory: string,
+  callback: (directory: string) => T | undefined
+): T | undefined {
+  while (true) {
+    const result = callback(directory);
+    if (result !== undefined) {
+      return result;
+    }
+
+    const parentPath = path.dirname(directory);
+    if (parentPath === directory) {
+      return undefined;
+    }
+
+    directory = parentPath;
+  }
+}
+
+// Package paths are loaded from a "node_modules" directory. Non-package paths
+// are relative or absolute paths.
+function isPackagePath(dir: string): boolean {
+  return (
+    !dir.startsWith("/") && !dir.startsWith("./") && !dir.startsWith("../")
+  );
 }
