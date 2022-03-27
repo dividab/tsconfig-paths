@@ -3,10 +3,6 @@
     "node": true
   },
   "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "tsconfig.json",
-    "sourceType": "module"
-  },
   "plugins": [
     "eslint-plugin-import",
     "eslint-plugin-jsdoc",
@@ -101,16 +97,13 @@
     "no-cond-assign": "error",
     "no-debugger": "error",
     "no-empty": "error",
-    "no-empty-function": "error",
     "no-eval": "error",
     "no-fallthrough": "error",
     "no-invalid-this": "error",
     "no-new-wrappers": "error",
     "no-redeclare": "error",
-    "no-shadow": "error",
     "no-underscore-dangle": "error",
     "no-unsafe-finally": "error",
-    "no-unused-expressions": "error",
     "no-unused-labels": "error",
     "no-var": "error",
     "one-var": ["error", "never"],
