@@ -52,7 +52,7 @@
     "test": "jest",
     "test-coverage": "jest --coverage",
     "build": "rimraf lib && tsc -p .",
-    "lint": "tslint './{src,tests}/**/*.ts{,x}'",
+    "lint": "eslint ./{src,tests}/**/*.ts{,x} --ext .js,.ts,.tsx -f visualstudio",
     "verify": "yarn build && yarn lint && yarn test-coverage",
     "preversion": "yarn verify",
     "postversion": "git push --tags && yarn publish --new-version $npm_package_version && git push && echo \"Successfully released version $npm_package_version!\""
