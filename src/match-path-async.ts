@@ -98,7 +98,7 @@ function findFirstExistingMainFieldMappedFile(
     return doneCallback(undefined, undefined);
   }
 
-  const tryNext = () =>
+  const tryNext = (): void =>
     findFirstExistingMainFieldMappedFile(
       packageJson,
       mainFields,
