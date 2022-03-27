@@ -71,11 +71,12 @@ export function register(explicitParams: ExplicitParams): () => void {
   );
 
   // Patch node's module loading
-  // tslint:disable-next-line:no-require-imports variable-name
+  // eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
   const Module = require("module");
+  // eslint-disable-next-line no-underscore-dangle
   const originalResolveFilename = Module._resolveFilename;
   const coreModules = getCoreModules(Module.builtinModules);
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any,no-underscore-dangle
   Module._resolveFilename = function (request: string, _parent: any): string {
     const isCoreModule = coreModules.hasOwnProperty(request);
     if (!isCoreModule) {
@@ -92,6 +93,7 @@ export function register(explicitParams: ExplicitParams): () => void {
 
   return () => {
     // Return node's module loading to original state.
+    // eslint-disable-next-line no-underscore-dangle
     Module._resolveFilename = originalResolveFilename;
   };
 }
