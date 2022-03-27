@@ -83,11 +83,9 @@ export function register(explicitParams: ExplicitParams): () => void {
       const found = matchPath(request);
       if (found) {
         const modifiedArguments = [found, ...[].slice.call(arguments, 1)]; // Passes all arguments. Even those that is not specified above.
-        // tslint:disable-next-line:no-invalid-this
         return originalResolveFilename.apply(this, modifiedArguments);
       }
     }
-    // tslint:disable-next-line:no-invalid-this
     return originalResolveFilename.apply(this, arguments);
   };
 
