@@ -107,47 +107,66 @@ describe("tsconfig-loader", () => {
 describe("walkForTsConfig", () => {
   it("should find tsconfig in starting directory", () => {
     const pathToTsconfig = join("/root", "dir1", "tsconfig.json");
-    const res = walkForTsConfig(
-      join("/root", "dir1"),
-      (path) => path === pathToTsconfig
-    );
-    // assert.equal(res, pathToTsconfig);
+    const res = walkForTsConfig(join("/root", "dir1"), (path) => {
+      if (path === "/root/dir1") {
+        return ["tsconfig.json"];
+      } else {
+        return [];
+      }
+    });
     expect(res).toBe(pathToTsconfig);
   });
 
   it("should find jsconfig in starting directory", () => {
     const pathToJsconfig = join("/root", "dir1", "jsconfig.json");
-    const res = walkForTsConfig(
-      join("/root", "dir1"),
-      (path) => path === pathToJsconfig
-    );
-    // assert.equal(res, pathToTsconfig);
+    const res = walkForTsConfig(join("/root", "dir1"), (path) => {
+      if (path === "/root/dir1") {
+        return ["jsconfig.json"];
+      } else {
+        return [];
+      }
+    });
     expect(res).toBe(pathToJsconfig);
+  });
+
+  it("tsconfig.json take precedence over jsconfig.json when both exist", () => {
+    const pathToTsconfig = join("/root/dir1", "tsconfig.json");
+    const res = walkForTsConfig(join("/root", "dir1"), (path) => {
+      if (path === "/root/dir1") {
+        return ["jsconfig.json", "tsconfig.json"];
+      } else {
+        return [];
+      }
+    });
+    expect(res).toBe(pathToTsconfig);
   });
 
   it("should find tsconfig in parent directory", () => {
     const pathToTsconfig = join("/root", "tsconfig.json");
-    const res = walkForTsConfig(
-      join("/root", "dir1"),
-      (path) => path === pathToTsconfig
-    );
-    // assert.equal(res, pathToTsconfig);
+    const res = walkForTsConfig(join("/root", "dir1"), (path) => {
+      if (path === "/root") {
+        return ["tsconfig.json"];
+      } else {
+        return [];
+      }
+    });
     expect(res).toBe(pathToTsconfig);
   });
 
   it("should find jsconfig in parent directory", () => {
     const pathToTsconfig = join("/root", "jsconfig.json");
-    const res = walkForTsConfig(
-      join("/root", "dir1"),
-      (path) => path === pathToTsconfig
-    );
-    // assert.equal(res, pathToTsconfig);
+    const res = walkForTsConfig(join("/root", "dir1"), (path) => {
+      if (path === "/root") {
+        return ["jsconfig.json"];
+      } else {
+        return [];
+      }
+    });
     expect(res).toBe(pathToTsconfig);
   });
 
   it("should return undefined when reaching the top", () => {
-    const res = walkForTsConfig(join("/root", "dir1", "kalle"), () => false);
-    // assert.equal(res, undefined);
+    const res = walkForTsConfig(join("/root", "dir1", "kalle"), () => []);
     expect(res).toBeUndefined();
   });
 });
