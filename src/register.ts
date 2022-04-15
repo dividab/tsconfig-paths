@@ -1,6 +1,5 @@
 import { createMatchPath } from "./match-path-sync";
 import { configLoader, ExplicitParams } from "./config-loader";
-import { options } from "./options";
 
 const noOp = (): void => void 0;
 
@@ -58,7 +57,7 @@ export interface RegisterParams extends ExplicitParams {
  */
 export function register(params?: RegisterParams): () => void {
   const configLoaderResult = configLoader({
-    cwd: params?.cwd ?? options.cwd,
+    cwd: params?.cwd,
     explicitParams:
       params && (params.baseUrl || params.paths) ? params : undefined,
   });
