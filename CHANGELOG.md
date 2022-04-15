@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Add `cwd` option to `register` function that overrides where the `tsconfig.json` search begins. See PR [#205](https://github.com/dividab/tsconfig-paths/pull/205).
+
 ## [3.14.1] - 2022-03-22
 
 ### Fixed
