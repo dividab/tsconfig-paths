@@ -129,6 +129,7 @@ describe("walkForTsConfig", () => {
     expect(res).toBe(pathToJsconfig);
   });
 
+  // see https://github.com/Microsoft/TypeScript/issues/15869#issuecomment-301845650
   it("tsconfig.json take precedence over jsconfig.json when both exist", () => {
     const pathToTsconfig = join("/root/dir1", "tsconfig.json");
     const res = walkForTsConfig(join("/root", "dir1"), (path) => {
