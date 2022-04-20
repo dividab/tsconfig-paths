@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Add support for `jsconfig.json`. See PR [#199](https://github.com/dividab/tsconfig-paths/pull/199). Thanks to [@F3n67u](https://github.com/F3n67u) for this PR!
+
+## [3.14.1] - 2022-03-22
+
+### Fixed
+
+- Use minimist 1.2.6 for all depencencies becuase of pollution vulnerability. See PR [#197](https://github.com/dividab/tsconfig-paths/pull/197). Thanks to [@gopijaganthan](https://github.com/gopijaganthan) for this fix!
+
+## [3.14.0] - 2022-03-13
+
+### Added
+
+- Support for path mapping starting with `/`. See PR [#180](https://github.com/dividab/tsconfig-paths/pull/180), issue [#113](https://github.com/dividab/tsconfig-paths/issues/113), and issue [#128](https://github.com/dividab/tsconfig-paths/issues/128). Thanks to [@benevbright](https://github.com/benevbright) for this fix!
+
+## [3.13.0] - 2022-03-03
+
+### Added
+
+- Include file extension in paths resolved from package.json "main" field. See PR [#135](https://github.com/dividab/tsconfig-paths/pull/135) and issue [#133](https://github.com/dividab/tsconfig-paths/issues/133). Thanks to [@katywings](https://github.com/katywings) for this fix!
+
+## [3.12.0] - 2021-08-24
+
+- Add support for baseUrl override using TS_NODE_BASEURL env var #185 and #114. Thanks to @ejhayes and @information-security for these PRs!
+
 ## [3.11.0] - 2021-08-24
 
 - Reverted upgrade of json5 due to being a breaking change. See PR #173.

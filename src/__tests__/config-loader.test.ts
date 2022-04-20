@@ -1,10 +1,9 @@
-import { assert } from "chai";
 import {
   configLoader,
   loadConfig,
   ConfigLoaderFailResult,
   ConfigLoaderSuccessResult,
-} from "../src/config-loader";
+} from "../config-loader";
 import { join } from "path";
 
 describe("config-loader", (): void => {
@@ -20,9 +19,12 @@ describe("config-loader", (): void => {
     });
 
     const successResult = result as ConfigLoaderSuccessResult;
-    assert.equal(successResult.resultType, "success");
-    assert.equal(successResult.absoluteBaseUrl, "/foo/bar");
-    assert.equal(successResult.paths["asd"][0], "asd");
+    // assert.equal(successResult.resultType, "success");
+    // assert.equal(successResult.absoluteBaseUrl, "/foo/bar");
+    // assert.equal(successResult.paths["asd"][0], "asd");
+    expect(successResult.resultType).toBe("success");
+    expect(successResult.absoluteBaseUrl).toBe("/foo/bar");
+    expect(successResult.paths["asd"][0]).toBe("asd");
   });
 
   it("should use explicitParams when set and add cwd when path is relative", () => {
@@ -37,15 +39,17 @@ describe("config-loader", (): void => {
     });
 
     const successResult = result as ConfigLoaderSuccessResult;
-    assert.equal(successResult.resultType, "success");
-    assert.equal(successResult.absoluteBaseUrl, join("/baz", "bar/"));
+    // assert.equal(successResult.resultType, "success");
+    // assert.equal(successResult.absoluteBaseUrl, join("/baz", "bar/"));
+    expect(successResult.resultType).toBe("success");
+    expect(successResult.absoluteBaseUrl).toBe(join("/baz", "bar/"));
   });
 
   it("should fallback to tsConfigLoader when explicitParams is not set", () => {
     const result = configLoader({
       explicitParams: undefined,
       cwd: "/baz",
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tsConfigLoader: (_: any) => ({
         tsConfigPath: "/baz/tsconfig.json",
         baseUrl: "./src",
@@ -54,15 +58,17 @@ describe("config-loader", (): void => {
     });
 
     const successResult = result as ConfigLoaderSuccessResult;
-    assert.equal(successResult.resultType, "success");
-    assert.equal(successResult.absoluteBaseUrl, join("/baz", "src"));
+    // assert.equal(successResult.resultType, "success");
+    // assert.equal(successResult.absoluteBaseUrl, join("/baz", "src"));
+    expect(successResult.resultType).toBe("success");
+    expect(successResult.absoluteBaseUrl).toBe(join("/baz", "src"));
   });
 
   it("should show an error message when baseUrl is missing", () => {
     const result = configLoader({
       explicitParams: undefined,
       cwd: "/baz",
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tsConfigLoader: (_: any) => ({
         tsConfigPath: "/baz/tsconfig.json",
         baseUrl: undefined,
@@ -71,8 +77,10 @@ describe("config-loader", (): void => {
     });
 
     const failResult = result as ConfigLoaderFailResult;
-    assert.equal(failResult.resultType, "failed");
-    assert.isTrue(failResult.message.indexOf("baseUrl") > -1);
+    // assert.equal(failResult.resultType, "failed");
+    // assert.isTrue(failResult.message.indexOf("baseUrl") > -1);
+    expect(failResult.resultType).toBe("failed");
+    expect(failResult.message.indexOf("baseUrl") > -1).toBeTruthy();
   });
 
   it("should presume cwd to be a tsconfig file when loadConfig is called with absolute path to tsconfig.json", () => {
@@ -84,8 +92,10 @@ describe("config-loader", (): void => {
     const result = loadConfig(configFile);
 
     const successResult = result as ConfigLoaderSuccessResult;
-    assert.equal(successResult.resultType, "success");
-    assert.equal(successResult.configFileAbsolutePath, configFile);
+    // assert.equal(successResult.resultType, "success");
+    // assert.equal(successResult.configFileAbsolutePath, configFile);
+    expect(successResult.resultType).toBe("success");
+    expect(successResult.configFileAbsolutePath).toBe(configFile);
   });
 
   it("should allow an absolute baseUrl in tsconfig.json", () => {
