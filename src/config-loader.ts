@@ -85,9 +85,7 @@ export function configLoader({
   }
 
   const tsConfigDir = path.dirname(loadResult.tsConfigPath);
-  const absoluteBaseUrl = path.isAbsolute(loadResult.baseUrl)
-    ? loadResult.baseUrl
-    : path.join(tsConfigDir, loadResult.baseUrl);
+  const absoluteBaseUrl = path.resolve(tsConfigDir, loadResult.baseUrl);
 
   return {
     resultType: "success",
