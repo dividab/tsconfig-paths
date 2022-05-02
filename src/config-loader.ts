@@ -1,6 +1,5 @@
-import * as TsConfigLoader from "./tsconfig-loader";
+import * as TsConfigLoader2 from "./tsconfig-loader";
 import * as path from "path";
-import { options } from "./options";
 
 export interface ExplicitParams {
   baseUrl: string;
@@ -10,8 +9,8 @@ export interface ExplicitParams {
 }
 
 export type TsConfigLoader = (
-  params: TsConfigLoader.TsConfigLoaderParams
-) => TsConfigLoader.TsConfigLoaderResult;
+  params: TsConfigLoader2.TsConfigLoaderParams
+) => TsConfigLoader2.TsConfigLoaderResult;
 
 export interface ConfigLoaderParams {
   cwd: string;
@@ -22,7 +21,7 @@ export interface ConfigLoaderParams {
 export interface ConfigLoaderSuccessResult {
   resultType: "success";
   configFileAbsolutePath: string;
-  baseUrl: string;
+  baseUrl?: string;
   absoluteBaseUrl: string;
   paths: { [key: string]: Array<string> };
   mainFields?: Array<string>;
@@ -38,17 +37,16 @@ export type ConfigLoaderResult =
   | ConfigLoaderSuccessResult
   | ConfigLoaderFailResult;
 
-export function loadConfig(cwd: string = options.cwd): ConfigLoaderResult {
-  return configLoader({ cwd: cwd });
+export function loadConfig(cwd: string = process.cwd()): ConfigLoaderResult {
+  return configLoader({ cwd });
 }
 
 export function configLoader({
   cwd,
   explicitParams,
-  tsConfigLoader = TsConfigLoader.tsConfigLoader,
+  tsConfigLoader = TsConfigLoader2.tsConfigLoader,
 }: ConfigLoaderParams): ConfigLoaderResult {
   if (explicitParams) {
-    // tslint:disable-next-line:no-shadowed-variable
     const absoluteBaseUrl = path.isAbsolute(explicitParams.baseUrl)
       ? explicitParams.baseUrl
       : path.join(cwd, explicitParams.baseUrl);
@@ -77,21 +75,15 @@ export function configLoader({
     };
   }
 
-  if (!loadResult.baseUrl) {
-    return {
-      resultType: "failed",
-      message: "Missing baseUrl in compilerOptions",
-    };
-  }
-
-  const tsConfigDir = path.dirname(loadResult.tsConfigPath);
-  const absoluteBaseUrl = path.join(tsConfigDir, loadResult.baseUrl);
-
   return {
     resultType: "success",
     configFileAbsolutePath: loadResult.tsConfigPath,
     baseUrl: loadResult.baseUrl,
-    absoluteBaseUrl,
+    absoluteBaseUrl: path.resolve(
+      path.dirname(loadResult.tsConfigPath),
+      loadResult.baseUrl || ""
+    ),
     paths: loadResult.paths || {},
+    addMatchAll: loadResult.baseUrl !== undefined,
   };
 }
