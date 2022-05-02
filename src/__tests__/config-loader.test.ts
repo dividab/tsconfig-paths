@@ -64,7 +64,7 @@ describe("config-loader", (): void => {
     expect(successResult.absoluteBaseUrl).toBe(join("/baz", "src"));
   });
 
-  it("should show an error message when baseUrl is missing", () => {
+  it("should tolerate a missing baseUrl", () => {
     const result = configLoader({
       explicitParams: undefined,
       cwd: "/baz",
@@ -77,10 +77,7 @@ describe("config-loader", (): void => {
     });
 
     const failResult = result as ConfigLoaderFailResult;
-    // assert.equal(failResult.resultType, "failed");
-    // assert.isTrue(failResult.message.indexOf("baseUrl") > -1);
-    expect(failResult.resultType).toBe("failed");
-    expect(failResult.message.indexOf("baseUrl") > -1).toBeTruthy();
+    expect(failResult.resultType).toBe("success");
   });
 
   it("should presume cwd to be a tsconfig file when loadConfig is called with absolute path to tsconfig.json", () => {
