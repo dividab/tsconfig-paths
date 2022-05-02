@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Ignore `--project`/`-P` CLI flag when explicit options are passed to `register`. See PR [#206](https://github.com/dividab/tsconfig-paths/pull/206).
+
 ### Added
 
 - Add `cwd` option to `register` function that overrides where the `tsconfig.json` search begins. See PR [#205](https://github.com/dividab/tsconfig-paths/pull/205).
@@ -14,9 +18,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Let `paths` mappings be absolute paths. See PR [#184](https://github.com/dividab/tsconfig-paths/pull/184).
 - Allow `baseUrl` in `tsconfig.json` to be an absolute path. See PR [#174](https://github.com/dividab/tsconfig-paths/pull/174). Thanks to [@nwalters512](https://github.com/nwalters512) for this PR!
 
-### Changed
+### Fixed
 
-- Ignore `--project`/`-P` CLI flag when explicit options are passed to `register`. See PR [#206](https://github.com/dividab/tsconfig-paths/pull/206).
+- Tolerate an undefined `baseUrl` compiler option. See PR [#208](https://github.com/dividab/tsconfig-paths/pull/208).
 
 ## [3.14.1] - 2022-03-22
 
