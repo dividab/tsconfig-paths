@@ -208,15 +208,15 @@ describe("loadConfig", () => {
   });
 
   it("It should throw an error including the file path when encountering invalid JSON5", () => {
-    assert.throws(
-      () =>
-        loadTsconfig(
-          "/root/dir1/tsconfig.json",
-          (path) => path === "/root/dir1/tsconfig.json",
-          (_) => `{
+    expect(() =>
+      loadTsconfig(
+        "/root/dir1/tsconfig.json",
+        (path) => path === "/root/dir1/tsconfig.json",
+        (_) => `{
             "compilerOptions": {
           }`
-        ),
+      )
+    ).toThrowError(
       "/root/dir1/tsconfig.json is malformed JSON5: invalid end of input at 3:12"
     );
   });
