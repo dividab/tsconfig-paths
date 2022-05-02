@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Ignore `--project`/`-P` CLI flag when explicit options are passed to `register`. See PR [#206](https://github.com/dividab/tsconfig-paths/pull/206).
+
+### Added
+
+- Add `cwd` option to `register` function that overrides where the `tsconfig.json` search begins. See PR [#205](https://github.com/dividab/tsconfig-paths/pull/205).
+- Add support for `jsconfig.json`. See PR [#199](https://github.com/dividab/tsconfig-paths/pull/199). Thanks to [@F3n67u](https://github.com/F3n67u) for this PR!
+- Let `paths` mappings be absolute paths. See PR [#184](https://github.com/dividab/tsconfig-paths/pull/184).
+
+### Fixed
+
+- Tolerate an undefined `baseUrl` compiler option. See PR [#208](https://github.com/dividab/tsconfig-paths/pull/208).
+
+## [3.14.1] - 2022-03-22
+
+### Fixed
+
+- Use minimist 1.2.6 for all depencencies becuase of pollution vulnerability. See PR [#197](https://github.com/dividab/tsconfig-paths/pull/197). Thanks to [@gopijaganthan](https://github.com/gopijaganthan) for this fix!
+
 ## [3.14.0] - 2022-03-13
 
 ### Added

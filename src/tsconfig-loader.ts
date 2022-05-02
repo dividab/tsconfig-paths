@@ -1,9 +1,9 @@
 import * as path from "path";
 import * as fs from "fs";
-// tslint:disable:no-require-imports
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 import JSON5 = require("json5");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 import StripBom = require("strip-bom");
-// tslint:enable:no-require-imports
 
 /**
  * Typing for the parts of tsconfig that we care about
@@ -90,28 +90,31 @@ function resolveConfigPath(cwd: string, filename?: string): string | undefined {
   const configAbsolutePath = walkForTsConfig(cwd);
   return configAbsolutePath ? path.resolve(configAbsolutePath) : undefined;
 }
-
 export function walkForTsConfig(
   directory: string,
-  existsSync: (path: string) => boolean = fs.existsSync
+  readdirSync: (path: string) => string[] = fs.readdirSync
 ): string | undefined {
-  const configPath = path.join(directory, "./tsconfig.json");
-  if (existsSync(configPath)) {
-    return configPath;
+  const files = readdirSync(directory);
+  const filesToCheck = ["tsconfig.json", "jsconfig.json"];
+  for (const fileToCheck of filesToCheck) {
+    if (files.indexOf(fileToCheck) !== -1) {
+      return path.join(directory, fileToCheck);
+    }
   }
 
-  const parentDirectory = path.join(directory, "../");
+  const parentDirectory = path.dirname(directory);
 
   // If we reached the top
   if (directory === parentDirectory) {
     return undefined;
   }
 
-  return walkForTsConfig(parentDirectory, existsSync);
+  return walkForTsConfig(parentDirectory, readdirSync);
 }
 
 export function loadTsconfig(
   configFilePath: string,
+  // eslint-disable-next-line no-shadow
   existsSync: (path: string) => boolean = fs.existsSync,
   readFileSync: (filename: string) => string = (filename: string) =>
     fs.readFileSync(filename, "utf8")
