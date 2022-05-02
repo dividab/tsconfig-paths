@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Ignore `--project`/`-P` CLI flag when explicit options are passed to `register`. See PR [#206](https://github.com/dividab/tsconfig-paths/pull/206).
+
 ### Added
 
 - Add `cwd` option to `register` function that overrides where the `tsconfig.json` search begins. See PR [#205](https://github.com/dividab/tsconfig-paths/pull/205).
