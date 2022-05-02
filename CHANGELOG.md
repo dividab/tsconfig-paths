@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 - Add support for `jsconfig.json`. See PR [#199](https://github.com/dividab/tsconfig-paths/pull/199). Thanks to [@F3n67u](https://github.com/F3n67u) for this PR!
+- Allow `baseUrl` in `tsconfig.json` to be an absolute path. See PR [#174](https://github.com/dividab/tsconfig-paths/pull/174). Thanks to [@nwalters512](https://github.com/nwalters512) for this PR!
 
 ## [3.14.1] - 2022-03-22
 
