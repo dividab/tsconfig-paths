@@ -1,6 +1,5 @@
 import { createMatchPath } from "./match-path-sync";
 import { configLoader, ExplicitParams } from "./config-loader";
-import { options } from "./options";
 
 const noOp = (): void => void 0;
 
@@ -45,13 +44,40 @@ function getCoreModules(
   return coreModules;
 }
 
+export interface RegisterParams extends ExplicitParams {
+  /**
+   * Defaults to `--project` CLI flag or `process.cwd()`
+   */
+  cwd?: string;
+}
+
 /**
  * Installs a custom module load function that can adhere to paths in tsconfig.
  * Returns a function to undo paths registration.
  */
-export function register(explicitParams: ExplicitParams): () => void {
+export function register(params?: RegisterParams): () => void {
+  let cwd: string | undefined;
+  let explicitParams: ExplicitParams | undefined;
+  if (params) {
+    cwd = params.cwd;
+    if (params.baseUrl || params.paths) {
+      explicitParams = params;
+    }
+  } else {
+    // eslint-disable-next-line
+    const minimist = require("minimist");
+    const argv = minimist(process.argv.slice(2), {
+      // eslint-disable-next-line id-denylist
+      string: ["project"],
+      alias: {
+        project: ["P"],
+      },
+    });
+    cwd = argv.project;
+  }
+
   const configLoaderResult = configLoader({
-    cwd: options.cwd,
+    cwd: cwd ?? process.cwd(),
     explicitParams,
   });
 
