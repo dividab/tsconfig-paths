@@ -19,9 +19,6 @@ describe("config-loader", (): void => {
     });
 
     const successResult = result as ConfigLoaderSuccessResult;
-    // assert.equal(successResult.resultType, "success");
-    // assert.equal(successResult.absoluteBaseUrl, "/foo/bar");
-    // assert.equal(successResult.paths["asd"][0], "asd");
     expect(successResult.resultType).toBe("success");
     expect(successResult.absoluteBaseUrl).toBe("/foo/bar");
     expect(successResult.paths["asd"][0]).toBe("asd");
@@ -39,8 +36,6 @@ describe("config-loader", (): void => {
     });
 
     const successResult = result as ConfigLoaderSuccessResult;
-    // assert.equal(successResult.resultType, "success");
-    // assert.equal(successResult.absoluteBaseUrl, join("/baz", "bar/"));
     expect(successResult.resultType).toBe("success");
     expect(successResult.absoluteBaseUrl).toBe(join("/baz", "bar/"));
   });
@@ -58,8 +53,6 @@ describe("config-loader", (): void => {
     });
 
     const successResult = result as ConfigLoaderSuccessResult;
-    // assert.equal(successResult.resultType, "success");
-    // assert.equal(successResult.absoluteBaseUrl, join("/baz", "src"));
     expect(successResult.resultType).toBe("success");
     expect(successResult.absoluteBaseUrl).toBe(join("/baz", "src"));
   });
@@ -89,8 +82,6 @@ describe("config-loader", (): void => {
     const result = loadConfig(configFile);
 
     const successResult = result as ConfigLoaderSuccessResult;
-    // assert.equal(successResult.resultType, "success");
-    // assert.equal(successResult.configFileAbsolutePath, configFile);
     expect(successResult.resultType).toBe("success");
     expect(successResult.configFileAbsolutePath).toBe(configFile);
   });
