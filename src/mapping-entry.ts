@@ -39,7 +39,7 @@ export function getAbsoluteMappingEntries(
   }
   // If there is no match-all path specified in the paths section of tsconfig, then try to match
   // all paths relative to baseUrl, this is how typescript works.
-  if (!paths["*"] && addMatchAll) {
+  if (!paths["*"] && addMatchAll && absoluteBaseUrl !== "/") {
     absolutePaths.push({
       pattern: "*",
       paths: [`${absoluteBaseUrl.replace(/\/$/, "")}/*`],
