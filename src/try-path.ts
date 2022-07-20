@@ -39,6 +39,17 @@ export function getPathsToTry(
             (e) => ({ type: "extension", path: physicalPath + e } as TryPath)
           )
         );
+        if (physicalPath.endsWith(".js")) {
+          pathsToTry.push(
+            ...extensions.map(
+              (e) =>
+                ({
+                  type: "extension",
+                  path: physicalPath.replace(/\.js$/, "") + e,
+                } as TryPath)
+            )
+          );
+        }
         pathsToTry.push({
           type: "package",
           path: path.join(physicalPath, "/package.json"),

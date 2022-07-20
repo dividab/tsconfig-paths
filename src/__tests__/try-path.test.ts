@@ -95,6 +95,32 @@ describe("mapping-entry", () => {
     ]);
   });
 
+  it("should include paths with ending .js removed that matches requested module", () => {
+    const result = getPathsToTry(
+      [".ts", ".tsx"],
+      [
+        {
+          pattern: "longest/pre/fix/*",
+          paths: [join("/absolute", "base", "url", "foo2", "*")],
+        },
+      ],
+      "longest/pre/fix/bar.js"
+    );
+
+    expect(result).toEqual(
+      expect.arrayContaining([
+        {
+          type: "extension",
+          path: join("/absolute", "base", "url", "foo2", "bar.ts"),
+        },
+        {
+          type: "extension",
+          path: join("/absolute", "base", "url", "foo2", "bar.tsx"),
+        },
+      ])
+    );
+  });
+
   it("should resolve paths starting with a slash", () => {
     const result = getPathsToTry(
       [".ts"],
