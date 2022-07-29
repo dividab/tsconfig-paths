@@ -27,7 +27,7 @@ export interface MatchPath {
 export function createMatchPath(
   absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> },
-  mainFields: string[] = ["main"],
+  mainFields: (string | string[])[] = ["main"],
   addMatchAll: boolean = true
 ): MatchPath {
   const absolutePaths = MappingEntry.getAbsoluteMappingEntries(
@@ -69,7 +69,7 @@ export function matchFromAbsolutePaths(
   readJson: Filesystem.ReadJsonSync = Filesystem.readJsonFromDiskSync,
   fileExists: Filesystem.FileExistsSync = Filesystem.fileExistsSync,
   extensions: Array<string> = Object.keys(require.extensions),
-  mainFields: string[] = ["main"]
+  mainFields: (string | string[])[] = ["main"]
 ): string | undefined {
   const tryPaths = TryPath.getPathsToTry(
     extensions,
@@ -86,13 +86,16 @@ export function matchFromAbsolutePaths(
 
 function findFirstExistingMainFieldMappedFile(
   packageJson: Filesystem.PackageJson,
-  mainFields: string[],
+  mainFields: (string | string[])[],
   packageJsonPath: string,
   fileExists: Filesystem.FileExistsSync
 ): string | undefined {
   for (let index = 0; index < mainFields.length; index++) {
-    const mainFieldName = mainFields[index];
-    const candidateMapping = packageJson[mainFieldName];
+    const mainFieldSelector = mainFields[index];
+    const candidateMapping =
+      typeof mainFieldSelector === "string"
+        ? packageJson[mainFieldSelector]
+        : mainFieldSelector.reduce((obj, key) => obj[key], packageJson);
     if (candidateMapping && typeof candidateMapping === "string") {
       const candidateFilePath = path.join(
         path.dirname(packageJsonPath),
@@ -111,7 +114,7 @@ function findFirstExistingPath(
   tryPaths: ReadonlyArray<TryPath.TryPath>,
   readJson: Filesystem.ReadJsonSync = Filesystem.readJsonFromDiskSync,
   fileExists: Filesystem.FileExistsSync,
-  mainFields: string[] = ["main"]
+  mainFields: (string | string[])[] = ["main"]
 ): string | undefined {
   for (const tryPath of tryPaths) {
     if (

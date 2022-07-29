@@ -146,7 +146,7 @@ The public API consists of these functions:
 export interface ExplicitParams {
   baseUrl: string;
   paths: { [key: string]: Array<string> };
-  mainFields?: Array<string>;
+  mainFields?: (string | string[])[];
   addMatchAll?: boolean;
   cwd?: string;
 }
@@ -209,7 +209,7 @@ export interface MatchPath {
 export function createMatchPath(
   absoluteBaseUrl: string,
   paths: { [key: string]: Array<string> },
-  mainFields: string[] = ["main"],
+  mainFields: (string | string[])[] = ["main"],
   addMatchAll: boolean = true
 ): MatchPath {
 ```
@@ -235,7 +235,7 @@ export function matchFromAbsolutePaths(
   readJson: Filesystem.ReadJsonSync = Filesystem.readJsonFromDiskSync,
   fileExists: Filesystem.FileExistsSync = Filesystem.fileExistsSync,
   extensions: Array<string> = Object.keys(require.extensions),
-  mainFields: string[] = ["main"]
+  mainFields: (string | string[])[] = ["main"]
 ): string | undefined {
 ```
 
