@@ -20,7 +20,7 @@ export interface MatchPath {
  *
  * @param absoluteBaseUrl Absolute version of baseUrl as specified in tsconfig.
  * @param paths The paths as specified in tsconfig.
- * @param mainFields A list of package.json field names to try when resolving module files.
+ * @param mainFields A list of package.json field names to try when resolving module files. Select a nested field using an array of field names.
  * @param addMatchAll Add a match-all "*" rule if none is present
  * @returns a function that can resolve paths.
  */
@@ -60,7 +60,7 @@ export function createMatchPath(
  * @param readJson Function that can read json from a path (useful for testing).
  * @param fileExists Function that checks for existence of a file at a path (useful for testing).
  * @param extensions File extensions to probe for (useful for testing).
- * @param mainFields A list of package.json field names to try when resolving module files.
+ * @param mainFields A list of package.json field names to try when resolving module files. Select a nested field using an array of field names.
  * @returns the found path, or undefined if no path was found.
  */
 export function matchFromAbsolutePaths(
