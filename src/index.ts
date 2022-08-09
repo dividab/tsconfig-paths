@@ -15,6 +15,7 @@ export {
   ConfigLoaderResult,
   ConfigLoaderSuccessResult,
   ConfigLoaderFailResult,
+  ConfigLoaderParams,
 } from "./config-loader";
 export {
   ReadJsonSync,
