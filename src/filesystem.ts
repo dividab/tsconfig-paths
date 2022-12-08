@@ -34,6 +34,7 @@ export interface ReadJsonAsync {
 
 export function fileExistsSync(path: string): boolean {
   // If the file doesn't exist, avoid throwing an exception over the native barrier for every miss
+  // @ts-expect-error throwIfNoEntry is a noop pre node 14.7, but is not part of the types
   return !!fs.statSync(path, { throwIfNoEntry: false })?.isFile();
 }
 
