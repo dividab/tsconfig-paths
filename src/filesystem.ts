@@ -34,16 +34,7 @@ export interface ReadJsonAsync {
 
 export function fileExistsSync(path: string): boolean {
   // If the file doesn't exist, avoid throwing an exception over the native barrier for every miss
-  if (!fs.existsSync(path)) {
-    return false;
-  }
-  try {
-    const stats = fs.statSync(path);
-    return stats.isFile();
-  } catch (err) {
-    // If error, assume file did not exist
-    return false;
-  }
+  return !!fs.statSync(path, { throwIfNoEntry: false })?.isFile();
 }
 
 /**
