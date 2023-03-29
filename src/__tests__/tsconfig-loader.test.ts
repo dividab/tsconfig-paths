@@ -394,4 +394,35 @@ describe("loadConfig", () => {
       },
     });
   });
+
+  it("should load a config with array extends without .json extension", () => {
+    const baseConfig = {
+      compilerOptions: { baseUrl: ".", paths: { foo: ["bar"] } },
+    };
+    const baseConfigPath = join("/root", "base-config-1.json");
+    const actualConfig = { extends: ["./base-config-1"] };
+    const actualConfigPath = join("/root", "tsconfig.json");
+
+    const res = loadTsconfig(
+      join("/root", "tsconfig.json"),
+      (path) => [baseConfigPath, actualConfigPath].indexOf(path) >= 0,
+      (path) => {
+        if (path === baseConfigPath) {
+          return JSON.stringify(baseConfig);
+        }
+        if (path === actualConfigPath) {
+          return JSON.stringify(actualConfig);
+        }
+        return "";
+      }
+    );
+
+    expect(res).toEqual({
+      extends: ["./base-config-1"],
+      compilerOptions: {
+        baseUrl: ".",
+        paths: { foo: ["bar"] },
+      },
+    });
+  });
 });
