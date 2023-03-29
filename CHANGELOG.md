@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.2.0] - 2023-03-29
+
+### Added
+
+- Add support for tsconfig extends as array of strings. #. See PR [#245](https://github.com/dividab/tsconfig-paths/pull/245). Thanks to [@DanielSidhion](https://github.com/DanielSidhion) for this PR!
+
 ## [3.14.2] - 2023-02-25
 
 ### Fixed
