@@ -1,5 +1,6 @@
 import * as path from "path";
 import * as fs from "fs";
+import * as typescript from "typescript";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import JSON5 = require("json5");
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -63,14 +64,23 @@ function loadSyncDefault(
       paths: undefined,
     };
   }
-  const config = loadTsconfig(configPath);
+  const rawConfig = typescript.readConfigFile(
+    configPath,
+    typescript.sys.readFile
+  );
+
+  const config = typescript.parseJsonConfigFileContent(
+    rawConfig.config,
+    typescript.sys,
+    cwd,
+    {},
+    filename
+  );
 
   return {
     tsConfigPath: configPath,
-    baseUrl:
-      baseUrl ||
-      (config && config.compilerOptions && config.compilerOptions.baseUrl),
-    paths: config && config.compilerOptions && config.compilerOptions.paths,
+    baseUrl: baseUrl || config.options.baseUrl,
+    paths: config.options.paths,
   };
 }
 
