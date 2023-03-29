@@ -32,7 +32,7 @@ export function tsConfigLoader({
   return loadResult;
 }
 
-function loadSyncDefault(
+export function loadSyncDefault(
   cwd: string,
   filename?: string,
   baseUrl?: string

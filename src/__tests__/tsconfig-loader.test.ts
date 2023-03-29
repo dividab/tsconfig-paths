@@ -3,7 +3,7 @@ import {
   tsConfigLoader,
   walkForTsConfig,
 } from "../tsconfig-loader";
-import { join } from "path";
+import { join, resolve } from "path";
 
 describe("tsconfig-loader", () => {
   it("should find tsconfig in cwd", () => {
@@ -164,5 +164,21 @@ describe("walkForTsConfig", () => {
   it("should return undefined when reaching the top", () => {
     const res = walkForTsConfig(join("/root", "dir1", "kalle"), () => []);
     expect(res).toBeUndefined();
+  });
+});
+
+describe("loadSyncDefault", () => {
+  it("should result multiple levels of tsconfig extension", () => {
+    const cwd = resolve(__dirname, "../../example/inherited");
+    const result = tsConfigLoader({
+      cwd,
+      getEnv: (_: string) => undefined,
+    });
+
+    expect(result).toEqual({
+      baseUrl: undefined,
+      paths: { "@": [] },
+      tsConfigPath: resolve(cwd, "tsconfig.json"),
+    });
   });
 });
