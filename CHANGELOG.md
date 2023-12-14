@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.15.0] - 2023-12-14
+
+### Added
+
+- Add support for extends as array of strings to v3 (backport of #245). See PR #260. Thanks to [@domdomegg](https://github.com/domdomegg) for this PR!
+
 ## [3.14.1] - 2022-03-22
 
 ### Fixed
