@@ -164,12 +164,123 @@ describe("walkForTsConfig", () => {
 });
 
 describe("loadSyncDefault", () => {
-  it("should result multiple levels of tsconfig extension", () => {
-    const cwd = resolve(__dirname, "../../example/inherited");
+  it("should load a config", () => {
+    const cwd = resolve(__dirname, "../../example/basic")
+
+    const result = tsConfigLoader({ cwd, getEnv: () => undefined });
+
+    expect(result).toEqual({
+      baseUrl: "./hej",
+      paths: {},
+      tsConfigPath: resolve(cwd, "tsconfig.json"),
+    });
+  });
+
+  it("should load a config with comments", () => {
+    const cwd = resolve(__dirname, "../../example/with-comments")
+
+    const result = tsConfigLoader({ cwd, getEnv: () => undefined });
+
+    expect(result).toEqual({
+      baseUrl: "./hej",
+      paths: {},
+      tsConfigPath: resolve(cwd, "tsconfig.json"),
+    });
+  });
+
+  it("should load a config with trailing commas", () => {
+    const cwd = resolve(__dirname, "../../example/with-trailing-commas")
+
+    const result = tsConfigLoader({ cwd, getEnv: () => undefined });
+
+    expect(result).toEqual({
+      baseUrl: "./hej",
+      paths: {},
+      tsConfigPath: resolve(cwd, "tsconfig.json"),
+    });
+  });
+
+  it("should gracefully handle invalid JSON5", () => {
+    const cwd = resolve(__dirname, "../../example/invalid")
+
+    const result = tsConfigLoader({ cwd, getEnv: () => undefined });
+
+    expect(result).toEqual({
+      baseUrl: undefined,
+      paths: { foo: ['bar'] },
+      tsConfigPath: resolve(cwd, 'tsconfig.json')
+    });
+  });
+
+  it("should load a config with string extends and overwrite all options", () => {
+    const cwd = resolve(__dirname, "../../example/extend-overwrite")
+    const tsConfigPath = resolve(cwd, 'nested/tsconfig.json');
+
     const result = tsConfigLoader({
       cwd,
-      getEnv: (_: string) => undefined,
+      getEnv: (name: string) => name === 'TS_NODE_PROJECT' ? tsConfigPath : undefined
     });
+
+    expect(result).toEqual({
+      baseUrl: "./kalle",
+      paths: { foo: ["bar2"] },
+      strict: true,
+      tsConfigPath
+    });
+  });
+
+  it("should load a config with string extends from node_modules and overwrite all options", () => {
+    const cwd = resolve(__dirname, "../../example/extend-node-module")
+
+    const result = tsConfigLoader({ cwd, getEnv: () => undefined });
+
+    expect(result).toEqual({
+      baseUrl: "./kalle",
+      paths: { foo: ["bar2"] },
+      strict: true,
+      tsConfigPath: resolve(cwd, "tsconfig.json")
+    });
+  });
+
+  it("should use baseUrl relative to location of extended tsconfig", () => {
+    const cwd = resolve(__dirname, "../../example/resolve-closest/dir1/dir2")
+
+    const result = tsConfigLoader({ cwd, getEnv: () => undefined });
+
+    expect(result).toEqual({
+      baseUrl: "../..",
+      paths: {},
+      tsConfigPath: resolve(cwd, "tsconfig.json")
+    });
+  });
+
+  it("should load a config with array extends and overwrite all options", () => {
+    const cwd = resolve(__dirname, "../../example/extend-multiple")
+
+    const result = tsConfigLoader({ cwd, getEnv: () => undefined });
+
+    expect(result).toEqual({
+      baseUrl: "./dir1/dir2",
+      paths: { foo: ["bar2"] },
+      tsConfigPath: resolve(cwd, "tsconfig.json")
+    });
+  });
+
+  it("should load a config with array extends without .json extension", () => {
+    const cwd = resolve(__dirname, "../../example/extend-without-extension")
+
+    const result = tsConfigLoader({ cwd, getEnv: () => undefined });
+
+    expect(result).toEqual({
+      baseUrl: "./",
+      paths: { foo: ["bar"] },
+      tsConfigPath: resolve(cwd, "tsconfig.json")
+    });
+  });
+
+  it("should resolve multiple levels of tsconfig extension", () => {
+    const cwd = resolve(__dirname, "../../example/inherited");
+    const result = tsConfigLoader({ cwd, getEnv: () => undefined });
 
     expect(result).toEqual({
       baseUrl: undefined,
