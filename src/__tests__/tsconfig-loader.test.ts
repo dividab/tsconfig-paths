@@ -1,5 +1,6 @@
 import { tsConfigLoader, walkForTsConfig } from "../tsconfig-loader";
 import { join, resolve } from "path";
+import { getTsconfig } from "get-tsconfig";
 
 describe("tsconfig-loader", () => {
   it("should find tsconfig in cwd", () => {
@@ -207,37 +208,7 @@ describe("loadSyncDefault", () => {
 
     expect(result).toEqual({
       baseUrl: undefined,
-      paths: { foo: ['bar'] },
-      tsConfigPath: resolve(cwd, 'tsconfig.json')
-    });
-  });
-
-  it("should load a config with string extends and overwrite all options", () => {
-    const cwd = resolve(__dirname, "../../example/extend-overwrite")
-    const tsConfigPath = resolve(cwd, 'nested/tsconfig.json');
-
-    const result = tsConfigLoader({
-      cwd,
-      getEnv: (name: string) => name === 'TS_NODE_PROJECT' ? tsConfigPath : undefined
-    });
-
-    expect(result).toEqual({
-      baseUrl: "./kalle",
-      paths: { foo: ["bar2"] },
-      strict: true,
-      tsConfigPath
-    });
-  });
-
-  it("should load a config with string extends from node_modules and overwrite all options", () => {
-    const cwd = resolve(__dirname, "../../example/extend-node-module")
-
-    const result = tsConfigLoader({ cwd, getEnv: () => undefined });
-
-    expect(result).toEqual({
-      baseUrl: "./kalle",
-      paths: { foo: ["bar2"] },
-      strict: true,
+      paths: { foo: ["bar"] },
       tsConfigPath: resolve(cwd, "tsconfig.json")
     });
   });
@@ -286,6 +257,42 @@ describe("loadSyncDefault", () => {
       baseUrl: undefined,
       paths: { "@": [] },
       tsConfigPath: resolve(cwd, "tsconfig.json"),
+    });
+  });
+});
+
+describe("getTsconfig", () => {
+  it("should load a config with string extends and overwrite all options", () => {
+    const tsConfigPath = resolve(__dirname, "../../example/extend-overwrite/nested/tsconfig.json");
+
+    const result = getTsconfig(tsConfigPath);
+
+    expect(result).toEqual({
+      config: {
+        compilerOptions: {
+          baseUrl: "./kalle",
+          paths: { foo: ["bar2"] },
+          strict: true,
+        }
+      },
+      path: tsConfigPath
+    });
+  });
+
+  it("should load a config with string extends from node_modules and overwrite all options", () => {
+    const tsConfigPath = resolve(__dirname, "../../example/extend-node-module/tsconfig.json")
+
+    const result = getTsconfig(tsConfigPath);
+
+    expect(result).toEqual({
+      config: {
+        compilerOptions: {
+          baseUrl: "./kalle",
+          paths: { foo: ["bar2"] },
+          strict: true,
+        }
+      },
+      path: tsConfigPath
     });
   });
 });

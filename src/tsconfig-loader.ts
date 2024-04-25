@@ -64,7 +64,6 @@ function loadSyncDefault(
 
   return {
     tsConfigPath: configPath,
-    ...tsconfig?.config.compilerOptions,
     baseUrl: baseUrl || tsconfig?.config.compilerOptions?.baseUrl,
     paths: tsconfig?.config.compilerOptions?.paths ?? {},
   };
