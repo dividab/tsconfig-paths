@@ -1,11 +1,16 @@
-import { createMatchPath } from "./match-path-sync";
-import { configLoader, ExplicitParams } from "./config-loader";
+import {
+  configLoader,
+  findConfigMatcher,
+  ExplicitParams,
+} from "./config-loader";
 
 const noOp = (): void => void 0;
 
 function getCoreModules(
   builtinModules: string[] | undefined
-): { [key: string]: boolean } {
+): {
+  [key: string]: boolean;
+} {
   builtinModules = builtinModules || [
     "assert",
     "buffer",
@@ -76,25 +81,12 @@ export function register(params?: RegisterParams): () => void {
     cwd = argv.project;
   }
 
-  const configLoaderResult = configLoader({
-    cwd: cwd ?? process.cwd(),
-    explicitParams,
-  });
-
-  if (configLoaderResult.resultType === "failed") {
-    console.warn(
-      `${configLoaderResult.message}. tsconfig-paths will be skipped`
-    );
-
-    return noOp;
-  }
-
-  const matchPath = createMatchPath(
-    configLoaderResult.absoluteBaseUrl,
-    configLoaderResult.paths,
-    configLoaderResult.mainFields,
-    configLoaderResult.addMatchAll
-  );
+  const configMatchers = [
+    findConfigMatcher({
+      cwd: cwd !== null && cwd !== void 0 ? cwd : process.cwd(),
+      explicitParams,
+    }),
+  ];
 
   // Patch node's module loading
   // eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
@@ -106,7 +98,22 @@ export function register(params?: RegisterParams): () => void {
   Module._resolveFilename = function (request: string, _parent: any): string {
     const isCoreModule = coreModules.hasOwnProperty(request);
     if (!isCoreModule) {
-      const found = matchPath(request);
+      const parentFilename = parent?.filename;
+
+      let matcher = configMatchers.find(
+        ({ config }) =>
+          !parentFilename || parentFilename.startsWith(config.absoluteBaseUrl)
+      );
+
+      if (!matcher) {
+        matcher = findConfigMatcher({
+          cwd: path.dirname(parentFilename),
+          explicitParams,
+        });
+        configMatchers.push(matcher);
+      }
+
+      const found = matcher.matchPath(request);
       if (found) {
         const modifiedArguments = [found, ...[].slice.call(arguments, 1)]; // Passes all arguments. Even those that is not specified above.
         return originalResolveFilename.apply(this, modifiedArguments);
