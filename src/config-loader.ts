@@ -93,7 +93,7 @@ export function findConfigMatcher({
   cwd,
   explicitParams,
 }: ConfigLoaderParams):
-  | { config: ConfigLoaderResult; matchPath: MatchPath }
+  | { config: ConfigLoaderSuccessResult; matchPath: MatchPath }
   | undefined {
   const configLoaderResult = configLoader({
     cwd,

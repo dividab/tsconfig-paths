@@ -1,8 +1,6 @@
-import {
-  configLoader,
-  findConfigMatcher,
-  ExplicitParams,
-} from "./config-loader";
+import * as path from "path";
+
+import { findConfigMatcher, ExplicitParams } from "./config-loader";
 
 const noOp = (): void => void 0;
 
@@ -99,7 +97,7 @@ export function register(params?: RegisterParams): () => void {
   const originalResolveFilename = Module._resolveFilename;
   const coreModules = getCoreModules(Module.builtinModules);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any,no-underscore-dangle
-  Module._resolveFilename = function (request: string, _parent: any): string {
+  Module._resolveFilename = function (request: string, parent: any): string {
     const isCoreModule = coreModules.hasOwnProperty(request);
     if (!isCoreModule) {
       const parentFilename = parent?.filename;
@@ -117,7 +115,9 @@ export function register(params?: RegisterParams): () => void {
           explicitParams,
         });
 
-        configMatchers.push(matcher);
+        if (matcher) {
+          configMatchers.push(matcher);
+        }
       }
 
       const found = matcher?.matchPath(request);
