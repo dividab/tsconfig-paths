@@ -81,12 +81,16 @@ export function register(params?: RegisterParams): () => void {
     cwd = argv.project;
   }
 
-  const configMatchers = [
-    findConfigMatcher({
-      cwd: cwd !== null && cwd !== void 0 ? cwd : process.cwd(),
-      explicitParams,
-    }),
-  ];
+  const primaryMatcher = findConfigMatcher({
+    cwd: cwd !== null && cwd !== void 0 ? cwd : process.cwd(),
+    explicitParams,
+  });
+
+  if (!primaryMatcher) {
+    return noOp;
+  }
+
+  const configMatchers = [primaryMatcher];
 
   // Patch node's module loading
   // eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
@@ -106,14 +110,17 @@ export function register(params?: RegisterParams): () => void {
       );
 
       if (!matcher) {
+        const targetProject = path.dirname(parentFilename);
+
         matcher = findConfigMatcher({
-          cwd: path.dirname(parentFilename),
+          cwd: targetProject,
           explicitParams,
         });
+
         configMatchers.push(matcher);
       }
 
-      const found = matcher.matchPath(request);
+      const found = matcher?.matchPath(request);
       if (found) {
         const modifiedArguments = [found, ...[].slice.call(arguments, 1)]; // Passes all arguments. Even those that is not specified above.
         return originalResolveFilename.apply(this, modifiedArguments);

@@ -92,7 +92,9 @@ export function configLoader({
 export function findConfigMatcher({
   cwd,
   explicitParams,
-}: ConfigLoaderParams): { config: ConfigLoaderResult; matchPath: MatchPath } {
+}: ConfigLoaderParams):
+  | { config: ConfigLoaderResult; matchPath: MatchPath }
+  | undefined {
   const configLoaderResult = configLoader({
     cwd,
     explicitParams,
@@ -102,7 +104,8 @@ export function findConfigMatcher({
     console.warn(
       "".concat(configLoaderResult.message, ". tsconfig-paths will be skipped")
     );
-    return noOp;
+
+    return;
   }
 
   const matchPath = createMatchPath(
