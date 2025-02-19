@@ -40,6 +40,25 @@ If `process.env.TS_NODE_BASEURL` is set it will override the value of `baseUrl` 
 
 If `process.env.TS_NODE_PROJECT` is set it will be used to resolved tsconfig.json
 
+## With jest
+
+You can plug in tsconfig-paths as a before hook transformer for jest, just following the example below:
+
+```json
+"transform": {
+      "^.+\\.(t|j)s$": [
+        "ts-jest",
+        {
+          "astTransformers": {
+            "before": [
+              "node_modules/tsconfig-paths/plugin"
+            ]
+          }
+        }
+      ]
+    },
+```
+
 ### With webpack
 
 For webpack please use the [tsconfig-paths-webpack-plugin](https://github.com/dividab/tsconfig-paths-webpack-plugin).
