@@ -14,14 +14,12 @@ If you require this package's `tsconfig-paths/register` module it will read the 
 
 ## How to install
 
-```
+```bash
 yarn add --dev tsconfig-paths
-```
-
-or
-
-```
+# or
 npm install --save-dev tsconfig-paths
+# or
+bun install --dev tsconfig-paths
 ```
 
 ## How to use
